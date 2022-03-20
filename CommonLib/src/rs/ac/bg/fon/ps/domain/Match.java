@@ -13,18 +13,18 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class Game implements GenericDomainObject {
+public class Match implements GenericDomainObject {
     
-    private int gameID;
+    private int matchID;
     private Date dateOfPlay;
     private Team home;
     private Team away;
 
-    public Game() {
+    public Match() {
     }
 
-    public Game(int gameID, Date dateOfPlay, Team home, Team away) {
-        this.gameID = gameID;
+    public Match(int matchID, Date dateOfPlay, Team home, Team away) {
+        this.matchID = matchID;
         this.dateOfPlay = dateOfPlay;
         this.home = home;
         this.away = away;
@@ -38,12 +38,12 @@ public class Game implements GenericDomainObject {
         this.away = away;
     }
 
-    public int getGameID() {
-        return gameID;
+    public int getMatchID() {
+        return matchID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
+    public void setMatchID(int matchID) {
+        this.matchID = matchID;
     }
 
     public Date getDateOfPlay() {
@@ -65,7 +65,7 @@ public class Game implements GenericDomainObject {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + this.gameID;
+        hash = 53 * hash + this.matchID;
         hash = 53 * hash + Objects.hashCode(this.dateOfPlay);
         hash = 53 * hash + Objects.hashCode(this.home);
         hash = 53 * hash + Objects.hashCode(this.away);
@@ -83,8 +83,8 @@ public class Game implements GenericDomainObject {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Game other = (Game) obj;
-        if (this.gameID != other.gameID) {
+        final Match other = (Match) obj;
+        if (this.matchID != other.matchID) {
             return false;
         }
         if (!Objects.equals(this.dateOfPlay, other.dateOfPlay)) {

@@ -15,22 +15,22 @@ import java.util.Objects;
 public class Type implements GenericDomainObject {
     
     private int typeID;
-    private String name;
+    private String typeName;
 
     public Type() {
     }
 
-    public Type(int typeID, String name) {
+    public Type(int typeID, String typeName) {
         this.typeID = typeID;
-        this.name = name;
+        this.typeName = typeName;
     }
 
-    public String getName() {
-        return name;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public int getTypeID() {
@@ -45,7 +45,7 @@ public class Type implements GenericDomainObject {
     public int hashCode() {
         int hash = 7;
         hash = 23 * hash + this.typeID;
-        hash = 23 * hash + Objects.hashCode(this.name);
+        hash = 23 * hash + Objects.hashCode(this.typeName);
         return hash;
     }
 
@@ -64,7 +64,7 @@ public class Type implements GenericDomainObject {
         if (this.typeID != other.typeID) {
             return false;
         }
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.typeName, other.typeName);
     }
 
     @Override

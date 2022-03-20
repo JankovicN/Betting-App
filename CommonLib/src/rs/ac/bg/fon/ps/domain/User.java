@@ -14,9 +14,9 @@ import java.util.Objects;
  */
 public class User implements GenericDomainObject{
     
+    private int userID;
     private String name;
     private String surname;
-    private String JMBG;// ?
     private String username;
     private String password;
     private Role role;
@@ -24,14 +24,15 @@ public class User implements GenericDomainObject{
     public User() {
     }
 
-    public User(String name, String surname, String JMBG, String username, String password, Role role) {
+    public User(int userID, String name, String surname, String username, String password, Role role) {
+        this.userID = userID;
         this.name = name;
         this.surname = surname;
-        this.JMBG = JMBG;
         this.username = username;
         this.password = password;
         this.role = role;
     }
+
 
     public Role getRole() {
         return role;
@@ -57,14 +58,6 @@ public class User implements GenericDomainObject{
         this.surname = surname;
     }
 
-    public String getJMBG() {
-        return JMBG;
-    }
-
-    public void setJMBG(String JMBG) {
-        this.JMBG = JMBG;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -81,15 +74,23 @@ public class User implements GenericDomainObject{
         this.password = password;
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.name);
-        hash = 43 * hash + Objects.hashCode(this.surname);
-        hash = 43 * hash + Objects.hashCode(this.JMBG);
-        hash = 43 * hash + Objects.hashCode(this.username);
-        hash = 43 * hash + Objects.hashCode(this.password);
-        hash = 43 * hash + Objects.hashCode(this.role);
+        int hash = 3;
+        hash = 97 * hash + this.userID;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.surname);
+        hash = 97 * hash + Objects.hashCode(this.username);
+        hash = 97 * hash + Objects.hashCode(this.password);
+        hash = 97 * hash + Objects.hashCode(this.role);
         return hash;
     }
 
@@ -105,13 +106,13 @@ public class User implements GenericDomainObject{
             return false;
         }
         final User other = (User) obj;
+        if (this.userID != other.userID) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.surname, other.surname)) {
-            return false;
-        }
-        if (!Objects.equals(this.JMBG, other.JMBG)) {
             return false;
         }
         if (!Objects.equals(this.username, other.username)) {
@@ -122,6 +123,9 @@ public class User implements GenericDomainObject{
         }
         return this.role == other.role;
     }
+    
+
+    
 
     @Override
     public String getTableName() {

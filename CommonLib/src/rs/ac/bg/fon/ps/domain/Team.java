@@ -15,14 +15,14 @@ import java.util.Objects;
 public class Team implements GenericDomainObject {
     
     int teamID;
-    String name;
+    String teamName;
 
     public Team() {
     }
 
-    public Team(int teamID, String name) {
+    public Team(int teamID, String teamName) {
         this.teamID = teamID;
-        this.name = name;
+        this.teamName = teamName;
     }
 
     public int getTeamID() {
@@ -33,19 +33,19 @@ public class Team implements GenericDomainObject {
         this.teamID = teamID;
     }
 
-    public String getName() {
-        return name;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 89 * hash + this.teamID;
-        hash = 89 * hash + Objects.hashCode(this.name);
+        hash = 89 * hash + Objects.hashCode(this.teamName);
         return hash;
     }
 
@@ -64,7 +64,7 @@ public class Team implements GenericDomainObject {
         if (this.teamID != other.teamID) {
             return false;
         }
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.teamName, other.teamName);
     }
 
     @Override

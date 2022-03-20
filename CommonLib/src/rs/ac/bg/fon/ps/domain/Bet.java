@@ -15,16 +15,16 @@ import java.util.Objects;
 public class Bet implements GenericDomainObject {
     
     private int betID;
-    private Game game;
+    private Match match;
     private Type type;
     private Odds odds;
 
     public Bet() {
     }
 
-    public Bet(int betID, Game game, Type type, Odds odds) {
+    public Bet(int betID, Match match, Type type, Odds odds) {
         this.betID = betID;
-        this.game = game;
+        this.match = match;
         this.type = type;
         this.odds = odds;
     }
@@ -45,12 +45,12 @@ public class Bet implements GenericDomainObject {
         this.betID = betID;
     }
 
-    public Game getGame() {
-        return game;
+    public Match getMatch() {
+        return match;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     public Type getType() {
@@ -65,7 +65,7 @@ public class Bet implements GenericDomainObject {
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + this.betID;
-        hash = 97 * hash + Objects.hashCode(this.game);
+        hash = 97 * hash + Objects.hashCode(this.match);
         hash = 97 * hash + Objects.hashCode(this.type);
         hash = 97 * hash + Objects.hashCode(this.odds);
         return hash;
@@ -86,7 +86,7 @@ public class Bet implements GenericDomainObject {
         if (this.betID != other.betID) {
             return false;
         }
-        if (!Objects.equals(this.game, other.game)) {
+        if (!Objects.equals(this.match, other.match)) {
             return false;
         }
         if (!Objects.equals(this.type, other.type)) {
