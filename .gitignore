@@ -1,2 +1,7 @@
 /CommonLib/nbproject/private/
 /Client/nbproject/private/
+/CommonLib/build/
+/CommonLib/dist/
+/Server/nbproject/private/
+/Server/build/
+/Server/dist/
