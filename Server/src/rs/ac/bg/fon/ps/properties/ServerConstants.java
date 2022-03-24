@@ -8,9 +8,7 @@ package rs.ac.bg.fon.ps.properties;
  *
  * @author nikol
  */
-public class DBConstants {
+public class ServerConstants {
     
-    public static final String DB_URL = "url";
-    public static final String DB_USERNAME = "username";
-    public static final String DB_PASSWORD = "password";
+    public static final String SERVER_PORT = "port";
 }

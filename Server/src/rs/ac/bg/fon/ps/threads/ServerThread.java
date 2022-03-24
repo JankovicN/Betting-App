@@ -4,9 +4,14 @@
  */
 package rs.ac.bg.fon.ps.threads;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rs.ac.bg.fon.ps.properties.ServerProperties;
+import rs.ac.bg.fon.ps.repository.db.DBConnectionFactory;
 import rs.ac.bg.fon.ps.users.Users;
 
 /**
@@ -16,9 +21,11 @@ import rs.ac.bg.fon.ps.users.Users;
 public class ServerThread extends Thread{
     
     ServerSocket serverSocket;
+    String port;
 
     public ServerThread() throws IOException {
-        serverSocket=new ServerSocket(9000);
+        readConfigProperties();
+        serverSocket=new ServerSocket(Integer.getInteger(port));
         System.out.println("Waiting for connection...");
     }
 
@@ -43,7 +50,16 @@ public class ServerThread extends Thread{
         for (HandleClientThread client : Users.getInstance().getClientThreads()) {
             client.getSocket().close();
         }
-        serverSocket.close();
-        
+        serverSocket.close();   
+    }
+    
+    private void readConfigProperties() {
+
+        try {
+            ServerProperties properties = new ServerProperties();
+            port=properties.getPort();
+        } catch (IOException e) {
+            Logger.getLogger(DBConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 }

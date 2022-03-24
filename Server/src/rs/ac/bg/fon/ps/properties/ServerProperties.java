@@ -7,41 +7,34 @@ package rs.ac.bg.fon.ps.properties;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Provider;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
 
 /**
  *
  * @author nikol
  */
-public class DBProperties {
+public class ServerProperties {
     
     private Properties properties;
 
-    public DBProperties() throws IOException {
+    public ServerProperties() throws IOException {
         
         try {
             properties=new Properties();
-            properties.load(new FileInputStream("config/dbconfig.properties"));
-        } catch (FileNotFoundException ex) {
+            properties.load(new FileInputStream("config/serverproperties.properties"));
+        } catch (FileNotFoundException e) {
             
             //TODO if there is no file
-            Logger.getLogger(DBProperties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBProperties.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    public String getURL() {
-       return properties.getProperty(DBConstants.DB_URL);
+    public String getPort(){
+        
+        return properties.getProperty(ServerConstants.SERVER_PORT);
     }
-    
-    public String getUsername() {
-       return properties.getProperty(DBConstants.DB_USERNAME);
-    }
-     
-    public String getPassword() {
-       return properties.getProperty(DBConstants.DB_PASSWORD);
-    }
-    
-    
 }
