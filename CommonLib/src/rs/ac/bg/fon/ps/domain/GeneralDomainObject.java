@@ -12,14 +12,14 @@ import java.sql.ResultSet;
  *
  * @author nikol
  */
-public interface GenericDomainObject extends Serializable{
+public interface GeneralDomainObject extends Serializable{
     
     String getTableName(); // returns String representing the name of the table
     String getColumnNamesForInsert(); // returns String representing column names that are used for INSERT query
     String getColumnNamesForInsertWithAlias(); // returns String representing column names with alias that are used for INSERT query
     String getDeleteCondition(); // returns String representing the condition for DELETE query
     String getUpdateCondition(); // returns String representing the condition for UPDATE query
-    String getUpdateValues(GenericDomainObject gdo); // returns String representing values that are changing in UPDATE query
+    String getUpdateValues(GeneralDomainObject gdo); // returns String representing values that are changing in UPDATE query
     String getInsertValues(); // returns String representing values that are inserted in table, in INSERT queey
     String getAlias(); //returns alias for SQL query
     String getSecondAlias();
@@ -28,6 +28,6 @@ public interface GenericDomainObject extends Serializable{
     String getSecondForeignKey(); // returns second foreign key as String, if the table has two foreign keys
     String getPrimaryKeyColumnName(); // returns the name of the column of primary key
     String getSecondPrimarykeyColumnName(); // returns the name of the column of second primary key, if the table has two primary keys
-    List<GenericDomainObject> readResultSet(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
+    List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
     
 }

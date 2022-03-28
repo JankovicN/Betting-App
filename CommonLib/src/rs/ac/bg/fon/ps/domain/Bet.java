@@ -12,22 +12,25 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class Bet implements GenericDomainObject {
+public class Bet implements GeneralDomainObject {
     
     private int betID;
-    private Match match;
-    private Type type;
+    private Ticket ticket;
+    private double betOdds;
+    private boolean passed;
     private Odds odds;
 
     public Bet() {
     }
 
-    public Bet(int betID, Match match, Type type, Odds odds) {
+    public Bet(int betID, Ticket ticket, double betOdds, boolean passed, Odds odds) {
         this.betID = betID;
-        this.match = match;
-        this.type = type;
+        this.ticket = ticket;
+        this.betOdds = betOdds;
+        this.passed = passed;
         this.odds = odds;
     }
+
 
     public Odds getOdds() {
         return odds;
@@ -44,30 +47,39 @@ public class Bet implements GenericDomainObject {
     public void setBetID(int betID) {
         this.betID = betID;
     }
-
-    public Match getMatch() {
-        return match;
+    
+    public double getBetOdds() {
+        return betOdds;
     }
 
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setBetOdds(double betOdds) {
+        this.betOdds = betOdds;
     }
 
-    public Type getType() {
-        return type;
+    public boolean isPassed() {
+        return passed;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setPassed(boolean passed) {
+        this.passed = passed;
+    }
+    
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + this.betID;
-        hash = 97 * hash + Objects.hashCode(this.match);
-        hash = 97 * hash + Objects.hashCode(this.type);
-        hash = 97 * hash + Objects.hashCode(this.odds);
+        int hash = 7;
+        hash = 43 * hash + this.betID;
+        hash = 43 * hash + Objects.hashCode(this.ticket);
+        hash = 43 * hash + (int) (Double.doubleToLongBits(this.betOdds) ^ (Double.doubleToLongBits(this.betOdds) >>> 32));
+        hash = 43 * hash + (this.passed ? 1 : 0);
+        hash = 43 * hash + Objects.hashCode(this.odds);
         return hash;
     }
 
@@ -86,13 +98,22 @@ public class Bet implements GenericDomainObject {
         if (this.betID != other.betID) {
             return false;
         }
-        if (!Objects.equals(this.match, other.match)) {
+        if (Double.doubleToLongBits(this.betOdds) != Double.doubleToLongBits(other.betOdds)) {
             return false;
         }
-        if (!Objects.equals(this.type, other.type)) {
+        if (this.passed != other.passed) {
+            return false;
+        }
+        if (!Objects.equals(this.ticket, other.ticket)) {
             return false;
         }
         return Objects.equals(this.odds, other.odds);
+    }
+
+    
+    @Override
+    public String toString() {
+        return "Ticket: "+ticket.getTicketID()+"  Passed: " + passed+"\nMatch: " + odds.getMatch().toString() + "   Type: " + odds.getType().toString() + "  Odds: " + betOdds;
     }
 
     @Override
@@ -121,7 +142,7 @@ public class Bet implements GenericDomainObject {
     }
 
     @Override
-    public String getUpdateValues(GenericDomainObject gdo) {
+    public String getUpdateValues(GeneralDomainObject gdo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -166,11 +187,8 @@ public class Bet implements GenericDomainObject {
     }
 
     @Override
-    public List<GenericDomainObject> readResultSet(ResultSet rs) throws Exception {
+    public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
-    
-    
+  
 }

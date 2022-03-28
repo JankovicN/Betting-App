@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class User implements GenericDomainObject{
+public class User implements GeneralDomainObject{
     
     private int userID;
     private String name;
@@ -153,7 +153,7 @@ public class User implements GenericDomainObject{
     }
 
     @Override
-    public String getUpdateValues(GenericDomainObject gdo) {
+    public String getUpdateValues(GeneralDomainObject gdo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -198,7 +198,7 @@ public class User implements GenericDomainObject{
     }
 
     @Override
-    public List<GenericDomainObject> readResultSet(ResultSet rs) throws Exception {
+    public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

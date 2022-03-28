@@ -12,19 +12,35 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class Odds implements GenericDomainObject {
+public class Odds implements GeneralDomainObject {
     
-    private int oddsID;
-    private Bet bet;
+    private Match match;
+    private Type type;
     private double odds;
 
     public Odds() {
     }
 
-    public Odds(int oddsID, Bet bet, double odds) {
-        this.oddsID = oddsID;
-        this.bet = bet;
+    public Odds(Match match, Type type, double odds) {
+        this.match = match;
+        this.type = type;
         this.odds = odds;
+    }
+    
+    public Match getMatch() {
+        return match;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public double getOdds() {
@@ -35,28 +51,12 @@ public class Odds implements GenericDomainObject {
         this.odds = odds;
     }
 
-    public int getOddsID() {
-        return oddsID;
-    }
-
-    public void setOddsID(int oddsID) {
-        this.oddsID = oddsID;
-    }
-
-    public Bet getBet() {
-        return bet;
-    }
-
-    public void setBet(Bet bet) {
-        this.bet = bet;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 41 * hash + this.oddsID;
-        hash = 41 * hash + Objects.hashCode(this.bet);
-        hash = 41 * hash + (int) (Double.doubleToLongBits(this.odds) ^ (Double.doubleToLongBits(this.odds) >>> 32));
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.match);
+        hash = 37 * hash + Objects.hashCode(this.type);
+        hash = 37 * hash + (int) (Double.doubleToLongBits(this.odds) ^ (Double.doubleToLongBits(this.odds) >>> 32));
         return hash;
     }
 
@@ -72,13 +72,18 @@ public class Odds implements GenericDomainObject {
             return false;
         }
         final Odds other = (Odds) obj;
-        if (this.oddsID != other.oddsID) {
-            return false;
-        }
         if (Double.doubleToLongBits(this.odds) != Double.doubleToLongBits(other.odds)) {
             return false;
         }
-        return Objects.equals(this.bet, other.bet);
+        if (!Objects.equals(this.match, other.match)) {
+            return false;
+        }
+        return Objects.equals(this.type, other.type);
+    }
+
+    @Override
+    public String toString() {
+        return "Match: " + match.toString() + "/nType: " + type.toString() + "/nOdds: " + odds;
     }
 
     @Override
@@ -107,7 +112,7 @@ public class Odds implements GenericDomainObject {
     }
 
     @Override
-    public String getUpdateValues(GenericDomainObject gdo) {
+    public String getUpdateValues(GeneralDomainObject gdo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -152,10 +157,7 @@ public class Odds implements GenericDomainObject {
     }
 
     @Override
-    public List<GenericDomainObject> readResultSet(ResultSet rs) throws Exception {
+    public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    
-    
+    }    
 }

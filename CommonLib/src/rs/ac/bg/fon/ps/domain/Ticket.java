@@ -6,6 +6,7 @@ package rs.ac.bg.fon.ps.domain;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -15,27 +16,36 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class Ticket implements GenericDomainObject {
+public class Ticket implements GeneralDomainObject {
 
     private int ticketID;
     private BigDecimal wager;
     private double oddsSum;
     private BigDecimal totalWin;
-    private User user;
     private Date date;
+    private boolean win;
+    private String state;
+    private User user;
+    private List<Bet> listOfBets;
 
     public Ticket() {
+        state = "unproccesed";
+        listOfBets = new ArrayList<>();
     }
 
-    public Ticket(int ticketID, BigDecimal wager, double oddsSum, BigDecimal totalWin, User user, Date date) {
+    public Ticket(int ticketID, BigDecimal wager, double oddsSum, BigDecimal totalWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
         this.ticketID = ticketID;
         this.wager = wager;
         this.oddsSum = oddsSum;
         this.totalWin = totalWin;
         this.user = user;
         this.date = date;
+        this.win = win;
+        this.state = state;
+        this.listOfBets = listOfBets;
     }
-    
+
+
     public int getTicketID() {
         return ticketID;
     }
@@ -84,15 +94,42 @@ public class Ticket implements GenericDomainObject {
         this.date = date;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public boolean isWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
+    }
+
+    public List<Bet> getListOfBets() {
+        return listOfBets;
+    }
+
+    public void setListOfBets(List<Bet> listOfBets) {
+        this.listOfBets = listOfBets;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + this.ticketID;
-        hash = 29 * hash + Objects.hashCode(this.wager);
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.oddsSum) ^ (Double.doubleToLongBits(this.oddsSum) >>> 32));
-        hash = 29 * hash + Objects.hashCode(this.totalWin);
-        hash = 29 * hash + Objects.hashCode(this.user);
-        hash = 29 * hash + Objects.hashCode(this.date);
+        int hash = 3;
+        hash = 79 * hash + this.ticketID;
+        hash = 79 * hash + Objects.hashCode(this.wager);
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.oddsSum) ^ (Double.doubleToLongBits(this.oddsSum) >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.totalWin);
+        hash = 79 * hash + Objects.hashCode(this.user);
+        hash = 79 * hash + Objects.hashCode(this.date);
+        hash = 79 * hash + (this.win ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.state);
+        hash = 79 * hash + Objects.hashCode(this.listOfBets);
         return hash;
     }
 
@@ -114,6 +151,12 @@ public class Ticket implements GenericDomainObject {
         if (Double.doubleToLongBits(this.oddsSum) != Double.doubleToLongBits(other.oddsSum)) {
             return false;
         }
+        if (this.win != other.win) {
+            return false;
+        }
+        if (!Objects.equals(this.state, other.state)) {
+            return false;
+        }
         if (!Objects.equals(this.wager, other.wager)) {
             return false;
         }
@@ -123,8 +166,18 @@ public class Ticket implements GenericDomainObject {
         if (!Objects.equals(this.user, other.user)) {
             return false;
         }
-        return Objects.equals(this.date, other.date);
+        if (!Objects.equals(this.date, other.date)) {
+            return false;
+        }
+        return Objects.equals(this.listOfBets, other.listOfBets);
     }
+
+    @Override
+    public String toString() {
+        return "TicketID: " + ticketID + "  Played on: "+ date +"  Passed: " + win +"\n"
+                + "Wager: "+wager+ "  Odds sum: " +oddsSum+ "  Total win: "+totalWin;
+    }
+    
     
     
     @Override
@@ -153,7 +206,7 @@ public class Ticket implements GenericDomainObject {
     }
 
     @Override
-    public String getUpdateValues(GenericDomainObject gdo) {
+    public String getUpdateValues(GeneralDomainObject gdo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -198,8 +251,7 @@ public class Ticket implements GenericDomainObject {
     }
 
     @Override
-    public List<GenericDomainObject> readResultSet(ResultSet rs) throws Exception {
+    public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }
