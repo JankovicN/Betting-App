@@ -12,15 +12,15 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rs.ac.bg.fon.ps.domain.GenericDomainObject;
 import rs.ac.bg.fon.ps.repository.db.DBConnectionFactory;
 import rs.ac.bg.fon.ps.repository.db.DBRepository;
+import rs.ac.bg.fon.ps.domain.GeneralDomainObject;
 
 /**
  *
  * @author nikol
  */
-public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
+public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
 
     /**
      *
@@ -28,7 +28,7 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
      * @throws Exception
      */
     @Override
-    public void add(GenericDomainObject param)throws Exception{
+    public void add(GeneralDomainObject param)throws Exception{
     
         try {
             Connection connection= DBConnectionFactory.getInstance().getConnection();
@@ -55,7 +55,7 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
      * @throws Exception
      */
     @Override
-    public void edit(GenericDomainObject param) throws Exception {
+    public void edit(GeneralDomainObject param) throws Exception {
         try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
@@ -81,7 +81,7 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
      * @throws Exception
      */
     @Override
-    public void delete(GenericDomainObject param) throws Exception {
+    public void delete(GeneralDomainObject param) throws Exception {
         try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
@@ -107,7 +107,7 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
      * @throws Exception
      */
     @Override
-    public List<GenericDomainObject> getAll(GenericDomainObject param) throws Exception {
+    public List<GeneralDomainObject> getAll(GeneralDomainObject param) throws Exception {
         try {
             String query = "SELECT * from " + param.getTableName();
             Connection connection = DBConnectionFactory.getInstance().getConnection();
@@ -129,7 +129,7 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
      * @throws Exception
      */
     @Override
-    public int addReturnKey(GenericDomainObject param) throws Exception {
+    public int addReturnKey(GeneralDomainObject param) throws Exception {
     try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
@@ -159,6 +159,24 @@ public class DBRepositoryGeneric implements DBRepository<GenericDomainObject>{
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new Exception("Greska prilikom dodavanja u bazu!");
+        }
+    }
+
+    @Override
+    public List<GeneralDomainObject> search(GeneralDomainObject param) throws Exception {
+        try {
+            String query = "SELECT * from " + param.getTableName()+
+                            " WHERE "+param.getSelectCondition();
+            System.out.println(query);
+            
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return param.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
         }
     }
     

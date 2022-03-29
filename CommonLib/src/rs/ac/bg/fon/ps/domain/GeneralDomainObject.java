@@ -21,6 +21,7 @@ public interface GeneralDomainObject extends Serializable{
     String getUpdateCondition(); // returns String representing the condition for UPDATE query
     String getUpdateValues(GeneralDomainObject gdo); // returns String representing values that are changing in UPDATE query
     String getInsertValues(); // returns String representing values that are inserted in table, in INSERT queey
+    String getSelectCondition();// returns String represeiting valuses for WHERE in SELECT query
     String getAlias(); //returns alias for SQL query
     String getSecondAlias();
     String getValuesForDoubleJoin(); // returns String representing values when joining three tables

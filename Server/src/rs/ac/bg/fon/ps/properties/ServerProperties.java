@@ -25,7 +25,7 @@ public class ServerProperties {
         
         try {
             properties=new Properties();
-            properties.load(new FileInputStream("config/serverproperties.properties"));
+            properties.load(new FileInputStream("config/serverconfig.properties"));
         } catch (FileNotFoundException e) {
             
             //TODO if there is no file

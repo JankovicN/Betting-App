@@ -5,10 +5,14 @@
 package rs.ac.bg.fon.ps.threads;
 
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rs.ac.bg.fon.ps.communication.Receiver;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
+import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.communication.Sender;
+import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.operations.Operations;
 
@@ -43,18 +47,19 @@ public class HandleClientThread extends Thread{
         try {
             while(true){
                 Request request = (Request)receiver.receive();
-                obradiOdgovor(request, response);
+                processResponse(request, response);
             }
         } catch (Exception e) {
             //TODO 
         }
     }
 
-    private void obradiOdgovor(Request request, Response response) throws Exception {
+    private void processResponse(Request request, Response response) throws Exception {
 
         switch(request.getOperation()){
         
-            
+            case Operations.LOGIN:
+                login(request, response);
         }
     }
 
@@ -64,5 +69,21 @@ public class HandleClientThread extends Thread{
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    private void login(Request request, Response response) throws Exception {
+     
+        try {
+            User user = (User)request.getArgument();
+            setClient(Controller.getInstance().login(user));
+            System.out.println("Login successful!");
+            response.setResult(user);
+            response.setResponseType(ResponseType.SUCCESS);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.setResponseType(ResponseType.ERROR);
+            response.setException(ex);
+        }
+        sender.send(response);
     }
 }

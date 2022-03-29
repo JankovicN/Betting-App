@@ -25,7 +25,7 @@ public class ServerThread extends Thread{
 
     public ServerThread() throws IOException {
         readConfigProperties();
-        serverSocket=new ServerSocket(Integer.getInteger(port));
+        serverSocket=new ServerSocket(Integer.parseInt(port));
         System.out.println("Waiting for connection...");
     }
 
@@ -57,7 +57,7 @@ public class ServerThread extends Thread{
 
         try {
             ServerProperties properties = new ServerProperties();
-            port=properties.getPort();
+            port = properties.getPort();
         } catch (IOException e) {
             Logger.getLogger(DBConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
         }

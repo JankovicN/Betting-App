@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -129,17 +130,17 @@ public class User implements GeneralDomainObject{
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "user";
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "userID, name, surname, username, password, role";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getAlias()+".userID, "+getAlias()+".name, "+getAlias()+".surname, "+getAlias()+".username, "+getAlias()+".password, "+getAlias()+".role";
     }
 
     @Override
@@ -164,7 +165,7 @@ public class User implements GeneralDomainObject{
 
     @Override
     public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "u";
     }
 
     @Override
@@ -189,7 +190,7 @@ public class User implements GeneralDomainObject{
 
     @Override
     public String getPrimaryKeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "userID";
     }
 
     @Override
@@ -199,7 +200,25 @@ public class User implements GeneralDomainObject{
 
     @Override
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+        List<GeneralDomainObject> list = new ArrayList<>();
+        
+        while(rs.next()){
+            User u = new User();
+            u.setName(rs.getString("name"));
+            u.setSurname(rs.getString("surname"));
+            u.setUsername(rs.getString("username"));
+            u.setPassword(rs.getString("password"));
+            u.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
+            u.setUserID(rs.getInt("userID"));
+            list.add(u);
+        }
+        return list;
+    }
+
+    @Override
+    public String getSelectCondition() {
+        return " username='"+ username +"' AND password='"+password+"'";
     }
     
     

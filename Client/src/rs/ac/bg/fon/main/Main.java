@@ -4,6 +4,8 @@
  */
 package rs.ac.bg.fon.main;
 
+import rs.ac.bg.fon.ps.controller.Controller;
+
 /**
  *
  * @author nikol
@@ -11,6 +13,6 @@ package rs.ac.bg.fon.main;
 public class Main {
     
     public static void main(String[] args) {
-        
+        Controller.getInstance().operFormLogin();
     }
 }

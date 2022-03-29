@@ -17,10 +17,10 @@ import rs.ac.bg.fon.ps.communication.Sender;
  */
 public class Communication {
     
-    static Communication instance;
-    final Socket socket;
-    final Sender sender;
-    final Receiver receiver;
+    private static Communication instance;
+    private final Socket socket;
+    private final Sender sender;
+    private final Receiver receiver;
 
     public Communication() throws Exception {
         this.socket = new Socket("localhost", 9000);
@@ -28,9 +28,9 @@ public class Communication {
         this.receiver = new Receiver(socket);
     }
     
-    public static Communication getInstance(){
+    public static Communication getInstance() throws Exception{
         if(instance==null){
-            return instance;
+            instance = new Communication();
         }
         return instance;
     }

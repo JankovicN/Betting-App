@@ -4,6 +4,10 @@
  */
 package rs.ac.bg.fon.ps.controller;
 
+import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
+import rs.ac.bg.fon.ps.operations.User.LoginUser;
+
 /**
  *
  * @author nikol
@@ -20,6 +24,14 @@ public class Controller {
             instance= new Controller();
         }
         return instance;
+    }
+
+    public User login(User client) throws Exception {
+        User user = client;
+        AbstractGenericOperation operation = new LoginUser();
+        operation.execute(user);
+        user = ((LoginUser)operation).getUser();
+        return user;
     }
     
 }

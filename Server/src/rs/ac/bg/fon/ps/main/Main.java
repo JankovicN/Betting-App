@@ -4,6 +4,8 @@
  */
 package rs.ac.bg.fon.ps.main;
 
+import rs.ac.bg.fon.ps.view.form.FormServer;
+
 /**
  *
  * @author nikol
@@ -12,5 +14,6 @@ public class Main {
     
     public static void main(String[] args) {
         
+        new FormServer().setVisible(true);
     }
 }

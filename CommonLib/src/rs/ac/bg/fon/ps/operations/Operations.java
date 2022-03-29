@@ -9,5 +9,5 @@ package rs.ac.bg.fon.ps.operations;
  * @author nikol
  */
 public class Operations {
-    
+    public static final int LOGIN=1;
 }
