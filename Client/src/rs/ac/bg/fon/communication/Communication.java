@@ -42,11 +42,4 @@ public class Communication {
         return (Response) new Receiver(socket).receive();
     }
     
-    public Response login(Request request) throws Exception{
-    
-        sender.send(request);
-        System.out.println("Login request sent..");
-        return (Response) new Receiver(socket).receive();
-    }
-    
 }

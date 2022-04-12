@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.threads;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rs.ac.bg.fon.ps.communication.Receiver;
@@ -13,6 +14,7 @@ import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.communication.Sender;
 import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.operations.Operations;
 
@@ -20,7 +22,8 @@ import rs.ac.bg.fon.ps.operations.Operations;
  *
  * @author nikol
  */
-public class HandleClientThread extends Thread{
+public class HandleClientThread extends Thread {
+
     private ServerThread serverThread;
     private Socket socket;
     private Sender sender;
@@ -32,9 +35,8 @@ public class HandleClientThread extends Thread{
         this.socket = socket;
         sender = new Sender(socket);
         receiver = new Receiver(socket);
-        this.client=new User();
+        this.client = new User();
     }
-
 
     public Socket getSocket() {
         return socket;
@@ -42,11 +44,11 @@ public class HandleClientThread extends Thread{
 
     @Override
     public void run() {
-    
+
         Response response = new Response();
         try {
-            while(true){
-                Request request = (Request)receiver.receive();
+            while (true) {
+                Request request = (Request) receiver.receive();
                 processResponse(request, response);
             }
         } catch (Exception e) {
@@ -56,10 +58,12 @@ public class HandleClientThread extends Thread{
 
     private void processResponse(Request request, Response response) throws Exception {
 
-        switch(request.getOperation()){
-        
+        switch (request.getOperation()) {
+
             case Operations.LOGIN:
                 login(request, response);
+            case Operations.GET_USER_TICKETS:
+                getUserTickets(request, response);
         }
     }
 
@@ -72,12 +76,28 @@ public class HandleClientThread extends Thread{
     }
 
     private void login(Request request, Response response) throws Exception {
-     
+
         try {
-            User user = (User)request.getArgument();
+            User user = (User) request.getArgument();
             setClient(Controller.getInstance().login(user));
             System.out.println("Login successful!");
-            response.setResult(user);
+            response.setResult(client);
+            response.setResponseType(ResponseType.SUCCESS);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.setResponseType(ResponseType.ERROR);
+            response.setException(ex);
+        }
+        sender.send(response);
+    }
+
+    private void getUserTickets(Request request, Response response) throws Exception {
+        try {
+            
+            ArrayList<Ticket> listOfTickets = Controller.getInstance().getUserTickets(client);
+
+            System.out.println("Requst for list of played tickets was successful!");
+            response.setResult(listOfTickets);
             response.setResponseType(ResponseType.SUCCESS);
         } catch (Exception ex) {
             ex.printStackTrace();

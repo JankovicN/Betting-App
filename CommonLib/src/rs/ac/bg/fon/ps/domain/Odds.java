@@ -92,6 +92,11 @@ public class Odds implements GeneralDomainObject {
     }
 
     @Override
+    public int getPrimaryKey() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
     public String getColumnNamesForInsert() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -160,6 +165,11 @@ public class Odds implements GeneralDomainObject {
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }    
+    
+    @Override
+    public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     @Override
     public String getSelectCondition() {

@@ -45,6 +45,7 @@ public class ControllerLogin {
         if(response.getResponseType().equals(ResponseType.SUCCESS)){
             
             user=(User) response.getResult();
+            System.out.println("\nUserID: "+user.getUserID()+"\nName: "+user.getName()+"\nSurname: "+user.getSurname()+"\nUsername: "+user.getUsername()+"\nPassword: "+user.getPassword()+"\nRole: "+user.getRole());
             Controller.getInstance().setCurrentUser(user);
             return user;
         }else{

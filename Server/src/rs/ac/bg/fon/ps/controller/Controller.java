@@ -4,9 +4,12 @@
  */
 package rs.ac.bg.fon.ps.controller;
 
+import java.util.ArrayList;
+import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 import rs.ac.bg.fon.ps.operations.User.LoginUser;
+import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
 
 /**
  *
@@ -32,6 +35,14 @@ public class Controller {
         operation.execute(user);
         user = ((LoginUser)operation).getUser();
         return user;
+    }
+
+    public ArrayList<Ticket> getUserTickets(User client) throws Exception {
+        User user = client;
+        AbstractGenericOperation operation = new GetUserTickets();
+        operation.execute(user);
+        ArrayList<Ticket> listOfTickets= ((GetUserTickets)operation).getList();
+        return listOfTickets;
     }
     
 }

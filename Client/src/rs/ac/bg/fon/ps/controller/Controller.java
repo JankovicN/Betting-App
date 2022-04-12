@@ -6,6 +6,7 @@ package rs.ac.bg.fon.ps.controller;
 
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
+import rs.ac.bg.fon.ps.view.form.FormMain;
 
 /**
  *
@@ -15,6 +16,7 @@ public class Controller {
     
     private static Controller instance;
     private ControllerLogin controllerLogin;
+    private ControllerMain controllerMain;
     private User currentUser;
 
     public Controller() {
@@ -45,7 +47,12 @@ public class Controller {
         return controllerLogin;
     }
 
-    public void openMainForm() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void openMainForm() throws Exception {
+        this.controllerMain=new ControllerMain(new FormMain());
+        this.controllerMain.openForm();
+    }
+
+    public ControllerMain getControllerMain() {
+        return controllerMain;
     }
 }

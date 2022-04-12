@@ -180,5 +180,41 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
         }
     }
     
+    @Override
+    public List<GeneralDomainObject> searchByForeignKey(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
+        try {
+            String query = "SELECT * from " + param.getTableName()+
+                            " WHERE "+param.getForeignKey() +"="+foreign.getPrimaryKey();
+            System.out.println(query);
+            
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return param.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+    
+    @Override
+    public List<GeneralDomainObject> searchByForeignKeyBasic(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
+        try {
+            String query = "SELECT * from " + param.getTableName()+
+                            " WHERE "+param.getForeignKey() +"="+foreign.getPrimaryKey();
+            System.out.println(query);
+            
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return param.readResultSetBasic(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+    
     
 }

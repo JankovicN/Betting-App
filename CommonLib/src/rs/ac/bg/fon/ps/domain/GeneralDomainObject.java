@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 public interface GeneralDomainObject extends Serializable{
     
     String getTableName(); // returns String representing the name of the table
+    int getPrimaryKey();//returns primary key
     String getColumnNamesForInsert(); // returns String representing column names that are used for INSERT query
     String getColumnNamesForInsertWithAlias(); // returns String representing column names with alias that are used for INSERT query
     String getDeleteCondition(); // returns String representing the condition for DELETE query
@@ -30,5 +31,6 @@ public interface GeneralDomainObject extends Serializable{
     String getPrimaryKeyColumnName(); // returns the name of the column of primary key
     String getSecondPrimarykeyColumnName(); // returns the name of the column of second primary key, if the table has two primary keys
     List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
+    List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
     
 }

@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  *
  * @author nikol
@@ -44,7 +43,6 @@ public class Ticket implements GeneralDomainObject {
         this.state = state;
         this.listOfBets = listOfBets;
     }
-
 
     public int getTicketID() {
         return ticketID;
@@ -174,25 +172,28 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String toString() {
-        return "TicketID: " + ticketID + "  Played on: "+ date +"  Passed: " + win +"\n"
-                + "Wager: "+wager+ "  Odds sum: " +oddsSum+ "  Total win: "+totalWin;
+        return "TicketID: " + ticketID + "  Played on: " + date + "  Passed: " + win + "\n"
+                + "Wager: " + wager + "  Odds sum: " + oddsSum + "  Total win: " + totalWin;
     }
-    
-    
-    
+
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "ticket";
+    }
+
+    @Override
+    public int getPrimaryKey() {
+        return ticketID;
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "ticketID, win, wager, oddsSum, totalWin, date, state, playedByUser";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getAlias() + ".ticketID, " + getAlias() + ".win, " + getAlias() + ".wager, " + getAlias() + ".oddsSum, " + getAlias() + ".totalWin, " + getAlias() + ".date," + getAlias() + ".state," + getAlias() + ".playedByUser";
     }
 
     @Override
@@ -217,7 +218,7 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "ti";
     }
 
     @Override
@@ -232,7 +233,7 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getForeignKey() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "playedByUser";
     }
 
     @Override
@@ -242,7 +243,7 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "ticketID";
     }
 
     @Override
@@ -254,9 +255,32 @@ public class Ticket implements GeneralDomainObject {
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
+    @Override
+    public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
+
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Ticket t = new Ticket();
+                t.setTicketID(rs.getInt("ticketID"));
+                t.setWin(rs.getBoolean("win"));
+                t.setWager(rs.getBigDecimal("wager"));
+                t.setOddsSum(rs.getDouble("oddsSum"));
+                t.setTotalWin(rs.getBigDecimal("totalWin"));
+                t.setDate(rs.getDate("date"));
+                t.setState(rs.getString("state"));
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
+
+    }
+
     @Override
     public String getSelectCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return " ticketID=" + ticketID;
     }
 }

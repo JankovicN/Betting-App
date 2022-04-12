@@ -132,6 +132,11 @@ public class User implements GeneralDomainObject{
     public String getTableName() {
         return "user";
     }
+    
+    @Override
+    public int getPrimaryKey() {
+        return userID;
+    }
 
     @Override
     public String getColumnNamesForInsert() {
@@ -203,17 +208,26 @@ public class User implements GeneralDomainObject{
     
         List<GeneralDomainObject> list = new ArrayList<>();
         
-        while(rs.next()){
-            User u = new User();
-            u.setName(rs.getString("name"));
-            u.setSurname(rs.getString("surname"));
-            u.setUsername(rs.getString("username"));
-            u.setPassword(rs.getString("password"));
-            u.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
-            u.setUserID(rs.getInt("userID"));
-            list.add(u);
+        if(rs.next()){
+            do{
+                User u = new User();
+                u.setName(rs.getString("name"));
+                u.setSurname(rs.getString("surname"));
+                u.setUsername(rs.getString("username"));
+                u.setPassword(rs.getString("password"));
+                u.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
+                u.setUserID(rs.getInt("userID"));
+                list.add(u);
+            }while(rs.next());
+            return list;
+        }else{
+            return null;
         }
-        return list;
+    }
+    
+    @Override
+    public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
