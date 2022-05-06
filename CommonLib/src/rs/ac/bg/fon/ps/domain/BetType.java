@@ -5,7 +5,6 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,98 +12,40 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class Match implements GeneralDomainObject {
+public class BetType implements GeneralDomainObject {
     
-    private int matchID;
-    private Date dateOfPlay;
-    private Team home;
-    private int homeGoals;
-    private Team away;
-    private int awayGoals;
-    private boolean isOver;
+    private int typeID;
+    private String typeName;
 
-    public Match() {
-        isOver = false;
+    public BetType() {
     }
 
-    public Match(int matchID, Date dateOfPlay, Team home, int homeGoals, Team away, int awayGoals, boolean isOver) {
-        this.matchID = matchID;
-        this.dateOfPlay = dateOfPlay;
-        this.home = home;
-        this.homeGoals = homeGoals;
-        this.away = away;
-        this.awayGoals = awayGoals;
-        this.isOver = isOver;
+    public BetType(int typeID, String typeName) {
+        this.typeID = typeID;
+        this.typeName = typeName;
     }
 
-
-    public Team getAway() {
-        return away;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setAway(Team away) {
-        this.away = away;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
-    public int getMatchID() {
-        return matchID;
+    public int getTypeID() {
+        return typeID;
     }
 
-    public void setMatchID(int matchID) {
-        this.matchID = matchID;
-    }
-
-    public Date getDateOfPlay() {
-        return dateOfPlay;
-    }
-
-    public void setDateOfPlay(Date dateOfPlay) {
-        this.dateOfPlay = dateOfPlay;
-    }
-
-    public Team getHome() {
-        return home;
-    }
-
-    public void setHome(Team home) {
-        this.home = home;
-    }
-    
-    
-    public int getHomeGoals() {
-        return homeGoals;
-    }
-
-    public void setHomeGoals(int homeGoals) {
-        this.homeGoals = homeGoals;
-    }
-
-    public int getAwayGoals() {
-        return awayGoals;
-    }
-
-    public void setAwayGoals(int awayGoals) {
-        this.awayGoals = awayGoals;
-    }
-
-    public boolean isIsOver() {
-        return isOver;
-    }
-
-    public void setIsOver(boolean isOver) {
-        this.isOver = isOver;
+    public void setTypeID(int typeID) {
+        this.typeID = typeID;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + this.matchID;
-        hash = 53 * hash + Objects.hashCode(this.dateOfPlay);
-        hash = 53 * hash + Objects.hashCode(this.home);
-        hash = 53 * hash + this.homeGoals;
-        hash = 53 * hash + Objects.hashCode(this.away);
-        hash = 53 * hash + this.awayGoals;
-        hash = 53 * hash + (this.isOver ? 1 : 0);
+        hash = 23 * hash + this.typeID;
+        hash = 23 * hash + Objects.hashCode(this.typeName);
         return hash;
     }
 
@@ -119,53 +60,38 @@ public class Match implements GeneralDomainObject {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Match other = (Match) obj;
-        if (this.matchID != other.matchID) {
+        final BetType other = (BetType) obj;
+        if (this.typeID != other.typeID) {
             return false;
         }
-        if (this.homeGoals != other.homeGoals) {
-            return false;
-        }
-        if (this.awayGoals != other.awayGoals) {
-            return false;
-        }
-        if (this.isOver != other.isOver) {
-            return false;
-        }
-        if (!Objects.equals(this.dateOfPlay, other.dateOfPlay)) {
-            return false;
-        }
-        if (!Objects.equals(this.home, other.home)) {
-            return false;
-        }
-        return Objects.equals(this.away, other.away);
+        return Objects.equals(this.typeName, other.typeName);
     }
 
     @Override
     public String toString() {
-        return home.toString() +" - "+ away.toString();
+        return typeName;
     }
-
+    
     
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int getPrimaryKey() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "bettype";
     }
     
     @Override
+    public int getPrimaryKey() {
+        return typeID;
+    }
+
+    @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "typeID,typeName";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getPrimaryKeyColumnNameWithAlias() + ", " + getAlias() + ".typeName";
     }
 
     @Override
@@ -190,7 +116,7 @@ public class Match implements GeneralDomainObject {
 
     @Override
     public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "t";
     }
 
     @Override
@@ -215,7 +141,7 @@ public class Match implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "typeID";
     }
 
     @Override
@@ -235,6 +161,27 @@ public class Match implements GeneralDomainObject {
     
     @Override
     public String getSelectCondition() {
+        return getPrimaryKeyColumnName()+"="+typeID;
+        
+    }
+
+    @Override
+    public String getForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getPrimaryKeyColumnNameWithAlias() {
+        return getAlias()+"."+getPrimaryKeyColumnName();
+    }
+
+    @Override
+    public String getSecondPrimarykeyColumnNameWithAlias() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

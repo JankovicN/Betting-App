@@ -130,7 +130,7 @@ public class FormLogin extends javax.swing.JFrame {
             User user= Controller.getInstance().getControllerLogin().login();
             JOptionPane.showMessageDialog(this, "Welcome "+ user.getUsername()+"!");
             this.dispose();
-            Controller.getInstance().openMainForm();
+            Controller.getInstance().openFormMain();
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this,ex.getMessage(), "Login error! ", JOptionPane.ERROR_MESSAGE);

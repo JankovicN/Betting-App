@@ -19,8 +19,8 @@ public class Ticket implements GeneralDomainObject {
 
     private int ticketID;
     private BigDecimal wager;
-    private double oddsSum;
-    private BigDecimal totalWin;
+    private double combinedOdds;
+    private BigDecimal potentialWin;
     private Date date;
     private boolean win;
     private String state;
@@ -32,11 +32,11 @@ public class Ticket implements GeneralDomainObject {
         listOfBets = new ArrayList<>();
     }
 
-    public Ticket(int ticketID, BigDecimal wager, double oddsSum, BigDecimal totalWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
+    public Ticket(int ticketID, BigDecimal wager, double combinedOdds, BigDecimal potentialWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
         this.ticketID = ticketID;
         this.wager = wager;
-        this.oddsSum = oddsSum;
-        this.totalWin = totalWin;
+        this.combinedOdds = combinedOdds;
+        this.potentialWin = potentialWin;
         this.user = user;
         this.date = date;
         this.win = win;
@@ -60,20 +60,20 @@ public class Ticket implements GeneralDomainObject {
         this.wager = wager;
     }
 
-    public double getOddsSum() {
-        return oddsSum;
+    public double getCombinedOdds() {
+        return combinedOdds;
     }
 
-    public void setOddsSum(double oddsSum) {
-        this.oddsSum = oddsSum;
+    public void setCombinedOdds(double combinedOdds) {
+        this.combinedOdds = combinedOdds;
     }
 
-    public BigDecimal getTotalWin() {
-        return totalWin;
+    public BigDecimal getPotentialWin() {
+        return potentialWin;
     }
 
-    public void setTotalWin(BigDecimal totalWin) {
-        this.totalWin = totalWin;
+    public void setPotentialWin(BigDecimal potentialWin) {
+        this.potentialWin = potentialWin;
     }
 
     public User getUser() {
@@ -121,8 +121,8 @@ public class Ticket implements GeneralDomainObject {
         int hash = 3;
         hash = 79 * hash + this.ticketID;
         hash = 79 * hash + Objects.hashCode(this.wager);
-        hash = 79 * hash + (int) (Double.doubleToLongBits(this.oddsSum) ^ (Double.doubleToLongBits(this.oddsSum) >>> 32));
-        hash = 79 * hash + Objects.hashCode(this.totalWin);
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.combinedOdds) ^ (Double.doubleToLongBits(this.combinedOdds) >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.potentialWin);
         hash = 79 * hash + Objects.hashCode(this.user);
         hash = 79 * hash + Objects.hashCode(this.date);
         hash = 79 * hash + (this.win ? 1 : 0);
@@ -146,7 +146,7 @@ public class Ticket implements GeneralDomainObject {
         if (this.ticketID != other.ticketID) {
             return false;
         }
-        if (Double.doubleToLongBits(this.oddsSum) != Double.doubleToLongBits(other.oddsSum)) {
+        if (Double.doubleToLongBits(this.combinedOdds) != Double.doubleToLongBits(other.combinedOdds)) {
             return false;
         }
         if (this.win != other.win) {
@@ -158,7 +158,7 @@ public class Ticket implements GeneralDomainObject {
         if (!Objects.equals(this.wager, other.wager)) {
             return false;
         }
-        if (!Objects.equals(this.totalWin, other.totalWin)) {
+        if (!Objects.equals(this.potentialWin, other.potentialWin)) {
             return false;
         }
         if (!Objects.equals(this.user, other.user)) {
@@ -173,7 +173,7 @@ public class Ticket implements GeneralDomainObject {
     @Override
     public String toString() {
         return "TicketID: " + ticketID + "  Played on: " + date + "  Passed: " + win + "\n"
-                + "Wager: " + wager + "  Odds sum: " + oddsSum + "  Total win: " + totalWin;
+                + "Wager: " + wager + "  Odds sum: " + combinedOdds + "  Total win: " + potentialWin;
     }
 
     @Override
@@ -267,8 +267,8 @@ public class Ticket implements GeneralDomainObject {
                 t.setTicketID(rs.getInt("ticketID"));
                 t.setWin(rs.getBoolean("win"));
                 t.setWager(rs.getBigDecimal("wager"));
-                t.setOddsSum(rs.getDouble("oddsSum"));
-                t.setTotalWin(rs.getBigDecimal("totalWin"));
+                t.setCombinedOdds(rs.getDouble("oddsSum"));
+                t.setPotentialWin(rs.getBigDecimal("totalWin"));
                 t.setDate(rs.getDate("date"));
                 t.setState(rs.getString("state"));
             } while (rs.next());
@@ -281,6 +281,26 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getSelectCondition() {
-        return " ticketID=" + ticketID;
+        return getPrimaryKeyColumnName()+"=" + ticketID;
+    }
+
+    @Override
+    public String getForeignKeyWithAlias() {
+        return getAlias()+"."+getForeignKey();
+    }
+
+    @Override
+    public String getSecondForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getPrimaryKeyColumnNameWithAlias() {
+        return getAlias()+"."+getPrimaryKeyColumnName();
+    }
+
+    @Override
+    public String getSecondPrimarykeyColumnNameWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

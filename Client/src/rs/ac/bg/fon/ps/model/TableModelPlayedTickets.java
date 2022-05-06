@@ -45,11 +45,11 @@ public class TableModelPlayedTickets extends AbstractTableModel {
             case 2:
                 return ticket.getWager();
             case 3:
-                return ticket.getOddsSum();
+                return ticket.getCombinedOdds();
             case 4:
-                return ticket.getTotalWin();
+                return ticket.getPotentialWin();
             case 5:
-                return ticket.getTotalWin();
+                return ticket.getPotentialWin();
             default:
                 throw new AssertionError();
         }

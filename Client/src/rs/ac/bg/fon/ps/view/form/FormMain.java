@@ -52,6 +52,7 @@ public class FormMain extends javax.swing.JFrame {
         menuItemCancelTicket = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Logged in as");
@@ -95,6 +96,11 @@ public class FormMain extends javax.swing.JFrame {
 
         btnViewTicket.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnViewTicket.setText("View ticket");
+        btnViewTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewTicketActionPerformed(evt);
+            }
+        });
 
         btnPlayNew.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnPlayNew.setText("Play new ticket");
@@ -200,6 +206,17 @@ public class FormMain extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void btnViewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTicketActionPerformed
+        
+        try {
+            Controller.getInstance().getControllerMain().viewTicket();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,ex.getMessage(),"Error getting selected ticket!", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnViewTicketActionPerformed
 
     /**
      * @param args the command line arguments

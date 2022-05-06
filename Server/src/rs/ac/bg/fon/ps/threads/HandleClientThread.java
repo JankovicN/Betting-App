@@ -24,10 +24,10 @@ import rs.ac.bg.fon.ps.operations.Operations;
  */
 public class HandleClientThread extends Thread {
 
-    private ServerThread serverThread;
-    private Socket socket;
-    private Sender sender;
-    private Receiver receiver;
+    private final ServerThread serverThread;
+    private final Socket socket;
+    private final Sender sender;
+    private final Receiver receiver;
     private User client;
 
     public HandleClientThread(ServerThread serverThread, Socket socket) {
@@ -64,6 +64,8 @@ public class HandleClientThread extends Thread {
                 login(request, response);
             case Operations.GET_USER_TICKETS:
                 getUserTickets(request, response);
+            case Operations.GET_TICKET:
+                getTicket(request, response);
         }
     }
 
@@ -92,12 +94,29 @@ public class HandleClientThread extends Thread {
     }
 
     private void getUserTickets(Request request, Response response) throws Exception {
+
         try {
-            
             ArrayList<Ticket> listOfTickets = Controller.getInstance().getUserTickets(client);
 
-            System.out.println("Requst for list of played tickets was successful!");
+            System.out.println("Request for list of played tickets was successful!");
             response.setResult(listOfTickets);
+            response.setResponseType(ResponseType.SUCCESS);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.setResponseType(ResponseType.ERROR);
+            response.setException(ex);
+        }
+        sender.send(response);
+    }
+
+    private void getTicket(Request request, Response response) throws Exception {
+        
+        try {
+            Ticket requestedTicket = (Ticket) request.getArgument();
+            Ticket ticket = Controller.getInstance().getTicket(requestedTicket);
+
+            System.out.println("Requst for ticket was successful!");
+            response.setResult(ticket);
             response.setResponseType(ResponseType.SUCCESS);
         } catch (Exception ex) {
             ex.printStackTrace();

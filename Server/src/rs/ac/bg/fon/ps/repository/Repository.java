@@ -19,5 +19,6 @@ public interface Repository<T> {
     List<T> searchByForeignKey(T param, T foreign) throws Exception;
     List<T> searchByForeignKeyBasic(T param, T foreign) throws Exception;
     List<T> getAll(T param) throws Exception;
+    List<T> getAllJoin(T first,T second,T third,T fourth,T fifth) throws Exception;
     int addReturnKey(T param) throws Exception;// insert into table and return primary key
 }

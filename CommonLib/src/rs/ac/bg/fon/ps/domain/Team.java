@@ -76,22 +76,22 @@ public class Team implements GeneralDomainObject {
     
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "team";
     }
 
     @Override
     public int getPrimaryKey() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return teamID;
     }
     
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "teamID, teamName";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getPrimaryKeyColumnNameWithAlias() + ", " + getAlias() + ".teamName";
     }
 
     @Override
@@ -116,12 +116,12 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "homeTeam";
     }
 
     @Override
     public String getSecondAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "awayTeam";
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "teamID";
     }
 
     @Override
@@ -161,6 +161,26 @@ public class Team implements GeneralDomainObject {
     
     @Override
     public String getSelectCondition() {
+        return getPrimaryKeyColumnName()+"="+teamID;
+    }
+
+    @Override
+    public String getForeignKeyWithAlias() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getPrimaryKeyColumnNameWithAlias() {
+        return getAlias()+"."+getPrimaryKeyColumnName();
+    }
+
+    @Override
+    public String getSecondPrimarykeyColumnNameWithAlias() {
+        return getSecondAlias()+"."+getSecondPrimarykeyColumnName();
     }
 }

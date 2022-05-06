@@ -14,32 +14,32 @@ import java.util.Objects;
  */
 public class Odds implements GeneralDomainObject {
     
-    private Match match;
-    private Type type;
+    private Game game;
+    private BetType type;
     private double odds;
 
     public Odds() {
     }
 
-    public Odds(Match match, Type type, double odds) {
-        this.match = match;
+    public Odds(Game game, BetType type, double odds) {
+        this.game = game;
         this.type = type;
         this.odds = odds;
     }
     
-    public Match getMatch() {
-        return match;
+    public Game getGame() {
+        return game;
     }
 
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public Type getType() {
+    public BetType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(BetType type) {
         this.type = type;
     }
 
@@ -54,7 +54,7 @@ public class Odds implements GeneralDomainObject {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.match);
+        hash = 37 * hash + Objects.hashCode(this.game);
         hash = 37 * hash + Objects.hashCode(this.type);
         hash = 37 * hash + (int) (Double.doubleToLongBits(this.odds) ^ (Double.doubleToLongBits(this.odds) >>> 32));
         return hash;
@@ -75,7 +75,7 @@ public class Odds implements GeneralDomainObject {
         if (Double.doubleToLongBits(this.odds) != Double.doubleToLongBits(other.odds)) {
             return false;
         }
-        if (!Objects.equals(this.match, other.match)) {
+        if (!Objects.equals(this.game, other.game)) {
             return false;
         }
         return Objects.equals(this.type, other.type);
@@ -83,7 +83,7 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String toString() {
-        return "Match: " + match.toString() + "/nType: " + type.toString() + "/nOdds: " + odds;
+        return "Match: " + game.toString() + "/nType: " + type.toString() + "/nOdds: " + odds;
     }
 
     @Override
@@ -173,6 +173,26 @@ public class Odds implements GeneralDomainObject {
     
     @Override
     public String getSelectCondition() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getPrimaryKeyColumnNameWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondPrimarykeyColumnNameWithAlias() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

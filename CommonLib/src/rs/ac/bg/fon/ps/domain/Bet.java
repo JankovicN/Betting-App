@@ -113,22 +113,22 @@ public class Bet implements GeneralDomainObject {
     
     @Override
     public String toString() {
-        return "Ticket: "+ticket.getTicketID()+"  Passed: " + passed+"\nMatch: " + odds.getMatch().toString() + "   Type: " + odds.getType().toString() + "  Odds: " + betOdds;
+        return "Ticket: "+ticket.getTicketID()+"  Passed: " + passed+"\nGame: " + odds.getGame().toString() + "   Type: " + odds.getType().toString() + "  Odds: " + betOdds;
     }
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "bet";
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "ticketID, betId, betOdds, passed, game, type";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      return getAlias() + ".ticketID, " + getAlias() + ".betId, " + getAlias() + ".betOdds, " + getAlias() + ".passed, " + getAlias() + ".game, " + getAlias() + ".type";
     }
 
     @Override
@@ -203,6 +203,26 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public int getPrimaryKey() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondForeignKeyWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getPrimaryKeyColumnNameWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getSecondPrimarykeyColumnNameWithAlias() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

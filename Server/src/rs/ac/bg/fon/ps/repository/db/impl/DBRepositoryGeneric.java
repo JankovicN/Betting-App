@@ -20,7 +20,7 @@ import rs.ac.bg.fon.ps.domain.GeneralDomainObject;
  *
  * @author nikol
  */
-public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
+public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
 
     /**
      *
@@ -28,11 +28,11 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
      * @throws Exception
      */
     @Override
-    public void add(GeneralDomainObject param)throws Exception{
-    
+    public void add(GeneralDomainObject param) throws Exception {
+
         try {
-            Connection connection= DBConnectionFactory.getInstance().getConnection();
-            StringBuilder sb= new StringBuilder();
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO")
                     .append(param.getTableName())
                     .append(" (").append(param.getColumnNamesForInsert()).append(") ")
@@ -40,7 +40,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
                     .append(param.getInsertValues()).append(")");
             String query = sb.toString();
             System.out.println(query);
-            Statement statement= connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.executeUpdate(query);
             statement.close();
         } catch (SQLException ex) {
@@ -97,7 +97,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
             ex.printStackTrace();
             throw new Exception("Error while deleting from database!");
         }
-    
+
     }
 
     /**
@@ -130,7 +130,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
      */
     @Override
     public int addReturnKey(GeneralDomainObject param) throws Exception {
-    try {
+        try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
             sb.append("INSERT INTO ")
@@ -141,16 +141,16 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
                     .append(")");
             String query = sb.toString();
             System.out.println(query);
-            PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
-            
+
             ResultSet rsKey = statement.getGeneratedKeys();
-            
-            if(rsKey.next()){
+
+            if (rsKey.next()) {
                 int id = rsKey.getInt(1);
                 rsKey.close();
                 statement.close();
-                
+
                 return id;
             }
 
@@ -165,10 +165,10 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
     @Override
     public List<GeneralDomainObject> search(GeneralDomainObject param) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()+
-                            " WHERE "+param.getSelectCondition();
+            String query = "SELECT * from " + param.getTableName()
+                    + " WHERE " + param.getSelectCondition();
             System.out.println(query);
-            
+
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -179,14 +179,14 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
             throw new Exception("Error getting all objects from database!");
         }
     }
-    
+
     @Override
     public List<GeneralDomainObject> searchByForeignKey(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()+
-                            " WHERE "+param.getForeignKey() +"="+foreign.getPrimaryKey();
+            String query = "SELECT * from " + param.getTableName()
+                    + " WHERE " + param.getForeignKey() + "=" + foreign.getPrimaryKey();
             System.out.println(query);
-            
+
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -197,14 +197,14 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
             throw new Exception("Error getting all objects from database!");
         }
     }
-    
+
     @Override
     public List<GeneralDomainObject> searchByForeignKeyBasic(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()+
-                            " WHERE "+param.getForeignKey() +"="+foreign.getPrimaryKey();
+            String query = "SELECT * from " + param.getTableName()
+                    + " WHERE " + param.getForeignKey() + "=" + foreign.getPrimaryKey();
             System.out.println(query);
-            
+
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -215,6 +215,29 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject>{
             throw new Exception("Error getting all objects from database!");
         }
     }
-    
-    
+
+    @Override
+    public List<GeneralDomainObject> getAllJoin(GeneralDomainObject first, GeneralDomainObject second, GeneralDomainObject third, GeneralDomainObject fourth, GeneralDomainObject fifth) throws Exception {
+
+        try {
+            String query = "SELECT * FROM " + first.getTableName() + " " + first.getAlias()
+                    + " JOIN " + second.getTableName() + " " + second.getAlias() + " ON " + first.getForeignKeyWithAlias() + "=" + second.getPrimaryKeyColumnNameWithAlias()
+                    + " AND " + first.getSecondForeignKeyWithAlias()+ "=" + second.getSecondPrimarykeyColumnNameWithAlias()
+                    + " JOIN " + third.getTableName() + " " + third.getAlias() + " ON " + second.getPrimaryKeyColumnNameWithAlias() + "=" + third.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + fourth.getTableName() + " " + fourth.getAlias() + " ON " + second.getSecondPrimarykeyColumnNameWithAlias()+ "=" + fourth.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + fifth.getTableName() + " " + fifth.getAlias() + " ON " + third.getForeignKeyWithAlias() + "=" + fifth.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + fifth.getTableName() + " " + fifth.getSecondAlias() + " ON " + third.getSecondForeignKeyWithAlias() + "=" + fifth.getSecondAlias() + "." + fifth.getPrimaryKeyColumnName();
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return first.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+
+    }
+
 }

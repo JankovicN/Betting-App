@@ -4,9 +4,11 @@
  */
 package rs.ac.bg.fon.ps.controller;
 
+import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
+import rs.ac.bg.fon.ps.view.form.FormViewTicket;
 
 /**
  *
@@ -17,6 +19,7 @@ public class Controller {
     private static Controller instance;
     private ControllerLogin controllerLogin;
     private ControllerMain controllerMain;
+    private ControllerViewTicket controllerViewTicket;
     private User currentUser;
 
     public Controller() {
@@ -47,7 +50,7 @@ public class Controller {
         return controllerLogin;
     }
 
-    public void openMainForm() throws Exception {
+    public void openFormMain() throws Exception {
         this.controllerMain=new ControllerMain(new FormMain());
         this.controllerMain.openForm();
     }
@@ -55,4 +58,14 @@ public class Controller {
     public ControllerMain getControllerMain() {
         return controllerMain;
     }
+    
+    public void openFormViewTicket(Ticket ticket) throws Exception {
+        this.controllerViewTicket = new ControllerViewTicket(new FormViewTicket(this.controllerMain.getFormMain(), false), ticket);
+        this.controllerViewTicket.openForm();
+    }
+
+    public ControllerViewTicket getControllerViewTicket() {
+        return controllerViewTicket;
+    }
+
 }

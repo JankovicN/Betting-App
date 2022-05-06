@@ -31,6 +31,10 @@ public class ControllerMain {
         this.formMain = formMain;
     }
 
+    public FormMain getFormMain() {
+        return this.formMain;
+    }
+
     public void openForm() throws Exception {
         formMain.setVisible(true);
         setupTable();
@@ -55,6 +59,11 @@ public class ControllerMain {
 
             ArrayList<Ticket> listOfTickets = (ArrayList<Ticket>) response.getResult();
 
+            for (Ticket ticket : listOfTickets) {
+                if (!ticket.getState().equals("processed")) {
+                    listOfTickets.remove(ticket);
+                }
+            }
             tmpt.setListOfTickets(listOfTickets);
             table.setModel(tmpt);
             table.setRowSelectionAllowed(true);
@@ -69,6 +78,7 @@ public class ControllerMain {
 
         String dateString = formMain.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         JTable table = formMain.getTablePlayedTicket();
         TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
 
@@ -80,6 +90,25 @@ public class ControllerMain {
             }
         }
         tmpt.setListOfTickets(listOfTickets);
+
+    }
+
+    public void viewTicket() throws Exception {
+
+        JTable table = formMain.getTablePlayedTicket();
+        TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
+
+        Ticket ticket = tmpt.getTicket(table.getSelectedRow());
+        Request request = new Request(Operations.GET_TICKET, ticket);
+        Response response = Communication.getInstance().sendRequest(request, "Request for ticket is sent..");
+
+        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+
+            ticket = (Ticket) response.getResult();
+            Controller.getInstance().openFormViewTicket(ticket);
+        } else {
+            throw response.getException();
+        }
 
     }
 }

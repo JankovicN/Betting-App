@@ -27,9 +27,13 @@ public interface GeneralDomainObject extends Serializable{
     String getSecondAlias();
     String getValuesForDoubleJoin(); // returns String representing values when joining three tables
     String getForeignKey(); // returns foreign key as String
+    String getForeignKeyWithAlias();
     String getSecondForeignKey(); // returns second foreign key as String, if the table has two foreign keys
+    String getSecondForeignKeyWithAlias();
     String getPrimaryKeyColumnName(); // returns the name of the column of primary key
+    String getPrimaryKeyColumnNameWithAlias();
     String getSecondPrimarykeyColumnName(); // returns the name of the column of second primary key, if the table has two primary keys
+    String getSecondPrimarykeyColumnNameWithAlias();
     List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
     List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception; // reads ResultSet and returns list of objects
     
