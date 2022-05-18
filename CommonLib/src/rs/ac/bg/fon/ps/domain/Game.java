@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -156,32 +157,43 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return getAlias() + ".gameID, " + getAlias() + ".dateOfPlay, " + getAlias() + ".home, " + getAlias() + ".homeGoals, " + getAlias() + ".away, " + getAlias() + ".awayGoals," + getAlias() + ".isOver";
+        return "gameID, dateOfPlay, home, homeGoals, away, awayGoals, isOver";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias("gameID") + ", " + addAlias("dateOfPlay") + ", " + addAlias("home") + ", " + addAlias("homeGoals") + ", " + addAlias("away") + ", " + addAlias("awayGoals") + "," + addAlias("isOver");
     }
 
     @Override
     public String getDeleteCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getPrimaryKeyColumnNameWithAlias() + "=" + this.getGameID();
     }
 
     @Override
     public String getUpdateCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getPrimaryKeyColumnNameWithAlias() + "=" + this.getGameID();
     }
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Game updatedGame = (Game) gdo;
+        return addAlias("dateOfPlay") + "=" + updatedGame.getDateOfPlay() + ","
+                + addAlias("home") + "=" + updatedGame.getHome().getTeamID() + ","
+                + addAlias("homeGoals") + "=" + updatedGame.getHomeGoals() + ","
+                + addAlias("away") + "=" + updatedGame.getAway().getTeamID() + ","
+                + addAlias("awayGoals") + "=" + updatedGame.getAwayGoals() + ","
+                + addAlias("isOver") + "=" + updatedGame.isIsOver();
     }
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "(" + this.getDateOfPlay() + ","
+                + this.getHome().getTeamID() + ","
+                + this.getHomeGoals() + ","
+                + this.getAway().getTeamID() + ","
+                + this.getAwayGoals() + ","
+                + this.isIsOver() + ")";
     }
 
     @Override
@@ -221,36 +233,95 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Team homeTeam = new Team();
+                homeTeam.setTeamID(rs.getInt(homeTeam.addAlias("teamID")));
+                homeTeam.setTeamName(rs.getString(homeTeam.addAlias("teamName")));
+
+                Team awayTeam = new Team();
+                awayTeam.setTeamID(rs.getInt(awayTeam.getSecondAlias() + ".teamID"));
+                awayTeam.setTeamName(rs.getString(awayTeam.getSecondAlias() + ".teamName"));
+
+                Game game = new Game();
+                game.setGameID(rs.getInt(this.addAlias("gameID")));
+                game.setDateOfPlay(rs.getDate(this.addAlias("dateOfPlay")));
+                game.setHome(homeTeam);
+                game.setHomeGoals(rs.getInt(this.addAlias("homeGoals")));
+                game.setAway(awayTeam);
+                game.setAwayGoals(rs.getInt(this.addAlias("awayGoals")));   
+                game.setIsOver(rs.getBoolean(this.addAlias("isOver")));
+
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Team home = new Team();
+                home.setTeamID(rs.getInt(home.addAlias("teamID")));
+                home.setTeamName(rs.getString(home.addAlias("teamName")));
+
+                Team away = new Team();
+                away.setTeamID(rs.getInt(away.getSecondAlias() + ".teamID"));
+                away.setTeamName(rs.getString(away.getSecondAlias() + ".teamName"));
+
+                Game game = new Game();
+                game.setGameID(rs.getInt(game.addAlias("gameID")));
+                game.setDateOfPlay(rs.getDate(game.addAlias("dateOfPlay")));
+                game.setHome(home);
+                game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
+                game.setAway(away);
+                game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));   
+                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getSelectCondition() {
-        return getPrimaryKeyColumnName()+"=" + gameID;
+        return this.getPrimaryKeyColumnNameWithAlias() + "=" + this.getGameID();
     }
 
     @Override
     public String getForeignKeyWithAlias() {
-        return getAlias() + "." + getForeignKey();
+        return this.addAlias(getForeignKey());
     }
 
     @Override
     public String getSecondForeignKeyWithAlias() {
-        return getAlias() + "." + getSecondForeignKey();
+        return this.addAlias(getSecondForeignKey());
     }
 
     @Override
     public String getPrimaryKeyColumnNameWithAlias() {
-        return getAlias()+"."+getPrimaryKeyColumnName();
+        return this.addAlias(getPrimaryKeyColumnName());
     }
 
     @Override
     public String getSecondPrimarykeyColumnNameWithAlias() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String addAlias(String column) {
+        return this.getAlias() + "." + column;
+    }
+    @Override
+    public int getSecondPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

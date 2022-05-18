@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author nikol
  */
 public class Odds implements GeneralDomainObject {
-    
+
     private Game game;
     private BetType type;
     private double odds;
@@ -26,7 +27,7 @@ public class Odds implements GeneralDomainObject {
         this.type = type;
         this.odds = odds;
     }
-    
+
     public Game getGame() {
         return game;
     }
@@ -88,47 +89,57 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "odds";
     }
 
     @Override
     public int getPrimaryKey() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.getGame().getPrimaryKey();
     }
-    
+
+    @Override
+    public int getSecondPrimaryKey() {
+        return this.getType().getPrimaryKey();
+    }
+
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "gameID, typeID, odds";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "," + addAlias(this.getType().getPrimaryKeyColumnName()) + "," + addAlias("odds");
     }
 
     @Override
     public String getDeleteCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "=" + this.getGame().getPrimaryKey() + " AND "
+                + addAlias(this.getType().getPrimaryKeyColumnName()) + "=" + this.getType().getPrimaryKey();
     }
 
     @Override
     public String getUpdateCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "=" + this.getGame().getPrimaryKey() + " AND "
+                + addAlias(this.getType().getPrimaryKeyColumnName()) + "=" + this.getType().getPrimaryKey();
     }
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Odds updatedOdds = (Odds) gdo;
+        return addAlias("odds") + "=" + updatedOdds.getOdds();
     }
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "(" + this.getGame().getGameID() + ","
+                + this.getType().getTypeID() + ","
+                + this.getOdds() + ")";
     }
 
     @Override
     public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "o";
     }
 
     @Override
@@ -153,27 +164,66 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "gameID";
     }
 
     @Override
     public String getSecondPrimarykeyColumnName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "typeID";
     }
 
     @Override
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }    
-    
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Game g = new Game();
+                g = (Game) g.readResultSet(rs).get(0);
+                
+                BetType bt = new BetType();
+                bt = (BetType) bt.readResultSet(rs).get(0);
+                
+                Odds o = new Odds();
+                o.setGame(g);
+                o.setType(bt);
+                o.setOdds(rs.getDouble(this.addAlias("odds")));
+                list.add(o);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Game game = new Game();
+                game = (Game) game.readResultSet(rs).get(0);
+                
+                BetType betType = new BetType();
+                betType = (BetType) betType.readResultSet(rs).get(0);
+                
+                Odds odds = new Odds();
+                odds.setGame(game);
+                odds.setType(betType);
+                odds.setOdds(rs.getDouble(this.addAlias("odds")));
+                list.add(odds);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
-    
+
     @Override
     public String getSelectCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "=" + this.getGame().getPrimaryKey() + " AND "
+                + addAlias(this.getType().getPrimaryKeyColumnName()) + "=" + this.getType().getPrimaryKey();
     }
 
     @Override
@@ -188,11 +238,16 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnNameWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.addAlias(getPrimaryKeyColumnName());
     }
 
     @Override
     public String getSecondPrimarykeyColumnNameWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.addAlias(getSecondPrimarykeyColumnName());
+    }
+
+    @Override
+    public String addAlias(String column) {
+        return this.getAlias() + "." + column;
     }
 }

@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author nikol
  */
 public class Team implements GeneralDomainObject {
-    
+
     int teamID;
     String teamName;
 
@@ -72,8 +73,6 @@ public class Team implements GeneralDomainObject {
         return teamName;
     }
 
-    
-    
     @Override
     public String getTableName() {
         return "team";
@@ -83,7 +82,7 @@ public class Team implements GeneralDomainObject {
     public int getPrimaryKey() {
         return teamID;
     }
-    
+
     @Override
     public String getColumnNamesForInsert() {
         return "teamID, teamName";
@@ -91,27 +90,28 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return getPrimaryKeyColumnNameWithAlias() + ", " + getAlias() + ".teamName";
+        return addAlias(getPrimaryKeyColumnName()) + ", " + addAlias("teamName");
     }
 
     @Override
     public String getDeleteCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(getPrimaryKeyColumnName()) + "=" + this.getTeamID();
     }
 
     @Override
     public String getUpdateCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(getPrimaryKeyColumnName()) + "=" + this.getTeamID();
     }
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Team updatedTeam = (Team) gdo;
+        return addAlias("teamName") + "=" + updatedTeam.getTeamName();
     }
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "(" + this.getTeamName() + ")";
     }
 
     @Override
@@ -151,17 +151,41 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Team t = new Team();
+                t.setTeamID(rs.getInt(this.addAlias("teamID")));
+                t.setTeamName(rs.getString(this.addAlias("teamName")));
+                list.add(t);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
-    
+
     @Override
     public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                Team t = new Team();
+                t.setTeamID(rs.getInt(this.addAlias("teamID")));
+                t.setTeamName(rs.getString(this.addAlias("teamName")));
+                list.add(t);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
-    
+
     @Override
     public String getSelectCondition() {
-        return getPrimaryKeyColumnName()+"="+teamID;
+        return getPrimaryKeyColumnNameWithAlias() + "=" + this.getTeamID();
     }
 
     @Override
@@ -176,11 +200,21 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getPrimaryKeyColumnNameWithAlias() {
-        return getAlias()+"."+getPrimaryKeyColumnName();
+        return this.addAlias(getPrimaryKeyColumnName());
     }
 
     @Override
     public String getSecondPrimarykeyColumnNameWithAlias() {
-        return getSecondAlias()+"."+getSecondPrimarykeyColumnName();
+        return getSecondAlias() + "." + getSecondPrimarykeyColumnName();
+    }
+
+    @Override
+    public String addAlias(String column) {
+        return this.getAlias() + "." + column;
+    }
+
+    @Override
+    public int getSecondPrimaryKey() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

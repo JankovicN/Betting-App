@@ -13,8 +13,8 @@ import java.util.Objects;
  *
  * @author nikol
  */
-public class User implements GeneralDomainObject{
-    
+public class User implements GeneralDomainObject {
+
     private int userID;
     private String name;
     private String surname;
@@ -33,7 +33,6 @@ public class User implements GeneralDomainObject{
         this.password = password;
         this.role = role;
     }
-
 
     public Role getRole() {
         return role;
@@ -124,15 +123,12 @@ public class User implements GeneralDomainObject{
         }
         return this.role == other.role;
     }
-    
-
-    
 
     @Override
     public String getTableName() {
         return "user";
     }
-    
+
     @Override
     public int getPrimaryKey() {
         return userID;
@@ -145,7 +141,7 @@ public class User implements GeneralDomainObject{
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return getAlias()+".userID, "+getAlias()+".name, "+getAlias()+".surname, "+getAlias()+".username, "+getAlias()+".password, "+getAlias()+".role";
+        return addAlias("userID") + ", " + addAlias("name") + ".name, " + addAlias("surname") + ", " + addAlias("username") + ", " + addAlias("password") + ", " + addAlias("role");
     }
 
     @Override
@@ -205,34 +201,51 @@ public class User implements GeneralDomainObject{
 
     @Override
     public List<GeneralDomainObject> readResultSet(ResultSet rs) throws Exception {
-    
+
         List<GeneralDomainObject> list = new ArrayList<>();
-        
-        if(rs.next()){
-            do{
+
+        if (rs.next()) {
+            do {
                 User u = new User();
-                u.setName(rs.getString("name"));
-                u.setSurname(rs.getString("surname"));
-                u.setUsername(rs.getString("username"));
-                u.setPassword(rs.getString("password"));
-                u.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
-                u.setUserID(rs.getInt("userID"));
+                u.setName(rs.getString(addAlias("name")));
+                u.setSurname(rs.getString(addAlias("surname")));
+                u.setUsername(rs.getString(addAlias("username")));
+                u.setPassword(rs.getString(addAlias("password")));
+                u.setRole(Role.valueOf(rs.getString(addAlias("role")).toUpperCase()));
+                u.setUserID(rs.getInt(addAlias("userID")));
                 list.add(u);
-            }while(rs.next());
+            } while (rs.next());
             return list;
-        }else{
+        } else {
             return null;
         }
     }
-    
+
     @Override
     public List<GeneralDomainObject> readResultSetBasic(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                User u = new User();
+                u.setName(rs.getString(addAlias("name")));
+                u.setSurname(rs.getString(addAlias("surname")));
+                u.setUsername(rs.getString(addAlias("username")));
+                u.setPassword(rs.getString(addAlias("password")));
+                u.setRole(Role.valueOf(rs.getString(addAlias("role")).toUpperCase()));
+                u.setUserID(rs.getInt(addAlias("userID")));
+                list.add(u);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getSelectCondition() {
-        return " username='"+ username +"' AND password='"+password+"'";
+        return " username='" + this.getUsername() + "' AND password='" + this.getPassword() + "'";
     }
 
     @Override
@@ -247,13 +260,21 @@ public class User implements GeneralDomainObject{
 
     @Override
     public String getPrimaryKeyColumnNameWithAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return addAlias(getPrimaryKeyColumnName());
     }
 
     @Override
     public String getSecondPrimarykeyColumnNameWithAlias() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
+
+    @Override
+    public String addAlias(String column) {
+        return this.getAlias() + "." + column;
+    }
+
+    @Override
+    public int getSecondPrimaryKey() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -16,6 +16,7 @@ public interface GeneralDomainObject extends Serializable{
     
     String getTableName(); // returns String representing the name of the table
     int getPrimaryKey();//returns primary key
+    int getSecondPrimaryKey();
     String getColumnNamesForInsert(); // returns String representing column names that are used for INSERT query
     String getColumnNamesForInsertWithAlias(); // returns String representing column names with alias that are used for INSERT query
     String getDeleteCondition(); // returns String representing the condition for DELETE query
@@ -24,6 +25,7 @@ public interface GeneralDomainObject extends Serializable{
     String getInsertValues(); // returns String representing values that are inserted in table, in INSERT queey
     String getSelectCondition();// returns String represeiting valuses for WHERE in SELECT query
     String getAlias(); //returns alias for SQL query
+    String addAlias(String column);//adds alias to column name
     String getSecondAlias();
     String getValuesForDoubleJoin(); // returns String representing values when joining three tables
     String getForeignKey(); // returns foreign key as String
