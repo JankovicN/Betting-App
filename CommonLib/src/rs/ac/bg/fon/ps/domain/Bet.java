@@ -22,6 +22,8 @@ public class Bet implements GeneralDomainObject {
     private Odds odds;
 
     public Bet() {
+        this.ticket = new Ticket();
+        this.odds = new Odds();
         this.passed = false;
     }
 
@@ -247,7 +249,7 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getSelectCondition() {
-        return this.addAlias(getTicket().getPrimaryKeyColumnName()) + "=" + this.getTicket().getPrimaryKey();
+        return this.addAlias(getTicket().getPrimaryKeyColumnName()) + "=" + this.getTicket().getPrimaryKeyColumnNameWithAlias();
     }
 
     @Override

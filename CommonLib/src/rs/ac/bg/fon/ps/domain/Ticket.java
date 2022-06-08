@@ -28,8 +28,9 @@ public class Ticket implements GeneralDomainObject {
     private List<Bet> listOfBets;
 
     public Ticket() {
-        state = "unproccesed";
-        listOfBets = new ArrayList<>();
+        this.state = "unproccesed";
+        this.listOfBets = new ArrayList<>();
+        this.user = new User();
     }
 
     public Ticket(int ticketID, BigDecimal wager, double combinedOdds, BigDecimal potentialWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
@@ -285,15 +286,6 @@ public class Ticket implements GeneralDomainObject {
                 t.setDate(rs.getDate("date"));
                 t.setState(rs.getString("state"));
                 t.setUser(u);
-                
-                Bet b = new Bet();
-                b.setTicket(t);
-                
-                List<GeneralDomainObject> l = new ArrayList<>();
-                l = b.readResultSet(rs);
-                for (GeneralDomainObject g : l) {
-                    t.getListOfBets().add((Bet) g);
-                }
                 
             } while (rs.next());
             return list;

@@ -109,7 +109,8 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
     @Override
     public List<GeneralDomainObject> getAll(GeneralDomainObject param) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName();
+            String query = "SELECT * from " + param.getTableName() +" "+ param.getAlias();
+            System.out.println(query);
             Connection connection = DBConnectionFactory.getInstance().getConnection();
 
             Statement statement = connection.createStatement();
@@ -165,7 +166,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
     @Override
     public List<GeneralDomainObject> search(GeneralDomainObject param) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()
+            String query = "SELECT * from " + param.getTableName() + " " + param.getAlias()
                     + " WHERE " + param.getSelectCondition();
             System.out.println(query);
 
@@ -183,8 +184,8 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
     @Override
     public List<GeneralDomainObject> searchByForeignKey(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()
-                    + " WHERE " + param.getForeignKey() + "=" + foreign.getPrimaryKey();
+            String query = "SELECT * from " + param.getTableName() + " " + param.getAlias()
+                    + " WHERE " + param.getForeignKeyWithAlias()+ "=" + foreign.getPrimaryKeyColumnNameWithAlias();
             System.out.println(query);
 
             Connection connection = DBConnectionFactory.getInstance().getConnection();
@@ -201,8 +202,8 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
     @Override
     public List<GeneralDomainObject> searchByForeignKeyBasic(GeneralDomainObject param, GeneralDomainObject foreign) throws Exception {
         try {
-            String query = "SELECT * from " + param.getTableName()
-                    + " WHERE " + param.getForeignKey() + "=" + foreign.getPrimaryKey();
+            String query = "SELECT * from " + param.getTableName() + " " + param.getAlias()
+                    + " WHERE " + param.getForeignKeyWithAlias() + "=" + foreign.getPrimaryKey();
             System.out.println(query);
 
             Connection connection = DBConnectionFactory.getInstance().getConnection();
@@ -217,22 +218,47 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
     }
 
     @Override
-    public List<GeneralDomainObject> getAllJoin(GeneralDomainObject first, GeneralDomainObject second, GeneralDomainObject third, GeneralDomainObject fourth, GeneralDomainObject fifth) throws Exception {
+    public List<GeneralDomainObject> getAllJoin(GeneralDomainObject bet, GeneralDomainObject odds, GeneralDomainObject match, GeneralDomainObject type, GeneralDomainObject team) throws Exception {
 
         try {
-            String query = "SELECT * FROM " + first.getTableName() + " " + first.getAlias()
-                    + " JOIN " + second.getTableName() + " " + second.getAlias() + " ON " + first.getForeignKeyWithAlias() + "=" + second.getPrimaryKeyColumnNameWithAlias()
-                    + " AND " + first.getSecondForeignKeyWithAlias()+ "=" + second.getSecondPrimarykeyColumnNameWithAlias()
-                    + " JOIN " + third.getTableName() + " " + third.getAlias() + " ON " + second.getPrimaryKeyColumnNameWithAlias() + "=" + third.getPrimaryKeyColumnNameWithAlias()
-                    + " JOIN " + fourth.getTableName() + " " + fourth.getAlias() + " ON " + second.getSecondPrimarykeyColumnNameWithAlias()+ "=" + fourth.getPrimaryKeyColumnNameWithAlias()
-                    + " JOIN " + fifth.getTableName() + " " + fifth.getAlias() + " ON " + third.getForeignKeyWithAlias() + "=" + fifth.getPrimaryKeyColumnNameWithAlias()
-                    + " JOIN " + fifth.getTableName() + " " + fifth.getSecondAlias() + " ON " + third.getSecondForeignKeyWithAlias() + "=" + fifth.getSecondAlias() + "." + fifth.getPrimaryKeyColumnName();
+            String query = "SELECT * FROM " + bet.getTableName() + " " + bet.getAlias()
+                    + " JOIN " + odds.getTableName() + " " + odds.getAlias() + " ON " + bet.getForeignKeyWithAlias() + "=" + odds.getPrimaryKeyColumnNameWithAlias()
+                    + " AND " + bet.getSecondForeignKeyWithAlias() + "=" + odds.getSecondPrimarykeyColumnNameWithAlias()
+                    + " JOIN " + match.getTableName() + " " + match.getAlias() + " ON " + odds.getPrimaryKeyColumnNameWithAlias() + "=" + match.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + type.getTableName() + " " + type.getAlias() + " ON " + odds.getSecondPrimarykeyColumnNameWithAlias() + "=" + type.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + team.getTableName() + " " + team.getAlias() + " ON " + match.getForeignKeyWithAlias() + "=" + team.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + team.getTableName() + " " + team.getSecondAlias() + " ON " + match.getSecondForeignKeyWithAlias() + "=" + team.getSecondAlias() + "." + team.getPrimaryKeyColumnName();
             Connection connection = DBConnectionFactory.getInstance().getConnection();
 
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
-            return first.readResultSet(rs);
+            return bet.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+
+    @Override
+    public List<GeneralDomainObject> getAllJoin(GeneralDomainObject bet, GeneralDomainObject odds, GeneralDomainObject match, GeneralDomainObject type, GeneralDomainObject team, GeneralDomainObject ticket) throws Exception {
+
+        try {
+            String query = "SELECT * FROM " + bet.getTableName() + " " + bet.getAlias()
+                    + " JOIN " + odds.getTableName() + " " + odds.getAlias() + " ON " + bet.getForeignKeyWithAlias() + "=" + odds.getPrimaryKeyColumnNameWithAlias()
+                    + " AND " + bet.getSecondForeignKeyWithAlias() + "=" + odds.getSecondPrimarykeyColumnNameWithAlias()
+                    + " JOIN " + match.getTableName() + " " + match.getAlias() + " ON " + odds.getPrimaryKeyColumnNameWithAlias() + "=" + match.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + type.getTableName() + " " + type.getAlias() + " ON " + odds.getSecondPrimarykeyColumnNameWithAlias() + "=" + type.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + team.getTableName() + " " + team.getAlias() + " ON " + match.getForeignKeyWithAlias() + "=" + team.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + team.getTableName() + " " + team.getSecondAlias() + " ON " + match.getSecondForeignKeyWithAlias() + "=" + team.getSecondAlias() + "." + team.getPrimaryKeyColumnName()
+                    + " WHERE " + bet.getSecondPrimarykeyColumnNameWithAlias()
+                    + "=" + ticket.getPrimaryKey();
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return bet.readResultSet(rs);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new Exception("Error getting all objects from database!");

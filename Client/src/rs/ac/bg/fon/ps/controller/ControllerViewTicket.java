@@ -5,7 +5,7 @@
 package rs.ac.bg.fon.ps.controller;
 
 import rs.ac.bg.fon.ps.domain.Ticket;
-import rs.ac.bg.fon.ps.view.form.FormViewTicket;
+import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
 
 /**
  *
@@ -13,16 +13,16 @@ import rs.ac.bg.fon.ps.view.form.FormViewTicket;
  */
 public class ControllerViewTicket {
     
-    private FormViewTicket formViewTicket;
+    private DialogViewTicket dialogViewTicket;
     private Ticket ticket;
 
-    public ControllerViewTicket(FormViewTicket formViewTicket, Ticket ticket) {
-        this.formViewTicket=formViewTicket;
+    public ControllerViewTicket(DialogViewTicket dialogViewTicket, Ticket ticket) {
+        this.dialogViewTicket=dialogViewTicket;
         this.ticket=ticket;
     }
 
-    public FormViewTicket getFormViewTicket() {
-        return formViewTicket;
+    public DialogViewTicket getDialogViewTicket() {
+        return dialogViewTicket;
     }
 
     public Ticket getTicket() {
@@ -30,7 +30,7 @@ public class ControllerViewTicket {
     }
     
     public void openForm() {
-        this.formViewTicket.setVisible(true);
+        this.dialogViewTicket.setVisible(true);
     }
     
 }

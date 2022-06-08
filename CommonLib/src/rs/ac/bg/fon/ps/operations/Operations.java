@@ -12,5 +12,7 @@ public class Operations {
 
     public static final int LOGIN = 1;
     public static final int GET_USER_TICKETS = 2;
-    public static final int GET_TICKET=3;
+    public static final int GET_TICKET = 3;
+    public static final int GET_TEAMS = 4;
+    public static final int ADD_TEAM = 5;
 }

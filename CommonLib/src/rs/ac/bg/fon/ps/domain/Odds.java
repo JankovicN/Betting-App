@@ -20,6 +20,8 @@ public class Odds implements GeneralDomainObject {
     private double odds;
 
     public Odds() {
+        this.game = new Game();
+        this.type= new BetType();
     }
 
     public Odds(Game game, BetType type, double odds) {

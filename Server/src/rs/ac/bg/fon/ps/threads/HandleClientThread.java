@@ -5,15 +5,15 @@
 package rs.ac.bg.fon.ps.threads;
 
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import rs.ac.bg.fon.ps.communication.Receiver;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.communication.Sender;
 import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.domain.Team;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.operations.Operations;
@@ -45,14 +45,23 @@ public class HandleClientThread extends Thread {
     @Override
     public void run() {
 
-        Response response = new Response();
         try {
             while (true) {
                 Request request = (Request) receiver.receive();
-                processResponse(request, response);
+                Response response = new Response();
+                try {
+                    processResponse(request, response);
+                    response.setResponseType(ResponseType.SUCCESS);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    response.setResponseType(ResponseType.ERROR);
+                    response.setException(ex);
+                }
+                sender.send(response);
             }
         } catch (Exception e) {
-            //TODO 
+            System.out.println("Client " + client.getUsername()+ " logged out!");
+            Controller.getInstance().logoutUser(client);
         }
     }
 
@@ -62,10 +71,19 @@ public class HandleClientThread extends Thread {
 
             case Operations.LOGIN:
                 login(request, response);
+                break;
             case Operations.GET_USER_TICKETS:
                 getUserTickets(request, response);
+                break;
             case Operations.GET_TICKET:
                 getTicket(request, response);
+                break;
+            case Operations.GET_TEAMS:
+                getTeams(request, response);
+                break;
+            case Operations.ADD_TEAM:
+                addTeam(request, response);
+                break;
         }
     }
 
@@ -79,50 +97,38 @@ public class HandleClientThread extends Thread {
 
     private void login(Request request, Response response) throws Exception {
 
-        try {
-            User user = (User) request.getArgument();
-            setClient(Controller.getInstance().login(user));
-            System.out.println("Login successful!");
-            response.setResult(client);
-            response.setResponseType(ResponseType.SUCCESS);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.setResponseType(ResponseType.ERROR);
-            response.setException(ex);
-        }
-        sender.send(response);
+        User user = (User) request.getArgument();
+        setClient(Controller.getInstance().login(user));
+        System.out.println("Login successful!");
+        response.setResult(client);
     }
 
     private void getUserTickets(Request request, Response response) throws Exception {
 
-        try {
-            ArrayList<Ticket> listOfTickets = Controller.getInstance().getUserTickets(client);
-
-            System.out.println("Request for list of played tickets was successful!");
-            response.setResult(listOfTickets);
-            response.setResponseType(ResponseType.SUCCESS);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.setResponseType(ResponseType.ERROR);
-            response.setException(ex);
-        }
-        sender.send(response);
+        ArrayList<Ticket> listOfTickets = Controller.getInstance().getUserTickets(client);
+        System.out.println("Request for list of played tickets was successful!");
+        response.setResult(listOfTickets);
     }
 
     private void getTicket(Request request, Response response) throws Exception {
-        
-        try {
-            Ticket requestedTicket = (Ticket) request.getArgument();
-            Ticket ticket = Controller.getInstance().getTicket(requestedTicket);
 
-            System.out.println("Requst for ticket was successful!");
-            response.setResult(ticket);
-            response.setResponseType(ResponseType.SUCCESS);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.setResponseType(ResponseType.ERROR);
-            response.setException(ex);
-        }
-        sender.send(response);
+        Ticket requestedTicket = (Ticket) request.getArgument();
+        Ticket ticket = Controller.getInstance().getTicket(requestedTicket);
+        System.out.println("Requst for ticket was successful!");
+        response.setResult(ticket);
+    }
+
+    private void getTeams(Request request, Response response) throws Exception {
+        
+        ArrayList<Team> listOfTeams = Controller.getInstance().getTeams();
+        System.out.println("Request for teams was successful!");
+        response.setResult(listOfTeams);
+    }
+
+    private void addTeam(Request request, Response response) throws Exception {
+        
+        Team newTeam = Controller.getInstance().addTeam((String) request.getArgument());
+        System.out.println("Request for teams was successful!");
+        response.setResult(newTeam);
     }
 }

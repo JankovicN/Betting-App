@@ -4,6 +4,13 @@
  */
 package rs.ac.bg.fon.ps.operations.ticket;
 
+import java.util.ArrayList;
+import javax.sound.sampled.FloatControl.Type;
+import rs.ac.bg.fon.ps.domain.Bet;
+import rs.ac.bg.fon.ps.domain.BetType;
+import rs.ac.bg.fon.ps.domain.Game;
+import rs.ac.bg.fon.ps.domain.Odds;
+import rs.ac.bg.fon.ps.domain.Team;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 
@@ -11,17 +18,23 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
  *
  * @author nikol
  */
-public class GetTicket extends AbstractGenericOperation{
+public class GetTicket extends AbstractGenericOperation {
 
     private Ticket ticket;
 
     public GetTicket() {
-        this.ticket=new Ticket();
+        this.ticket = new Ticket();
     }
-    
+
     @Override
     protected void executeOperation(Object param) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Ticket t = (Ticket) param;
+        ArrayList<Bet> list = (ArrayList<Bet>) repository.getAllJoin(new Bet(), new Odds(), new Game(), new BetType(), new Team(), t);
+
+        for (Bet bet : list) {
+            t.getListOfBets().add(bet);
+        }
+        this.ticket = t;
     }
 
     @Override
@@ -32,5 +45,5 @@ public class GetTicket extends AbstractGenericOperation{
     public Ticket getTicket() {
         return this.ticket;
     }
-    
+
 }

@@ -39,6 +39,7 @@ public class ServerThread extends Thread{
                 HandleClientThread clientThread= new HandleClientThread(this, socket);
                 clientThread.start();
                 Users.getInstance().addClientThread(clientThread);
+                System.out.println("logged in");
             }
         } catch (Exception e) {
         }

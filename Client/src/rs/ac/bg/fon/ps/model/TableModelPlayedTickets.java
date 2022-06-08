@@ -75,5 +75,6 @@ public class TableModelPlayedTickets extends AbstractTableModel {
 
     public void setListOfTickets(ArrayList<Ticket> listOfTickets) {
         this.listOfTickets = listOfTickets;
+        fireTableDataChanged();
     }
 }

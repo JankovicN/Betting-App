@@ -15,7 +15,7 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
  */
 public class GetUserTickets extends AbstractGenericOperation {
 
-    ArrayList<Ticket> listOfTickets;
+    private ArrayList<Ticket> listOfTickets;
 
     public GetUserTickets() {
         listOfTickets=new ArrayList<>();
@@ -32,7 +32,11 @@ public class GetUserTickets extends AbstractGenericOperation {
         ArrayList<Ticket> list =(ArrayList<Ticket>) repository.searchByForeignKeyBasic(new Ticket(), user);
         
         if(list!=null){
-            listOfTickets=list;
+            for (Ticket ticket : list) {
+                if(ticket.getState().equals("proccesed")){
+                    listOfTickets.add(ticket);
+                }
+            }
         }
         
     }

@@ -25,6 +25,8 @@ public class Game implements GeneralDomainObject {
     private boolean isOver;
 
     public Game() {
+        this.home = new Team();
+        this.away= new Team();
         isOver = false;
     }
 

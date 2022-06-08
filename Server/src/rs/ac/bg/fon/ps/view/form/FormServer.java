@@ -6,8 +6,15 @@ package rs.ac.bg.fon.ps.view.form;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.model.TableModelUsers;
 import rs.ac.bg.fon.ps.threads.ServerThread;
 
 /**
@@ -20,12 +27,17 @@ public class FormServer extends javax.swing.JFrame {
      * Creates new form FormServer
      */
     ServerThread serverThread;
+    private TableModelUsers tmu;
+
     public FormServer() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Controller.getInstance().setFormServer(this);
+        addTableModel();
         setUpForm(false);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,19 +113,22 @@ public class FormServer extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(93, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(309, 309, 309))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblActive, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblActive, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(100, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,9 +182,9 @@ public class FormServer extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(150, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,30 +199,30 @@ public class FormServer extends javax.swing.JFrame {
     }//GEN-LAST:event_itemConfigActionPerformed
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-        
-      try {
-            if(serverThread!=null){
+
+        try {
+            if (serverThread != null) {
                 serverThread.stopServer();
                 setUpForm(false);
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error while stopping server!");
-        }  
-        
+        }
+
     }//GEN-LAST:event_btnStopActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        
+
         try {
-            if(serverThread==null || !serverThread.isAlive()){
-                serverThread= new ServerThread();
+            if (serverThread == null || !serverThread.isAlive()) {
+                serverThread = new ServerThread();
                 serverThread.start();
                 setUpForm(true);
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error while starting server!");
         }
-        
+
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void itemTiketiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTiketiActionPerformed
@@ -269,18 +284,41 @@ public class FormServer extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setUpForm(boolean active) {
-    
-        if(active){
-            btnStart.setEnabled(!active);
-            btnStop.setEnabled(active);
+
+        btnStart.setEnabled(!active);
+        btnStop.setEnabled(active);
+        jLabel2.setVisible(active);
+        jScrollPane1.setVisible(active);
+
+        if (active) {
             lblActive.setText(" online!");
             lblActive.setForeground(new Color(42, 112, 37));
-        }else{
-            btnStart.setEnabled(!active);
-            btnStop.setEnabled(active);
+        } else {
             lblActive.setText(" offline!");
             lblActive.setForeground(new Color(229, 51, 51));
         }
+
+    }
     
+    public void loginUser(User user) {
+        tmu.loginUser(user);
+    }
+
+    private void addTableModel() {
+        try {
+            tmu = new TableModelUsers();
+            tblClients.setModel(tmu);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error while setting up user table!");
+        }
+    }
+
+    public void logoutUser(User client) {
+        tmu.logoutUser(client);
+        tblClients.setModel(tmu);
+    }
+
+    public TableModelUsers getTmu() {
+        return tmu;
     }
 }

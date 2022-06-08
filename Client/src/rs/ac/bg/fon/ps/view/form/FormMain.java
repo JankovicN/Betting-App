@@ -7,6 +7,7 @@ package rs.ac.bg.fon.ps.view.form;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -24,6 +25,8 @@ public class FormMain extends javax.swing.JFrame {
      */
     public FormMain() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -54,22 +57,23 @@ public class FormMain extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel1.setText("Logged in as");
 
-        lblUser.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblUser.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         lblUser.setText("jLabel2");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel2.setText("Filter by date ( input date as dd/MM/yyyy)");
 
+        txtDate.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         txtDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDateActionPerformed(evt);
             }
         });
 
-        btnFilter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnFilter.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         btnFilter.setText("Filter");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,10 +81,11 @@ public class FormMain extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Played tickets");
 
+        tblPlayedTickets.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         tblPlayedTickets.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -94,7 +99,7 @@ public class FormMain extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblPlayedTickets);
 
-        btnViewTicket.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnViewTicket.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         btnViewTicket.setText("View ticket");
         btnViewTicket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,7 +107,7 @@ public class FormMain extends javax.swing.JFrame {
             }
         });
 
-        btnPlayNew.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnPlayNew.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         btnPlayNew.setText("Play new ticket");
 
         menuAdmin.setText("Admin settings");
@@ -135,37 +140,35 @@ public class FormMain extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblUser))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblUser)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnViewTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPlayNew)))
-                .addContainerGap())
+                        .addComponent(btnPlayNew))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblUser))
-                .addGap(18, 18, 18)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,18 +177,26 @@ public class FormMain extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPlayNew)
                     .addComponent(btnViewTicket))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuItemCreateMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCreateMatchActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            Controller.getInstance().openFormCreateGame();
+            this.dispose();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening table!", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_menuItemCreateMatchActionPerformed
 
     private void menuItemViewMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewMatchActionPerformed
@@ -200,22 +211,22 @@ public class FormMain extends javax.swing.JFrame {
 
         try {
             Controller.getInstance().getControllerMain().filterTable();
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,ex.getMessage(),"Invalid date!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid date!", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void btnViewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTicketActionPerformed
-        
+
         try {
             Controller.getInstance().getControllerMain().viewTicket();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,ex.getMessage(),"Error getting selected ticket!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error getting selected ticket!", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnViewTicketActionPerformed
 
     /**

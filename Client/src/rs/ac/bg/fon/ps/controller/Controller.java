@@ -6,29 +6,33 @@ package rs.ac.bg.fon.ps.controller;
 
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.view.form.DialogCreateTeam;
+import rs.ac.bg.fon.ps.view.form.FormGame;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
-import rs.ac.bg.fon.ps.view.form.FormViewTicket;
+import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
 
 /**
  *
  * @author nikol
  */
 public class Controller {
-    
+
     private static Controller instance;
     private ControllerLogin controllerLogin;
     private ControllerMain controllerMain;
     private ControllerViewTicket controllerViewTicket;
+    private ControllerCreateGame controllerCreateGame;
+    private ControllerCreateTeam controllerCreateTeam;
     private User currentUser;
 
     public Controller() {
     }
-    
-    public static Controller getInstance(){
-    
-        if(instance==null){
-            instance=new Controller();
+
+    public static Controller getInstance() {
+
+        if (instance == null) {
+            instance = new Controller();
         }
         return instance;
     }
@@ -40,32 +44,50 @@ public class Controller {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    
-    public void operFormLogin(){
-        this.controllerLogin=new ControllerLogin(new FormLogin());
+
+    public void operFormLogin() {
+        this.controllerLogin = new ControllerLogin(new FormLogin());
         this.controllerLogin.openForm();
     }
-    
-    public ControllerLogin getControllerLogin(){
+
+    public ControllerLogin getControllerLogin() {
         return controllerLogin;
     }
 
     public void openFormMain() throws Exception {
-        this.controllerMain=new ControllerMain(new FormMain());
+        this.controllerMain = new ControllerMain(new FormMain());
         this.controllerMain.openForm();
     }
 
     public ControllerMain getControllerMain() {
         return controllerMain;
     }
-    
+
     public void openFormViewTicket(Ticket ticket) throws Exception {
-        this.controllerViewTicket = new ControllerViewTicket(new FormViewTicket(this.controllerMain.getFormMain(), false), ticket);
+        this.controllerViewTicket = new ControllerViewTicket(new DialogViewTicket(this.controllerMain.getFormMain(), false), ticket);
         this.controllerViewTicket.openForm();
     }
 
     public ControllerViewTicket getControllerViewTicket() {
         return controllerViewTicket;
+    }
+
+    public void openFormCreateGame() throws Exception {
+        this.controllerCreateGame = new ControllerCreateGame(new FormGame());
+        this.controllerCreateGame.openForm();
+    }
+
+    public ControllerCreateGame getControllerCreateGame() {
+        return controllerCreateGame;
+    }
+
+    public void openDialogCreateTeam() throws Exception {
+        this.controllerCreateTeam = new ControllerCreateTeam(new DialogCreateTeam(this.controllerCreateGame.getFormCreateGame(), false));
+        this.controllerCreateTeam.openForm();
+    }
+
+    public ControllerCreateTeam getControllerCreateTeam() {
+        return controllerCreateTeam;
     }
 
 }

@@ -85,12 +85,12 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "teamID, teamName";
+        return "teamName";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias(getPrimaryKeyColumnName()) + ", " + addAlias("teamName");
+        return addAlias("teamName");
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Team implements GeneralDomainObject {
 
     @Override
     public String getInsertValues() {
-        return "(" + this.getTeamName() + ")";
+        return "(\"" + this.getTeamName() + "\")";
     }
 
     @Override

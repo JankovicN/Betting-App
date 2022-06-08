@@ -21,8 +21,10 @@ public class User implements GeneralDomainObject {
     private String username;
     private String password;
     private Role role;
+    private String dateOfLogin;
 
     public User() {
+        this.dateOfLogin = "Never logged in";
     }
 
     public User(int userID, String name, String surname, String username, String password, Role role) {
@@ -32,6 +34,14 @@ public class User implements GeneralDomainObject {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public String getDateOfLogin() {
+        return dateOfLogin;
+    }
+
+    public void setDateOfLogin(String dateOfLogin) {
+        this.dateOfLogin = dateOfLogin;
     }
 
     public Role getRole() {
@@ -245,7 +255,7 @@ public class User implements GeneralDomainObject {
 
     @Override
     public String getSelectCondition() {
-        return " username='" + this.getUsername() + "' AND password='" + this.getPassword() + "'";
+        return getAlias() + ".username='" + this.getUsername() + "' AND " + getAlias() + ".password='" + this.getPassword() + "'";
     }
 
     @Override
