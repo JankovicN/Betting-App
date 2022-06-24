@@ -2,30 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package rs.ac.bg.fon.ps.operations.User;
+package rs.ac.bg.fon.ps.operations.BetType;
 
 import java.util.ArrayList;
-import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 
 /**
  *
  * @author nikol
  */
-public class GetAllUsers extends AbstractGenericOperation {
+public class GetAllBetTypes extends AbstractGenericOperation{
+    
+    ArrayList<BetType> listOfBetTypes;
 
-    private ArrayList<User> listOfUsers;
-
-    public GetAllUsers() {
-        listOfUsers = new ArrayList<>();
+    public GetAllBetTypes() {
+        this.listOfBetTypes = new ArrayList<>();
     }
 
+    public ArrayList<BetType> getListOfBetTypes() {
+        return listOfBetTypes;
+    }
+       
     @Override
     protected void executeOperation(Object param) throws Exception {
-        ArrayList<User> list = (ArrayList<User>) repository.getAll(new User());
+         ArrayList<BetType> list = (ArrayList<BetType>) repository.getAll(new BetType());
 
         if (list != null) {
-            this.listOfUsers = list;
+            this.listOfBetTypes = list;
         }
     }
 
@@ -33,9 +37,5 @@ public class GetAllUsers extends AbstractGenericOperation {
     protected void precondicions(Object param) throws Exception {
         return;
     }
-
-    public ArrayList<User> getListOfUsers() {
-        return listOfUsers;
-    }
-
+    
 }

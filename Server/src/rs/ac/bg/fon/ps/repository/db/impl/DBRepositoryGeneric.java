@@ -36,8 +36,8 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             sb.append("INSERT INTO")
                     .append(param.getTableName())
                     .append(" (").append(param.getColumnNamesForInsert()).append(") ")
-                    .append(" VALUES (")
-                    .append(param.getInsertValues()).append(")");
+                    .append(" VALUES ")
+                    .append(param.getInsertValues());
             String query = sb.toString();
             System.out.println(query);
             Statement statement = connection.createStatement();
@@ -137,9 +137,8 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             sb.append("INSERT INTO ")
                     .append(param.getTableName())
                     .append(" (").append(param.getColumnNamesForInsert()).append(")")
-                    .append(" VALUES (")
-                    .append(param.getInsertValues())
-                    .append(")");
+                    .append(" VALUES ")
+                    .append(param.getInsertValues());
             String query = sb.toString();
             System.out.println(query);
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

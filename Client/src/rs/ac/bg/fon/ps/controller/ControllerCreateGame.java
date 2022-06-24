@@ -7,11 +7,13 @@ package rs.ac.bg.fon.ps.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +23,8 @@ import rs.ac.bg.fon.communication.Communication;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
+import rs.ac.bg.fon.ps.domain.Game;
+import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.domain.Team;
 import rs.ac.bg.fon.ps.operations.Operations;
 import rs.ac.bg.fon.ps.view.form.FormGame;
@@ -33,10 +37,14 @@ public class ControllerCreateGame {
 
     private final FormGame formCreateGame;
     private ArrayList<Team> teams;
+    private Game game;
+    private ArrayList<Odds> listOfOdds;
 
     public ControllerCreateGame(FormGame formCreateGame) {
         this.formCreateGame = formCreateGame;
         this.teams = new ArrayList<>();
+        this.game = new Game();
+        this.listOfOdds = new ArrayList<>();
     }
 
     public void openForm() throws Exception {
@@ -85,30 +93,6 @@ public class ControllerCreateGame {
                     cmbHomeTeam.addItem(team);
                 }
 
-                cmbAwayTeam.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
-                        Team awayTeam = (Team) cmbAwayTeam.getSelectedItem();
-                        cmbHomeTeam.removeAll();
-                        ArrayList<Team> homeTeams = teams;
-                        homeTeams.remove(awayTeam);
-                    }
-
-                });
-
-//                cmbAwayTeam.addItemListener((ItemEvent e) -> {
-//                    Team awayTeam = (Team) cmbAwayTeam.getSelectedItem();
-//                    cmbHomeTeam.removeAll();
-//                    ArrayList<Team> homeTeams = teams;
-//                    homeTeams.remove(awayTeam);
-//                });
-                cmbHomeTeam.addItemListener((ItemEvent e) -> {
-                    Team homeTeam = (Team) cmbHomeTeam.getSelectedItem();
-                    cmbAwayTeam.removeAll();
-                    ArrayList<Team> awayTeams = teams;
-                    awayTeams.remove(homeTeam);
-                });
             }
         } else {
             throw response.getException();
@@ -116,39 +100,103 @@ public class ControllerCreateGame {
 
     }
 
-    public void addGame(String teamName) {
+    public FormGame getFormCreateGame() {
+        return formCreateGame;
+    }
 
-        for (Team team : teams) {
-            if (team.getTeamName().equals(teamName)) {
-                JOptionPane.showMessageDialog(formCreateGame, "Team already exists!", "Create team", JOptionPane.OK_OPTION);
-                return;
-            }
+    public void setOdds(ArrayList<Odds> listOfOdds) {
+        this.listOfOdds = listOfOdds;
+    }
+
+    public Game getGame() {
+        if (game.getHome().getTeamName() == null || game.getAway().getTeamName() == null) {
+            return null;
         }
-        try {
-            Request request = new Request(Operations.ADD_TEAM, teamName);
-            Response response = Communication.getInstance().sendRequest(request, "Request for tickets played by user is sent..");
+        return game;
+    }
 
-            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                Team newTeam = (Team) response.getResult();
-
-                JComboBox cmbHomeTeam = formCreateGame.getCmbHomeTeam();
-                JComboBox cmbAwayTeam = formCreateGame.getCmbAwayTeam();
-
-                cmbAwayTeam.addItem(newTeam);
-                cmbHomeTeam.addItem(newTeam);
-
-            } else {
-                throw response.getException();
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error adding team! ", JOptionPane.ERROR_MESSAGE);
+    public void confirmTeams() {
+        this.game = new Game();
+        game.setHome((Team) formCreateGame.getCmbHomeTeam().getSelectedItem());
+        game.setAway((Team) formCreateGame.getCmbAwayTeam().getSelectedItem());
+        listOfOdds = new ArrayList<>();
+        if (Controller.getInstance().getControllerAddOdds() != null) {
+            Controller.getInstance().getControllerAddOdds().resetOdds();
         }
     }
 
-    public FormGame getFormCreateGame() {
-        return formCreateGame;
+    public boolean compareTeams() {
+        return !((Team) formCreateGame.getCmbHomeTeam().getSelectedItem()).getTeamName().equals(((Team) formCreateGame.getCmbAwayTeam().getSelectedItem()).getTeamName());
+    }
+
+    public boolean validateConfirmTeams() {
+        return game.getHome().getTeamName() != null && game.getAway().getTeamName() != null;
+    }
+
+    public boolean validateCreateGame() {
+        return !listOfOdds.isEmpty();
+    }
+
+    public boolean addDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = sdf.parse(formCreateGame.getTxtDate().getText());
+            game.setDateOfPlay(date);
+            return true;
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(formCreateGame, "Invalid date format!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    public void createOdds() {
+
+        
+
+        if (addDate() && validateCreateGame() && validateConfirmTeams() && compareTeams()) {
+
+            Iterator<Odds> iter = listOfOdds.iterator();
+            while (iter.hasNext()) {
+                Odds o = iter.next();
+                if (o.getOdds() == 1.0) {
+                    iter.remove();
+                }
+            }
+            try {
+                Request request = new Request(Operations.CREATE_GAME, game);
+                Response response = Communication.getInstance().sendRequest(request, "Request for creating game is sent..");
+
+                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                    game.setGameID(((Game) response.getResult()).getGameID());
+                } else {
+                    throw response.getException();
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error creating game ", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try {
+                Request request = new Request(Operations.CREATE_ODDS, listOfOdds);
+                Response response = Communication.getInstance().sendRequest(request, "Request for creating odds is sent..");
+
+                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                    formCreateGame.dispose();
+                    Controller.getInstance().getControllerMain().openForm();
+
+                } else {
+                    throw response.getException();
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error creating odds ", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(formCreateGame, "Please confirm teams and add odds to create game! :D", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 }

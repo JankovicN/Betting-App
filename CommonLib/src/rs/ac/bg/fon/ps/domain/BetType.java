@@ -85,7 +85,7 @@ public class BetType implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "typeID,typeName";
+        return "typeID, typeName";
     }
 
     @Override

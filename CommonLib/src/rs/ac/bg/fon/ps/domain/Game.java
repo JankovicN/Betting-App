@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +24,13 @@ public class Game implements GeneralDomainObject {
     private Team away;
     private int awayGoals;
     private boolean isOver;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public Game() {
         this.home = new Team();
-        this.away= new Team();
+        this.homeGoals = 0;
+        this.away = new Team();
+        this.awayGoals = 0;
         isOver = false;
     }
 
@@ -159,7 +163,7 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "gameID, dateOfPlay, home, homeGoals, away, awayGoals, isOver";
+        return " dateOfPlay, home, homeGoals, away, awayGoals, isOver";
     }
 
     @Override
@@ -180,7 +184,7 @@ public class Game implements GeneralDomainObject {
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
         Game updatedGame = (Game) gdo;
-        return addAlias("dateOfPlay") + "=" + updatedGame.getDateOfPlay() + ","
+        return addAlias("dateOfPlay") + "=" + sdf.format(updatedGame.getDateOfPlay()) + ","
                 + addAlias("home") + "=" + updatedGame.getHome().getTeamID() + ","
                 + addAlias("homeGoals") + "=" + updatedGame.getHomeGoals() + ","
                 + addAlias("away") + "=" + updatedGame.getAway().getTeamID() + ","
@@ -190,7 +194,8 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String getInsertValues() {
-        return "(" + this.getDateOfPlay() + ","
+        java.sql.Date date = new java.sql.Date(dateOfPlay.getTime());
+        return "('" + date + "',"
                 + this.getHome().getTeamID() + ","
                 + this.getHomeGoals() + ","
                 + this.getAway().getTeamID() + ","
@@ -253,7 +258,7 @@ public class Game implements GeneralDomainObject {
                 game.setHome(homeTeam);
                 game.setHomeGoals(rs.getInt(this.addAlias("homeGoals")));
                 game.setAway(awayTeam);
-                game.setAwayGoals(rs.getInt(this.addAlias("awayGoals")));   
+                game.setAwayGoals(rs.getInt(this.addAlias("awayGoals")));
                 game.setIsOver(rs.getBoolean(this.addAlias("isOver")));
 
             } while (rs.next());
@@ -283,7 +288,7 @@ public class Game implements GeneralDomainObject {
                 game.setHome(home);
                 game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
                 game.setAway(away);
-                game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));   
+                game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
                 game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
 
             } while (rs.next());
@@ -322,6 +327,7 @@ public class Game implements GeneralDomainObject {
     public String addAlias(String column) {
         return this.getAlias() + "." + column;
     }
+
     @Override
     public int getSecondPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

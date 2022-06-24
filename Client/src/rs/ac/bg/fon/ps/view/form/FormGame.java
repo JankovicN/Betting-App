@@ -26,8 +26,8 @@ public class FormGame extends javax.swing.JFrame {
      */
     public FormGame() {
         initComponents();
-        
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
 
     }
@@ -51,6 +51,7 @@ public class FormGame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cmbAwayTeam = new javax.swing.JComboBox();
         btnCreateTeam = new javax.swing.JButton();
+        btnConfirmTeams = new javax.swing.JButton();
         btnConfirm = new javax.swing.JButton();
         btnAddOdds = new javax.swing.JButton();
         lblTitle = new javax.swing.JLabel();
@@ -106,27 +107,36 @@ public class FormGame extends javax.swing.JFrame {
             }
         });
 
+        btnConfirmTeams.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        btnConfirmTeams.setText("Confirm teams");
+        btnConfirmTeams.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmTeamsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnCreateTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2))
+                            .addComponent(jLabel2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel3)))
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmbAwayTeam, 0, 316, Short.MAX_VALUE)
-                            .addComponent(cmbHomeTeam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cmbHomeTeam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(btnCreateTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(btnConfirmTeams, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -140,8 +150,10 @@ public class FormGame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cmbAwayTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(btnCreateTeam)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmTeams)
+                    .addComponent(btnCreateTeam))
                 .addContainerGap())
         );
 
@@ -211,7 +223,7 @@ public class FormGame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 192, Short.MAX_VALUE)
+                        .addGap(0, 186, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
@@ -236,7 +248,7 @@ public class FormGame extends javax.swing.JFrame {
                                 .addComponent(lblAwayGoals))
                             .addComponent(btnConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAddOdds, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 192, Short.MAX_VALUE)))
+                        .addGap(0, 186, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -287,7 +299,9 @@ public class FormGame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        // TODO add your handling code here:
+        
+        Controller.getInstance().getControllerCreateGame().createOdds();
+        
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnCreateTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTeamActionPerformed
@@ -320,8 +334,31 @@ public class FormGame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtHomeGoalsActionPerformed
 
     private void btnAddOddsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOddsActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (Controller.getInstance().getControllerCreateGame().validateConfirmTeams()) {
+                Controller.getInstance().openDialogAddOdds();
+            }else{
+                JOptionPane.showMessageDialog(this, "You must confirm teams before adding odds!", "Teams not confirmed!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAddOddsActionPerformed
+
+    private void btnConfirmTeamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTeamsActionPerformed
+        try {
+            if (Controller.getInstance().getControllerCreateGame().compareTeams()) {
+                Controller.getInstance().getControllerCreateGame().confirmTeams();
+            JOptionPane.showMessageDialog(this, "Teams confirmed successfully!");
+            }else{
+                JOptionPane.showMessageDialog(this, "You must choose two different teams!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnConfirmTeamsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,6 +399,7 @@ public class FormGame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddOdds;
     private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnConfirmTeams;
     private javax.swing.JButton btnCreateTeam;
     private javax.swing.JComboBox cmbAwayTeam;
     private javax.swing.JComboBox cmbHomeTeam;
@@ -441,6 +479,4 @@ public class FormGame extends javax.swing.JFrame {
         return lblScore;
     }
 
-    
-    
 }

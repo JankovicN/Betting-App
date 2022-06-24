@@ -108,7 +108,7 @@ public class DialogCreateTeam extends javax.swing.JDialog {
 
     private void btnCreateTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTeamActionPerformed
         this.dispose();
-        Controller.getInstance().getControllerCreateGame().addGame(txtTeamName.getText());
+        Controller.getInstance().getControllerCreateTeam().addTeam(txtTeamName.getText());
     }//GEN-LAST:event_btnCreateTeamActionPerformed
 
     /**

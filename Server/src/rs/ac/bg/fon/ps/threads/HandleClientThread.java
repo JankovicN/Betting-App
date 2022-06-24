@@ -5,7 +5,6 @@
 package rs.ac.bg.fon.ps.threads;
 
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import rs.ac.bg.fon.ps.communication.Receiver;
 import rs.ac.bg.fon.ps.communication.Request;
@@ -13,6 +12,9 @@ import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.communication.Sender;
 import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.domain.BetType;
+import rs.ac.bg.fon.ps.domain.Game;
+import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.domain.Team;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
@@ -60,7 +62,7 @@ public class HandleClientThread extends Thread {
                 sender.send(response);
             }
         } catch (Exception e) {
-            System.out.println("Client " + client.getUsername()+ " logged out!");
+            System.out.println("Client " + client.getUsername() + " logged out!");
             Controller.getInstance().logoutUser(client);
         }
     }
@@ -83,6 +85,15 @@ public class HandleClientThread extends Thread {
                 break;
             case Operations.ADD_TEAM:
                 addTeam(request, response);
+                break;
+            case Operations.GET_BETTYPE:
+                getBetType(request, response);
+                break;
+            case Operations.CREATE_ODDS:
+                createOdds(request, response);
+                break;
+            case Operations.CREATE_GAME:
+                createGame(request, response);
                 break;
         }
     }
@@ -119,16 +130,33 @@ public class HandleClientThread extends Thread {
     }
 
     private void getTeams(Request request, Response response) throws Exception {
-        
+
         ArrayList<Team> listOfTeams = Controller.getInstance().getTeams();
         System.out.println("Request for teams was successful!");
         response.setResult(listOfTeams);
     }
 
     private void addTeam(Request request, Response response) throws Exception {
-        
+
         Team newTeam = Controller.getInstance().addTeam((String) request.getArgument());
-        System.out.println("Request for teams was successful!");
+        System.out.println("Request for adding team was successful!");
         response.setResult(newTeam);
+    }
+
+    private void getBetType(Request request, Response response) throws Exception {
+        ArrayList<BetType> listOfBetTypes = Controller.getInstance().getBetTypes();
+        System.out.println("Request for bet types was successful!");
+        response.setResult(listOfBetTypes);
+    }
+
+    private void createOdds(Request request, Response response) throws Exception {
+        Controller.getInstance().createOdds((ArrayList<Odds>) request.getArgument());
+        System.out.println("Request for rreating odds was successful!");
+    }
+
+    private void createGame(Request request, Response response) throws Exception {
+        Game newGame = Controller.getInstance().addGame((Game) request.getArgument());
+        System.out.println("Request for adding game was successful!");
+        response.setResult(newGame);
     }
 }

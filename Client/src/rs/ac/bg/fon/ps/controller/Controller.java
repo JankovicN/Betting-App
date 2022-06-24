@@ -6,6 +6,7 @@ package rs.ac.bg.fon.ps.controller;
 
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
 import rs.ac.bg.fon.ps.view.form.DialogCreateTeam;
 import rs.ac.bg.fon.ps.view.form.FormGame;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
@@ -24,6 +25,7 @@ public class Controller {
     private ControllerViewTicket controllerViewTicket;
     private ControllerCreateGame controllerCreateGame;
     private ControllerCreateTeam controllerCreateTeam;
+    private ControllerAddOdds controllerAddOdds;
     private User currentUser;
 
     public Controller() {
@@ -55,7 +57,9 @@ public class Controller {
     }
 
     public void openFormMain() throws Exception {
-        this.controllerMain = new ControllerMain(new FormMain());
+        if (this.controllerMain == null) {
+            this.controllerMain = new ControllerMain(new FormMain());
+        }
         this.controllerMain.openForm();
     }
 
@@ -82,12 +86,23 @@ public class Controller {
     }
 
     public void openDialogCreateTeam() throws Exception {
-        this.controllerCreateTeam = new ControllerCreateTeam(new DialogCreateTeam(this.controllerCreateGame.getFormCreateGame(), false));
+        this.controllerCreateTeam = new ControllerCreateTeam(new DialogCreateTeam(this.controllerCreateGame.getFormCreateGame(), false),controllerCreateGame.getTeams());
         this.controllerCreateTeam.openForm();
     }
 
     public ControllerCreateTeam getControllerCreateTeam() {
         return controllerCreateTeam;
+    }
+
+    public ControllerAddOdds getControllerAddOdds() {
+        return controllerAddOdds;
+    }
+
+    public void openDialogAddOdds() throws Exception {
+        if (this.controllerAddOdds == null) {
+            this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerCreateGame.getFormCreateGame(), false), controllerCreateGame.getGame());
+        }
+        this.controllerAddOdds.openForm();
     }
 
 }

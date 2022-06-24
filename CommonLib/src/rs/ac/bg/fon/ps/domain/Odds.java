@@ -91,7 +91,7 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String getTableName() {
-        return "odds";
+        return " odds";
     }
 
     @Override
