@@ -4,6 +4,18 @@
  */
 package rs.ac.bg.fon.ps.view.form;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ButtonModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import rs.ac.bg.fon.ps.controller.Controller;
+
 /**
  *
  * @author nikol
@@ -26,41 +38,337 @@ public class FormPlayTicket extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgDate = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblGames = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtTeam = new javax.swing.JTextField();
+        btnAddGame = new javax.swing.JButton();
+        btnFilterByTeamName = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtWager = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        lblCombinedOdds = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblPotentialWin = new javax.swing.JLabel();
+        btnRemoveBet = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTicket = new javax.swing.JTable();
+        btnPlayTicket = new javax.swing.JButton();
+        rbToday = new javax.swing.JRadioButton();
+        rb3Days = new javax.swing.JRadioButton();
+        rbAllTime = new javax.swing.JRadioButton();
+        btnFilterByDate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        tblGames.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        tblGames.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblGames);
+
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Bet Selection");
+
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel2.setText("Filter game by team: ");
+
+        txtTeam.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtTeam.setToolTipText("");
+
+        btnAddGame.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        btnAddGame.setText("Add game to ticket");
+        btnAddGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddGameActionPerformed(evt);
+            }
+        });
+
+        btnFilterByTeamName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        btnFilterByTeamName.setText("Filter by team");
+        btnFilterByTeamName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterByTeamNameActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel6.setText("Filter game by date: ");
+
+        jPanel2.setBackground(new java.awt.Color(235, 234, 234));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Ticket overview");
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel5.setText("Wager: ");
+
+        txtWager.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtWager.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel3.setText("Combined odds: ");
+
+        lblCombinedOdds.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        lblCombinedOdds.setText("-");
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel4.setText("Potential win:  ");
+
+        lblPotentialWin.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        lblPotentialWin.setText("-");
+
+        btnRemoveBet.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        btnRemoveBet.setText("Remove bet");
+        btnRemoveBet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveBetActionPerformed(evt);
+            }
+        });
+
+        tblTicket.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblTicket);
+
+        btnPlayTicket.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        btnPlayTicket.setText("Play Ticket");
+        btnPlayTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayTicketActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnRemoveBet, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(22, 22, 22)
+                        .addComponent(lblPotentialWin, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPlayTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtWager)
+                            .addComponent(lblCombinedOdds, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))))
+                .addGap(40, 40, 40))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel7)
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnRemoveBet)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtWager, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblCombinedOdds))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lblPotentialWin))
+                .addGap(18, 18, 18)
+                .addComponent(btnPlayTicket)
+                .addGap(40, 40, 40))
+        );
+
+        rbToday.setBackground(new java.awt.Color(255, 255, 255));
+        bgDate.add(rbToday);
+        rbToday.setText("Today");
+        rbToday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTodayActionPerformed(evt);
+            }
+        });
+
+        rb3Days.setBackground(new java.awt.Color(255, 255, 255));
+        bgDate.add(rb3Days);
+        rb3Days.setText("Next 3 days");
+
+        rbAllTime.setBackground(new java.awt.Color(255, 255, 255));
+        bgDate.add(rbAllTime);
+        rbAllTime.setSelected(true);
+        rbAllTime.setText("All time");
+
+        btnFilterByDate.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        btnFilterByDate.setText("Filter by date");
+        btnFilterByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterByDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(173, 173, 173)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddGame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(rbAllTime)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rbToday)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rb3Days))
+                                    .addComponent(txtTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(44, 44, 44)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnFilterByDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnFilterByTeamName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addGap(100, 100, 100)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 443, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel1)
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFilterByTeamName))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(rbToday)
+                    .addComponent(rb3Days)
+                    .addComponent(rbAllTime)
+                    .addComponent(btnFilterByDate))
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAddGame, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRemoveBetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveBetActionPerformed
+
+        //REMOVE BET FROM TICKET TABLE
+        Controller.getInstance().getControllerPlayTicket().removeBetFromTable();
+        
+    }//GEN-LAST:event_btnRemoveBetActionPerformed
+
+    private void btnAddGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGameActionPerformed
+        
+        try {
+            //OPEN DIALOG FOR SELECTED GAME
+            Controller.getInstance().getControllerPlayTicket().openDialogOdds();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening dialog Odds", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnAddGameActionPerformed
+
+    private void btnFilterByTeamNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterByTeamNameActionPerformed
+        
+        // CONTROLLER FILTER TABLE BY TEAM NAME
+        Controller.getInstance().getControllerPlayTicket().filterByTeamName();
+        
+    }//GEN-LAST:event_btnFilterByTeamNameActionPerformed
+
+    private void btnPlayTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayTicketActionPerformed
+        
+        try {
+            //PLAY TICKET, SAVE IT TO DATABASE
+            Controller.getInstance().getControllerPlayTicket().playTicket();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error playing ticket", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnPlayTicketActionPerformed
+
+    private void rbTodayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTodayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbTodayActionPerformed
+
+    private void btnFilterByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterByDateActionPerformed
+        
+        try {
+            // FILTER BASED ON SELECTED RADIO BUTTON
+            Controller.getInstance().getControllerPlayTicket().filterByDate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error filtering by date", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnFilterByDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,6 +406,78 @@ public class FormPlayTicket extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgDate;
+    private javax.swing.JButton btnAddGame;
+    private javax.swing.JButton btnFilterByDate;
+    private javax.swing.JButton btnFilterByTeamName;
+    private javax.swing.JButton btnPlayTicket;
+    private javax.swing.JButton btnRemoveBet;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblCombinedOdds;
+    private javax.swing.JLabel lblPotentialWin;
+    private javax.swing.JRadioButton rb3Days;
+    private javax.swing.JRadioButton rbAllTime;
+    private javax.swing.JRadioButton rbToday;
+    private javax.swing.JTable tblGames;
+    private javax.swing.JTable tblTicket;
+    private javax.swing.JTextField txtTeam;
+    private javax.swing.JTextField txtWager;
     // End of variables declaration//GEN-END:variables
+
+    public JLabel getLblCombinedOdds() {
+        return lblCombinedOdds;
+    }
+
+    public JLabel getLblPotentialWin() {
+        return lblPotentialWin;
+    }
+
+    public JRadioButton getRb3Days() {
+        return rb3Days;
+    }
+
+    public JRadioButton getRbAllTime() {
+        return rbAllTime;
+    }
+
+    public JRadioButton getRbToday() {
+        return rbToday;
+    }
+
+    public JTable getTblGames() {
+        return tblGames;
+    }
+
+    public JTable getTblTicket() {
+        return tblTicket;
+    }
+
+    public JTextField getTxtWager() {
+        return txtWager;
+    }
+
+    public JTextField getTxtTeam() {
+        return txtTeam;
+    }
+  
+    public void setupWager(){
+        txtWager.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            Controller.getInstance().getControllerPlayTicket().updatePotentialWin();
+                
+            }
+        });
+    }
+    
 }

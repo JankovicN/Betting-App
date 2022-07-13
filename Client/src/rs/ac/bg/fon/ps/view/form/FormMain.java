@@ -109,6 +109,11 @@ public class FormMain extends javax.swing.JFrame {
 
         btnPlayNew.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         btnPlayNew.setText("Play new ticket");
+        btnPlayNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayNewActionPerformed(evt);
+            }
+        });
 
         menuAdmin.setText("Admin settings");
 
@@ -228,6 +233,15 @@ public class FormMain extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnViewTicketActionPerformed
+
+    private void btnPlayNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNewActionPerformed
+        try {
+            Controller.getInstance().getControllerMain().playNewTicket();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening form", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPlayNewActionPerformed
 
     /**
      * @param args the command line arguments

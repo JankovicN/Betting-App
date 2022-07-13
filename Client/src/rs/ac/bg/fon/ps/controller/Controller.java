@@ -8,10 +8,12 @@ import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
 import rs.ac.bg.fon.ps.view.form.DialogCreateTeam;
+import rs.ac.bg.fon.ps.view.form.DialogGameOdds;
 import rs.ac.bg.fon.ps.view.form.FormGame;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
+import rs.ac.bg.fon.ps.view.form.FormPlayTicket;
 
 /**
  *
@@ -26,6 +28,8 @@ public class Controller {
     private ControllerCreateGame controllerCreateGame;
     private ControllerCreateTeam controllerCreateTeam;
     private ControllerAddOdds controllerAddOdds;
+    private ControllerGameOdds controllerGameOdds;
+    private ControllerPlayTicket controllerPlayTicket;
     private User currentUser;
 
     public Controller() {
@@ -86,7 +90,7 @@ public class Controller {
     }
 
     public void openDialogCreateTeam() throws Exception {
-        this.controllerCreateTeam = new ControllerCreateTeam(new DialogCreateTeam(this.controllerCreateGame.getFormCreateGame(), false),controllerCreateGame.getTeams());
+        this.controllerCreateTeam = new ControllerCreateTeam(new DialogCreateTeam(this.controllerCreateGame.getFormCreateGame(), false), controllerCreateGame.getTeams());
         this.controllerCreateTeam.openForm();
     }
 
@@ -103,6 +107,24 @@ public class Controller {
             this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerCreateGame.getFormCreateGame(), false), controllerCreateGame.getGame());
         }
         this.controllerAddOdds.openForm();
+    }
+
+    public ControllerGameOdds getControllerGameOdds() {
+        return controllerGameOdds;
+    }
+
+    public void openDialogGameOdds() throws Exception {
+        this.controllerGameOdds = new ControllerGameOdds(new DialogGameOdds(this.controllerPlayTicket.getFormPlayTicket(), false), controllerPlayTicket.getSelectedGame());
+        this.controllerGameOdds.openForm();
+    }
+
+    public ControllerPlayTicket getControllerPlayTicket() {
+        return controllerPlayTicket;
+    }
+
+    public void openFormPlayTicket() throws Exception {
+        this.controllerPlayTicket = new ControllerPlayTicket(new FormPlayTicket());
+        this.controllerPlayTicket.openForm();
     }
 
 }

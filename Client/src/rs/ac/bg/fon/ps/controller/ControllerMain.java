@@ -58,7 +58,7 @@ public class ControllerMain {
         if (response.getResponseType().equals(ResponseType.SUCCESS)) {
 
             ArrayList<Ticket> listOfTickets = (ArrayList<Ticket>) response.getResult();
-
+            System.out.println("list size " + listOfTickets.size());
             for (Ticket ticket : listOfTickets) {
                 if (!ticket.getState().equals("processed")) {
                     listOfTickets.remove(ticket);
@@ -109,6 +109,10 @@ public class ControllerMain {
         } else {
             throw response.getException();
         }
-
+    }
+    
+    public void playNewTicket() throws Exception{
+        formMain.setVisible(false);
+        Controller.getInstance().openFormPlayTicket();
     }
 }

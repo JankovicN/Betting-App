@@ -15,7 +15,7 @@ import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.domain.Ticket;
-import rs.ac.bg.fon.ps.model.TableModelOdds;
+import rs.ac.bg.fon.ps.model.TableModelAddOdds;
 import rs.ac.bg.fon.ps.operations.Operations;
 import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
 
@@ -49,7 +49,7 @@ public class ControllerAddOdds {
         dialogAddOdds.setlblGame(game.toString());
 
         JTable table = dialogAddOdds.getTblOdds();
-        TableModelOdds tmo = new TableModelOdds();
+        TableModelAddOdds tmo = new TableModelAddOdds();
         if (listOfOdds.isEmpty()) {
             Request request = new Request(Operations.GET_BETTYPE, null);
             Response response = Communication.getInstance().sendRequest(request, "Request for bet types sent..");

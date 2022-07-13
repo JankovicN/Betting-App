@@ -7,6 +7,7 @@ package rs.ac.bg.fon.ps.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import rs.ac.bg.fon.ps.domain.Bet;
 import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
@@ -18,9 +19,12 @@ import rs.ac.bg.fon.ps.operations.BetType.GetAllBetTypes;
 import rs.ac.bg.fon.ps.operations.User.GetAllUsers;
 import rs.ac.bg.fon.ps.operations.User.LoginUser;
 import rs.ac.bg.fon.ps.operations.game.AddGame;
+import rs.ac.bg.fon.ps.operations.game.GetGamesNotStarted;
 import rs.ac.bg.fon.ps.operations.odds.CreateOdds;
+import rs.ac.bg.fon.ps.operations.odds.GetOddsForGame;
 import rs.ac.bg.fon.ps.operations.team.AddTeam;
 import rs.ac.bg.fon.ps.operations.team.GetTeams;
+import rs.ac.bg.fon.ps.operations.ticket.CreateTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
 import rs.ac.bg.fon.ps.view.form.FormServer;
@@ -134,6 +138,24 @@ public class Controller {
         operation.execute(game);
         game.setGameID(((AddGame)operation).getGameID());
         return game;
+    }
+
+    public ArrayList<Odds> getOddsForGame(Game game) throws Exception {
+        AbstractGenericOperation operation = new GetOddsForGame();
+        operation.execute(game);
+        return ((GetOddsForGame)operation).getListOfOdds();
+    }
+
+    public ArrayList<Game> getGamesNotStarted() throws Exception {
+        AbstractGenericOperation operation = new GetGamesNotStarted();
+        operation.execute(null);
+        return ((GetGamesNotStarted) operation).getListOfGames();
+        
+    }
+
+    public void createTicket(ArrayList<Bet> listOfBets) throws Exception {
+        AbstractGenericOperation operation = new CreateTicket();
+        operation.execute(listOfBets);
     }
     
 }

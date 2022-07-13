@@ -12,6 +12,7 @@ import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.communication.Sender;
 import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.domain.Bet;
 import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
@@ -95,6 +96,15 @@ public class HandleClientThread extends Thread {
             case Operations.CREATE_GAME:
                 createGame(request, response);
                 break;
+            case Operations.GET_ODDS:
+                getOddsForGame(request, response);
+                break;
+            case Operations.GET_GAMES_NOT_STARTED:
+                getGamesNotStarted(request, response);
+                break;
+            case Operations.CREATE_TICKET:
+                createTicket(request, response);
+                break;
         }
     }
 
@@ -158,5 +168,23 @@ public class HandleClientThread extends Thread {
         Game newGame = Controller.getInstance().addGame((Game) request.getArgument());
         System.out.println("Request for adding game was successful!");
         response.setResult(newGame);
+    }
+
+    private void getOddsForGame(Request request, Response response) throws Exception {
+        ArrayList<Odds> listOfOdds = Controller.getInstance().getOddsForGame((Game) request.getArgument());
+        System.out.println("Request for game odds was successful");
+        response.setResult(listOfOdds);
+    }
+
+    private void getGamesNotStarted(Request request, Response response) throws Exception {
+        ArrayList<Game> listOfGames = Controller.getInstance().getGamesNotStarted();
+        System.out.println("Request for games was successful");
+        response.setResult(listOfGames);
+    }
+
+    private void createTicket(Request request, Response response) throws Exception {
+        Controller.getInstance().createTicket((ArrayList<Bet>) request.getArgument());
+        System.out.println("Request for creting ticket was successful");
+        
     }
 }

@@ -261,6 +261,7 @@ public class Game implements GeneralDomainObject {
                 game.setAwayGoals(rs.getInt(this.addAlias("awayGoals")));
                 game.setIsOver(rs.getBoolean(this.addAlias("isOver")));
 
+                list.add(game);
             } while (rs.next());
             return list;
         } else {
@@ -290,6 +291,9 @@ public class Game implements GeneralDomainObject {
                 game.setAway(away);
                 game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
                 game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+                System.out.println("Game: " + game);
+
+                list.add(game);
 
             } while (rs.next());
             return list;
@@ -301,6 +305,10 @@ public class Game implements GeneralDomainObject {
     @Override
     public String getSelectCondition() {
         return this.getPrimaryKeyColumnNameWithAlias() + "=" + this.getGameID();
+    }
+
+    public String getNotStartedCondition() {
+        return addAlias("dateOfPlay") + " > " + " '" + new java.sql.Date((new Date()).getTime()) + "'";
     }
 
     @Override

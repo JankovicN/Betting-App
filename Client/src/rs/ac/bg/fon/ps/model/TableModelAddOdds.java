@@ -5,6 +5,8 @@
 package rs.ac.bg.fon.ps.model;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import rs.ac.bg.fon.ps.domain.Odds;
 
@@ -12,13 +14,13 @@ import rs.ac.bg.fon.ps.domain.Odds;
  *
  * @author nikol
  */
-public class TableModelOdds extends AbstractTableModel{
-    
+public class TableModelAddOdds extends AbstractTableModel {
+
     private ArrayList<Odds> listOfOdds;
 
     private String[] columns = new String[]{"Type", "Odds"};
 
-    public TableModelOdds() {
+    public TableModelAddOdds() {
         listOfOdds = new ArrayList<>();
     }
 
@@ -47,14 +49,30 @@ public class TableModelOdds extends AbstractTableModel{
                 throw new AssertionError();
         }
     }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        try {
+            double odds = Double.parseDouble((String) aValue);
+            if (odds > 1.0) {
+                listOfOdds.get(rowIndex).setOdds(odds);
+                fireTableDataChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     @Override
     public String getColumnName(int column) {
         return columns[column];
     }
-    
-    public Odds getOdd(int rowIndex){
-        return listOfOdds.get(rowIndex);
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex != 0;
     }
+
 
     public ArrayList<Odds> getListOfOdds() {
         return listOfOdds;

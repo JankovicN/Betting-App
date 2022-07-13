@@ -33,8 +33,9 @@ public class GetUserTickets extends AbstractGenericOperation {
         
         if(list!=null){
             for (Ticket ticket : list) {
-                if(ticket.getState().equals("proccesed")){
+                if(ticket.getState().equals("processed")){
                     listOfTickets.add(ticket);
+                    System.out.println("added ticket to lsit");
                 }
             }
         }

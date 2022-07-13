@@ -31,6 +31,10 @@ public class Ticket implements GeneralDomainObject {
         this.state = "unproccesed";
         this.listOfBets = new ArrayList<>();
         this.user = new User();
+        this.combinedOdds = 1;
+        this.potentialWin = BigDecimal.ZERO;
+        this.win = false;
+        this.date = new Date();
     }
 
     public Ticket(int ticketID, BigDecimal wager, double combinedOdds, BigDecimal potentialWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
@@ -174,7 +178,7 @@ public class Ticket implements GeneralDomainObject {
     @Override
     public String toString() {
         return "TicketID: " + ticketID + "  Played on: " + date + "  Passed: " + win + "\n"
-                + "Wager: " + wager + "  Odds sum: " + combinedOdds + "  Total win: " + potentialWin;
+                + "Wager: " + wager + "  Combined odds: " + combinedOdds + "  Potential win: " + potentialWin;
     }
 
     @Override
@@ -189,16 +193,15 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "ticketID, win, wager, oddsSum, totalWin, date, state, playedByUser";
+        return " win, wager, combinedOdds, potentialWin, date, state, playedByUser";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("ticketID") + ".ticketID, "
-                + addAlias("win") + ", "
+        return addAlias("win") + ", "
                 + addAlias("wager") + ", "
-                + addAlias("oddsSum") + ", "
-                + addAlias("totalWin") + ", "
+                + addAlias("combinedOdds") + ", "
+                + addAlias("potentialWin") + ", "
                 + addAlias("date") + ","
                 + addAlias("state") + ","
                 + addAlias("playedByUser");
@@ -221,14 +224,14 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getInsertValues() {
-        
-        return "(" + this.isWin()+ ","
-                + this.getWager()+ ","
-                + this.getCombinedOdds()+ ","
+        java.sql.Date dateSQL = new java.sql.Date(date.getTime());
+        return "(" + this.isWin() + ","
+                + this.getWager() + ","
+                + this.getCombinedOdds() + ","
                 + this.getPotentialWin() + ","
-                + this.getDate()+ ","
-                + "unprocessed, "+
-                + this.getUser().getPrimaryKey()+ ")";
+                + "'" + dateSQL + "',"
+                + "\'unprocessed\',"
+                + +this.getUser().getPrimaryKey() + ")";
     }
 
     @Override
@@ -273,20 +276,21 @@ public class Ticket implements GeneralDomainObject {
 
         if (rs.next()) {
             do {
-                
+
                 User u = new User();
                 u = (User) u.readResultSet(rs).get(0);
-                
+
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt("ticketID"));
                 t.setWin(rs.getBoolean("win"));
                 t.setWager(rs.getBigDecimal("wager"));
-                t.setCombinedOdds(rs.getDouble("oddsSum"));
-                t.setPotentialWin(rs.getBigDecimal("totalWin"));
+                t.setCombinedOdds(rs.getDouble("combinedOdds"));
+                t.setPotentialWin(rs.getBigDecimal("potentialWin"));
                 t.setDate(rs.getDate("date"));
                 t.setState(rs.getString("state"));
                 t.setUser(u);
-                
+
+                list.add(t);
             } while (rs.next());
             return list;
         } else {
@@ -306,10 +310,12 @@ public class Ticket implements GeneralDomainObject {
                 t.setTicketID(rs.getInt("ticketID"));
                 t.setWin(rs.getBoolean("win"));
                 t.setWager(rs.getBigDecimal("wager"));
-                t.setCombinedOdds(rs.getDouble("oddsSum"));
-                t.setPotentialWin(rs.getBigDecimal("totalWin"));
+                t.setCombinedOdds(rs.getDouble("combinedOdds"));
+                t.setPotentialWin(rs.getBigDecimal("potentialWin"));
                 t.setDate(rs.getDate("date"));
                 t.setState(rs.getString("state"));
+                System.out.println("ticket -> " + t);
+                list.add(t);
             } while (rs.next());
             return list;
         } else {
@@ -320,7 +326,7 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getSelectCondition() {
-        return getPrimaryKeyColumnNameWithAlias()+ "=" + getPrimaryKey();
+        return getPrimaryKeyColumnNameWithAlias() + "=" + getPrimaryKey();
     }
 
     @Override

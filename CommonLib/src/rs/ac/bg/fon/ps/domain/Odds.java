@@ -21,7 +21,7 @@ public class Odds implements GeneralDomainObject {
 
     public Odds() {
         this.game = new Game();
-        this.type= new BetType();
+        this.type = new BetType();
     }
 
     public Odds(Game game, BetType type, double odds) {
@@ -180,14 +180,29 @@ public class Odds implements GeneralDomainObject {
 
         if (rs.next()) {
             do {
-                Game g = new Game();
-                g = (Game) g.readResultSet(rs).get(0);
-                
+                Team home = new Team();
+                home.setTeamID(rs.getInt(home.addAlias("teamID")));
+                home.setTeamName(rs.getString(home.addAlias("teamName")));
+
+                Team away = new Team();
+                away.setTeamID(rs.getInt(away.getSecondAlias() + ".teamID"));
+                away.setTeamName(rs.getString(away.getSecondAlias() + ".teamName"));
+
+                Game game = new Game();
+                game.setGameID(rs.getInt(game.addAlias("gameID")));
+                game.setDateOfPlay(rs.getDate(game.addAlias("dateOfPlay")));
+                game.setHome(home);
+                game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
+                game.setAway(away);
+                game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
+                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+
                 BetType bt = new BetType();
-                bt = (BetType) bt.readResultSet(rs).get(0);
-                
+                bt.setTypeID(rs.getInt(bt.addAlias("typeID")));
+                bt.setTypeName(rs.getString(bt.addAlias("typeName")));
+
                 Odds o = new Odds();
-                o.setGame(g);
+                o.setGame(game);
                 o.setType(bt);
                 o.setOdds(rs.getDouble(this.addAlias("odds")));
                 list.add(o);
@@ -206,10 +221,10 @@ public class Odds implements GeneralDomainObject {
             do {
                 Game game = new Game();
                 game = (Game) game.readResultSet(rs).get(0);
-                
+
                 BetType betType = new BetType();
                 betType = (BetType) betType.readResultSet(rs).get(0);
-                
+
                 Odds odds = new Odds();
                 odds.setGame(game);
                 odds.setType(betType);
@@ -224,8 +239,7 @@ public class Odds implements GeneralDomainObject {
 
     @Override
     public String getSelectCondition() {
-        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "=" + this.getGame().getPrimaryKey() + " AND "
-                + addAlias(this.getType().getPrimaryKeyColumnName()) + "=" + this.getType().getPrimaryKey();
+        return addAlias(this.getGame().getPrimaryKeyColumnName()) + "=" + this.getGame().getPrimaryKey();
     }
 
     @Override
@@ -251,5 +265,9 @@ public class Odds implements GeneralDomainObject {
     @Override
     public String addAlias(String column) {
         return this.getAlias() + "." + column;
+    }
+
+    public String getGameCondition() {
+        return addAlias("gameID") + "=" + this.getGame().getGameID();
     }
 }

@@ -20,7 +20,7 @@ public class Bet implements GeneralDomainObject {
     private double betOdds;
     private boolean passed;
     private Odds odds;
-
+    
     public Bet() {
         this.ticket = new Ticket();
         this.odds = new Odds();
@@ -125,12 +125,12 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "ticketID, betID, betOdds, passed, game, type";
+        return "ticketID, betOdds, passed, game, type";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("ticketID") + ", " + addAlias("betID") + ", " + addAlias("betOdds") + ", " + addAlias("passed") + ", " + addAlias("game") + ", " + addAlias("types");
+        return addAlias("ticketID") + ", " + addAlias("betOdds") + ", " + addAlias("passed") + ", " + addAlias("game") + ", " + addAlias("types");
     }
 
     @Override
@@ -152,11 +152,10 @@ public class Bet implements GeneralDomainObject {
     @Override
     public String getInsertValues() {
         return "(" + this.getTicket().getTicketID() + ","
-                + this.getBetID() + ","
                 + this.getOdds().getOdds()+ ","
                 + "0 ,"
                 + this.getOdds().getGame().getGameID() + ","
-                + this.getOdds().getType().getTypeID() + ","
+                + this.getOdds().getType().getTypeID()
                 + ")";
     }
 
