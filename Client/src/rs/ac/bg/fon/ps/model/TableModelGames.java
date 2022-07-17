@@ -42,7 +42,7 @@ public class TableModelGames extends AbstractTableModel{
                 return game.toString();
             }
             case 1 -> {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                 return sdf.format(game.getDateOfPlay());
             }
             default ->

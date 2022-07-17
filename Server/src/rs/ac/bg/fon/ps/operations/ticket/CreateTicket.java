@@ -15,11 +15,22 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
  */
 public class CreateTicket extends AbstractGenericOperation{
 
+    private Ticket ticket;
+
+    public CreateTicket() {
+        this.ticket = new Ticket();
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+    
+    
     @Override
     protected void executeOperation(Object param) throws Exception {
         
         ArrayList<Bet> listOfBets = (ArrayList<Bet>) param;
-        Ticket ticket = listOfBets.get(0).getTicket();
+        ticket = listOfBets.get(0).getTicket();
         
         int ticketId =repository.addReturnKey(ticket);
         ticket.setTicketID(ticketId);

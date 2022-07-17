@@ -14,6 +14,7 @@ public interface Repository<T> {
     
     void add(T param) throws Exception;
     void edit(T param) throws Exception;
+    void update(T param, String condition) throws Exception;
     void delete(T param) throws Exception;
     List<T> search(T param) throws Exception;
     List<T> search(T param, String condition) throws Exception;
@@ -25,6 +26,7 @@ public interface Repository<T> {
     List<T> getAllJoinCondition(T odds,T game,T team,T type, String condition) throws Exception;
     List<T> getAllJoin(T bet,T odds,T match,T type,T team) throws Exception;
     List<T> getAllJoin(T bet,T odds,T match,T type,T team,T ticket) throws Exception;
+    List<T> getAllJoin(T bet,T odds,T match,T type,T team,T ticket, T user) throws Exception;
     
     int addReturnKey(T param) throws Exception;// insert into table and return primary key
 }

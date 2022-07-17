@@ -8,7 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ListIterator;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.communication.Communication;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
@@ -26,9 +29,11 @@ import rs.ac.bg.fon.ps.view.form.FormMain;
 public class ControllerMain {
 
     private final FormMain formMain;
+    private ArrayList<Ticket> listOfTickets;
 
     public ControllerMain(FormMain formMain) {
         this.formMain = formMain;
+        listOfTickets = new ArrayList<>();
     }
 
     public FormMain getFormMain() {
@@ -65,7 +70,9 @@ public class ControllerMain {
                 }
             }
             tmpt.setListOfTickets(listOfTickets);
+            this.listOfTickets=listOfTickets;
             table.setModel(tmpt);
+            centerTableText(table);
             table.setRowSelectionAllowed(true);
             formMain.setTablePlayedTicket(table);
         } else {
@@ -76,20 +83,27 @@ public class ControllerMain {
 
     public void filterTable() throws ParseException {
 
+        
         String dateString = formMain.getDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
         JTable table = formMain.getTablePlayedTicket();
         TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
 
+        if(dateString.isBlank()){
+        
+            tmpt.setListOfTickets(listOfTickets);
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         Date date = sdf.parse(dateString);
-        ArrayList<Ticket> listOfTickets = tmpt.getListOfTickets();
-        for (Ticket ticket : listOfTickets) {
-            if (!ticket.getDate().equals(date)) {
-                listOfTickets.remove(ticket);
+        ArrayList<Ticket> list = new ArrayList<>(listOfTickets);
+        ListIterator<Ticket> iterator = listOfTickets.listIterator();
+        while(iterator.hasNext()){
+            if (!iterator.next().getDate().equals(date)) {
+                iterator.remove();
             }
         }
-        tmpt.setListOfTickets(listOfTickets);
+        tmpt.setListOfTickets(list);
 
     }
 
@@ -110,9 +124,15 @@ public class ControllerMain {
             throw response.getException();
         }
     }
-    
-    public void playNewTicket() throws Exception{
+
+    public void playNewTicket() throws Exception {
         formMain.setVisible(false);
         Controller.getInstance().openFormPlayTicket();
+    }
+
+    private void centerTableText(JTable table) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.setDefaultRenderer(Object.class, centerRenderer);
     }
 }

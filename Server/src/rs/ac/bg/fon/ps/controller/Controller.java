@@ -27,6 +27,7 @@ import rs.ac.bg.fon.ps.operations.team.GetTeams;
 import rs.ac.bg.fon.ps.operations.ticket.CreateTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
+import rs.ac.bg.fon.ps.operations.ticket.ProcessTicket;
 import rs.ac.bg.fon.ps.view.form.FormServer;
 
 /**
@@ -153,9 +154,15 @@ public class Controller {
         
     }
 
-    public void createTicket(ArrayList<Bet> listOfBets) throws Exception {
+    public Ticket createTicket(ArrayList<Bet> listOfBets) throws Exception {
         AbstractGenericOperation operation = new CreateTicket();
         operation.execute(listOfBets);
+        return((CreateTicket) operation).getTicket();
+    }
+
+    public void processTicket(Ticket ticket) throws Exception {
+        AbstractGenericOperation operation = new ProcessTicket();
+        operation.execute(ticket);
     }
     
 }

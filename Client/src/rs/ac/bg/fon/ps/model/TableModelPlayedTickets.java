@@ -49,7 +49,15 @@ public class TableModelPlayedTickets extends AbstractTableModel {
             case 4:
                 return ticket.getPotentialWin();
             case 5:
-                return ticket.getPotentialWin();
+                if (!ticket.getState().equals("completed")) {
+                    return "?";
+                } else {
+                    if (ticket.isWin()) {
+                        return "WIN";
+                    } else {
+                        return "LOST";
+                    }
+                }
             default:
                 throw new AssertionError();
         }

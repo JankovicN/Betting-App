@@ -30,6 +30,7 @@ public class Controller {
     private ControllerAddOdds controllerAddOdds;
     private ControllerGameOdds controllerGameOdds;
     private ControllerPlayTicket controllerPlayTicket;
+    private ControllerConfirmTicket controllerConfirmTicket;
     private User currentUser;
 
     public Controller() {
@@ -125,6 +126,15 @@ public class Controller {
     public void openFormPlayTicket() throws Exception {
         this.controllerPlayTicket = new ControllerPlayTicket(new FormPlayTicket());
         this.controllerPlayTicket.openForm();
+    }
+    
+    public ControllerConfirmTicket getControllerConfirmTicket() {
+        return controllerConfirmTicket;
+    }
+
+    public void openDialogConfirmTicket() throws Exception {
+        this.controllerConfirmTicket = new ControllerConfirmTicket(new DialogViewTicket(this.controllerPlayTicket.getFormPlayTicket(), false), controllerPlayTicket.getTicket());
+        this.controllerConfirmTicket.openForm();
     }
 
 }

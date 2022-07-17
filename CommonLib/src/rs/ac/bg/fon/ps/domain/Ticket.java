@@ -6,6 +6,7 @@ package rs.ac.bg.fon.ps.domain;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -219,17 +220,18 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return "  date= \'" + sdf.format(date) + "\',  win= " + win + ", state = \'" + state + "\'";
     }
 
     @Override
     public String getInsertValues() {
-        java.sql.Date dateSQL = new java.sql.Date(date.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return "(" + this.isWin() + ","
                 + this.getWager() + ","
                 + this.getCombinedOdds() + ","
                 + this.getPotentialWin() + ","
-                + "'" + dateSQL + "',"
+                + "'" + sdf.format(date) + "',"
                 + "\'unprocessed\',"
                 + +this.getUser().getPrimaryKey() + ")";
     }
@@ -278,7 +280,12 @@ public class Ticket implements GeneralDomainObject {
             do {
 
                 User u = new User();
-                u = (User) u.readResultSet(rs).get(0);
+                u.setName(rs.getString(u.addAlias("name")));
+                u.setSurname(rs.getString(u.addAlias("surname")));
+                u.setUsername(rs.getString(u.addAlias("username")));
+                u.setPassword(rs.getString(u.addAlias("password")));
+                u.setRole(Role.valueOf(rs.getString(u.addAlias("role")).toUpperCase()));
+                u.setUserID(rs.getInt(u.addAlias("userID")));
 
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt("ticketID"));
@@ -357,5 +364,9 @@ public class Ticket implements GeneralDomainObject {
     @Override
     public int getSecondPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String getProcessCondition() {
+        return getPrimaryKeyColumnName() + "=" + ticketID + " AND state = unprocessed";
     }
 }

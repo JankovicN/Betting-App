@@ -200,19 +200,58 @@ public class Bet implements GeneralDomainObject {
 
         if (rs.next()) {
             do {
+                Team home = new Team();
+                home.setTeamID(rs.getInt(home.addAlias("teamID")));
+                home.setTeamName(rs.getString(home.addAlias("teamName")));
+
+                Team away = new Team();
+                away.setTeamID(rs.getInt(away.getSecondAlias() + ".teamID"));
+                away.setTeamName(rs.getString(away.getSecondAlias() + ".teamName"));
+
+                Game game = new Game();
+                game.setGameID(rs.getInt(game.addAlias("gameID")));
+                game.setDateOfPlay(rs.getDate(game.addAlias("dateOfPlay")));
+                game.setHome(home);
+                game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
+                game.setAway(away);
+                game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
+                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+
+                BetType bt = new BetType();
+                bt.setTypeID(rs.getInt(bt.addAlias("typeID")));
+                bt.setTypeName(rs.getString(bt.addAlias("typeName")));
+
                 Odds o = new Odds();
-                o = (Odds) o.readResultSet(rs).get(0);
+                o.setGame(game);
+                o.setType(bt);
+                o.setOdds(rs.getDouble(o.addAlias("odds")));
+
+                User u = new User();
+                u.setName(rs.getString(u.addAlias("name")));
+                u.setSurname(rs.getString(u.addAlias("surname")));
+                u.setUsername(rs.getString(u.addAlias("username")));
+                u.setPassword(rs.getString(u.addAlias("password")));
+                u.setRole(Role.valueOf(rs.getString(u.addAlias("role")).toUpperCase()));
+                u.setUserID(rs.getInt(u.addAlias("userID")));
 
                 Ticket t = new Ticket();
-                t = (Ticket) t.readResultSet(rs).get(0);
+                t.setTicketID(rs.getInt(t.addAlias("ticketID")));
+                t.setWin(rs.getBoolean(t.addAlias("win")));
+                t.setWager(rs.getBigDecimal(t.addAlias("wager")));
+                t.setCombinedOdds(rs.getDouble(t.addAlias("combinedOdds")));
+                t.setPotentialWin(rs.getBigDecimal(t.addAlias("potentialWin")));
+                t.setDate(rs.getDate(t.addAlias("date")));
+                t.setState(rs.getString(t.addAlias("state")));
+                t.setUser(u);
 
                 Bet b = new Bet();
-                b.setBetID(rs.getInt(addAlias("betID")));
+                b.setBetID(rs.getInt(b.addAlias("betID")));
                 b.setTicket(t);
-                b.setBetOdds(rs.getDouble(addAlias("betOdds")));
-                b.setPassed(rs.getBoolean(addAlias("passed")));
+                b.setBetOdds(rs.getDouble(b.addAlias("betOdds")));
+                b.setPassed(rs.getBoolean(b.addAlias("passed")));
                 b.setOdds(o);
-
+                
+                list.add(b);
             } while (rs.next());
             return list;
         } else {

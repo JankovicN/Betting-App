@@ -105,6 +105,9 @@ public class HandleClientThread extends Thread {
             case Operations.CREATE_TICKET:
                 createTicket(request, response);
                 break;
+            case Operations.PROCESS_TICKET:
+                processTicket(request, response);
+                break;
         }
     }
 
@@ -183,8 +186,13 @@ public class HandleClientThread extends Thread {
     }
 
     private void createTicket(Request request, Response response) throws Exception {
-        Controller.getInstance().createTicket((ArrayList<Bet>) request.getArgument());
+        Ticket ticket = Controller.getInstance().createTicket((ArrayList<Bet>) request.getArgument());
         System.out.println("Request for creting ticket was successful");
-        
+        response.setResult(ticket);
+    }
+
+    private void processTicket(Request request, Response response) throws Exception {
+        Controller.getInstance().processTicket((Ticket) request.getArgument());
+        System.out.println("Request for processing ticket was successful");
     }
 }

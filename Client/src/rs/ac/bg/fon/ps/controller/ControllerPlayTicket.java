@@ -63,7 +63,6 @@ public class ControllerPlayTicket {
         JTable tableGames = formPlayTicket.getTblGames();
         TableModelGames tmg = new TableModelGames();
         getGames();
-        System.out.println("LIST OF GAMES SIZE -> " + listOfGames.size());
         tmg.setListOfGames(listOfGames);
         tableGames.setModel(tmg);
 
@@ -220,32 +219,14 @@ public class ControllerPlayTicket {
                 Date afterTommorow = c.getTime();
 
                 for (Game g : listOfGames) {
-                    if (sdf.format(g.getDateOfPlay()).equals(sdf.format(today)) || 
-                            sdf.format(g.getDateOfPlay()).equals(sdf.format(tommorow)) || 
-                            sdf.format(g.getDateOfPlay()).equals(sdf.format(afterTommorow))) {
+                    if (sdf.format(g.getDateOfPlay()).equals(sdf.format(today))
+                            || sdf.format(g.getDateOfPlay()).equals(sdf.format(tommorow))
+                            || sdf.format(g.getDateOfPlay()).equals(sdf.format(afterTommorow))) {
                         addGameToList(filteredList, g);
                     }
                 }
             }
             setupTableGames(filteredList);
-        }
-
-    }
-
-    public void playTicket() throws Exception {
-
-        Request request = new Request(Operations.CREATE_TICKET, listOfBets);
-        Response response = Communication.getInstance().sendRequest(request, "Request for creating ticket is sent..");
-
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-
-            JOptionPane.showMessageDialog(formPlayTicket, "Ticket played successfully");
-            formPlayTicket.dispose();
-            Controller.getInstance().openFormMain();
-
-        } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "Error playing ticket!", "Error ", JOptionPane.ERROR_MESSAGE);
-            throw response.getException();
         }
 
     }
@@ -282,6 +263,10 @@ public class ControllerPlayTicket {
 
         list.add(g);
 
+    }
+
+    public Ticket getTicket() {
+        return ticket;
     }
 
 }

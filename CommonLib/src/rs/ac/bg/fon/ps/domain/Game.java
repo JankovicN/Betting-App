@@ -148,7 +148,7 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String toString() {
-        return home.toString() + " - " + away.toString();
+        return "  " + home.toString() + " - " + away.toString();
     }
 
     @Override
@@ -184,7 +184,8 @@ public class Game implements GeneralDomainObject {
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
         Game updatedGame = (Game) gdo;
-        return addAlias("dateOfPlay") + "=" + sdf.format(updatedGame.getDateOfPlay()) + ","
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return addAlias("dateOfPlay") + "='" + sdf.format(dateOfPlay) + "',"
                 + addAlias("home") + "=" + updatedGame.getHome().getTeamID() + ","
                 + addAlias("homeGoals") + "=" + updatedGame.getHomeGoals() + ","
                 + addAlias("away") + "=" + updatedGame.getAway().getTeamID() + ","
@@ -194,8 +195,9 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String getInsertValues() {
-        java.sql.Date date = new java.sql.Date(dateOfPlay.getTime());
-        return "('" + date + "',"
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return "('" + sdf.format(dateOfPlay) + "',"
                 + this.getHome().getTeamID() + ","
                 + this.getHomeGoals() + ","
                 + this.getAway().getTeamID() + ","
@@ -254,7 +256,11 @@ public class Game implements GeneralDomainObject {
 
                 Game game = new Game();
                 game.setGameID(rs.getInt(this.addAlias("gameID")));
-                game.setDateOfPlay(rs.getDate(this.addAlias("dateOfPlay")));
+                String date = rs.getString(this.addAlias("dateOfPlay"));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date sqlDate = sdf.parse(date);
+                SimpleDateFormat sdfTableView = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                game.setDateOfPlay(sqlDate);
                 game.setHome(homeTeam);
                 game.setHomeGoals(rs.getInt(this.addAlias("homeGoals")));
                 game.setAway(awayTeam);
@@ -308,7 +314,8 @@ public class Game implements GeneralDomainObject {
     }
 
     public String getNotStartedCondition() {
-        return addAlias("dateOfPlay") + " > " + " '" + new java.sql.Date((new Date()).getTime()) + "'";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return addAlias("dateOfPlay") + " > " + " '" + sdf.format(new Date()) + "'";
     }
 
     @Override

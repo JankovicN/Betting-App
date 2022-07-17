@@ -85,7 +85,7 @@ public class FormMain extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Played tickets");
 
-        tblPlayedTickets.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        tblPlayedTickets.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tblPlayedTickets.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
