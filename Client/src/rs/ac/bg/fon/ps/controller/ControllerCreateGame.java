@@ -48,6 +48,7 @@ public class ControllerCreateGame {
     }
 
     public void openForm() throws Exception {
+        System.out.println("Opened Form Create Game ");
         formCreateGame.setVisible(true);
         setupForm();
     }
@@ -133,6 +134,20 @@ public class ControllerCreateGame {
         return game.getHome().getTeamName() != null && game.getAway().getTeamName() != null;
     }
 
+    public void openAddOddsDialog() {
+        try {
+            if (validateConfirmTeams()) {
+                Controller.getInstance().openDialogAddOdds();
+
+            } else {
+                JOptionPane.showMessageDialog(formCreateGame, "You must confirm teams before adding odds!", "Teams not confirmed!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public boolean validateCreateGame() {
         return !listOfOdds.isEmpty();
     }
@@ -150,8 +165,6 @@ public class ControllerCreateGame {
     }
 
     public void createOdds() {
-
-        
 
         if (addDate() && validateCreateGame() && validateConfirmTeams() && compareTeams()) {
 
@@ -184,7 +197,7 @@ public class ControllerCreateGame {
                 if (response.getResponseType().equals(ResponseType.SUCCESS)) {
                     formCreateGame.dispose();
                     Controller.getInstance().getControllerMain().openForm();
-
+                    Controller.getInstance().setControllerAddOddsToNull();
                 } else {
                     throw response.getException();
                 }

@@ -12,8 +12,8 @@ import rs.ac.bg.fon.ps.domain.Odds;
  *
  * @author nikol
  */
-public class TableModelOdds extends AbstractTableModel{
-    
+public class TableModelOdds extends AbstractTableModel {
+
     private ArrayList<Odds> listOfOdds;
 
     private String[] columns = new String[]{"Type", "Odds"};
@@ -47,12 +47,13 @@ public class TableModelOdds extends AbstractTableModel{
                 throw new AssertionError();
         }
     }
+
     @Override
     public String getColumnName(int column) {
         return columns[column];
     }
-    
-    public Odds getOdd(int rowIndex){
+
+    public Odds getOdd(int rowIndex) {
         return listOfOdds.get(rowIndex);
     }
 

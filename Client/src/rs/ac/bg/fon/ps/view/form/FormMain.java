@@ -205,7 +205,14 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemCreateMatchActionPerformed
 
     private void menuItemViewMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewMatchActionPerformed
-        // TODO add your handling code here:
+        
+        try {
+            Controller.getInstance().openFormViewGames();
+            this.dispose();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening table!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_menuItemViewMatchActionPerformed
 
     private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed

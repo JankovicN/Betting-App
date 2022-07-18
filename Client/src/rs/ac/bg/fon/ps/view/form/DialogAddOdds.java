@@ -110,8 +110,7 @@ public class DialogAddOdds extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btndodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndodajActionPerformed
-        ArrayList<Odds> listOfOdds = Controller.getInstance().getControllerAddOdds().getOdds();
-        Controller.getInstance().getControllerCreateGame().setOdds(listOfOdds);
+        Controller.getInstance().confirmAddOrEditOdds();
         this.dispose();
         
     }//GEN-LAST:event_btndodajActionPerformed

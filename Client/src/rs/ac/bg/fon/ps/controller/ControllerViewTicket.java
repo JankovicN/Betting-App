@@ -39,6 +39,7 @@ public class ControllerViewTicket {
     }
 
     public void openForm() {
+        System.out.println("Opened Dialog View Ticket ");
         this.dialogViewTicket.setVisible(true);
         setupForm();
     }

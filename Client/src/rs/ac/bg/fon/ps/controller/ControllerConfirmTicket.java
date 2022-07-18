@@ -45,6 +45,7 @@ public class ControllerConfirmTicket {
     }
 
     public void openForm() {
+        System.out.println("Opened Confirm Ticket ");
         this.dialogViewTicket.setVisible(true);
         setupForm();
     }

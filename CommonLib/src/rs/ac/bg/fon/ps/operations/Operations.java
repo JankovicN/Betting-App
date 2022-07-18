@@ -22,4 +22,5 @@ public class Operations {
     public static final int GET_GAMES_NOT_STARTED = 10;
     public static final int CREATE_TICKET = 11;
     public static final int PROCESS_TICKET = 12;
+    public static final int GET_ODDS_FOR_GAME = 13;
 }

@@ -35,6 +35,7 @@ public class ControllerGameOdds {
     }
 
     public void openForm() throws Exception {
+        System.out.println("Opened Dialog Game Odds ");
         this.dialogGameOdds.setVisible(true);
         setupDialog();
     }

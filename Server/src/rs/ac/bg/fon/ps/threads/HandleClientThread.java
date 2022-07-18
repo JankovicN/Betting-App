@@ -108,6 +108,9 @@ public class HandleClientThread extends Thread {
             case Operations.PROCESS_TICKET:
                 processTicket(request, response);
                 break;
+            case Operations.GET_ODDS_FOR_GAME:
+                getOddsForGame(request, response);
+                break;
         }
     }
 

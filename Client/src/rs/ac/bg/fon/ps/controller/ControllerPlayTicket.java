@@ -50,6 +50,8 @@ public class ControllerPlayTicket {
     }
 
     public void openForm() throws Exception {
+        
+        System.out.println("Opened Form Play Ticket");
         formPlayTicket.setVisible(true);
         setupForm();
     }
@@ -161,7 +163,7 @@ public class ControllerPlayTicket {
         if (selected != -1) {
             return listOfGames.get(selected);
         } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "No game seleceted", "Login error! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "No game seleceted", "Game selection error! ", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -209,7 +211,7 @@ public class ControllerPlayTicket {
                     }
                 }
             } else {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                 Calendar c = Calendar.getInstance();
                 c.setTime(today);
                 c.add(Calendar.DATE, 1);

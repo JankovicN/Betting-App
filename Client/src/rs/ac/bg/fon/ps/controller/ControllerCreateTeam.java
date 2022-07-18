@@ -30,6 +30,7 @@ public class ControllerCreateTeam {
     }
 
     public void openForm() {
+        System.out.println("Opened Dialog Create Team ");
         this.dialogCreateTeam.setVisible(true);
     }
     

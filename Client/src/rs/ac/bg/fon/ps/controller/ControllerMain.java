@@ -41,6 +41,7 @@ public class ControllerMain {
     }
 
     public void openForm() throws Exception {
+        System.out.println("Opened Form Main ");
         formMain.setVisible(true);
         setupTable();
     }
@@ -93,7 +94,7 @@ public class ControllerMain {
             tmpt.setListOfTickets(listOfTickets);
             return;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
         Date date = sdf.parse(dateString);
         ArrayList<Ticket> list = new ArrayList<>(listOfTickets);

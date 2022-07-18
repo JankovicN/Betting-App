@@ -4,6 +4,9 @@
  */
 package rs.ac.bg.fon.ps.controller;
 
+import java.util.ArrayList;
+import rs.ac.bg.fon.ps.domain.Game;
+import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
@@ -14,6 +17,7 @@ import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
 import rs.ac.bg.fon.ps.view.form.FormPlayTicket;
+import rs.ac.bg.fon.ps.view.form.FormViewGames;
 
 /**
  *
@@ -31,6 +35,8 @@ public class Controller {
     private ControllerGameOdds controllerGameOdds;
     private ControllerPlayTicket controllerPlayTicket;
     private ControllerConfirmTicket controllerConfirmTicket;
+    private ControllerViewGames controllerViewGames;
+    private ControllerEditGame controllerEditGame;
     private User currentUser;
 
     public Controller() {
@@ -102,12 +108,22 @@ public class Controller {
     public ControllerAddOdds getControllerAddOdds() {
         return controllerAddOdds;
     }
+    public void setControllerAddOddsToNull() {
+        controllerAddOdds = null;
+    }
 
     public void openDialogAddOdds() throws Exception {
         if (this.controllerAddOdds == null) {
             this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerCreateGame.getFormCreateGame(), false), controllerCreateGame.getGame());
         }
-        this.controllerAddOdds.openForm();
+        this.controllerAddOdds.openDialogAddOdds();
+    }
+    
+    public void openDialogEditOdds() throws Exception{
+        if (this.controllerAddOdds == null) {
+            this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerEditGame.getFormEditGame(), false), controllerEditGame.getGame());
+        }
+        this.controllerAddOdds.openDialogEditOdds();
     }
 
     public ControllerGameOdds getControllerGameOdds() {
@@ -137,4 +153,51 @@ public class Controller {
         this.controllerConfirmTicket.openForm();
     }
 
+    public ControllerViewGames getControllerViewGames() {
+        return controllerViewGames;
+    }
+
+    public void openFormViewGames() throws Exception{
+        this.controllerViewGames = new ControllerViewGames(new FormViewGames());
+        this.controllerViewGames.openForm();
+    }
+    
+    public ControllerEditGame getControllerEditGame(){
+        return controllerEditGame;
+    }
+    
+    public void openFormEditGame(){
+        Game game= controllerViewGames.getSelectedGame();
+        if(game!=null){
+            this.controllerEditGame = new ControllerEditGame(new FormGame(), game);
+            this.controllerEditGame.openForm();
+        }
+        
+    }
+    
+    public void openAddOrEditOddsDialog(){
+        if (controllerEditGame!=null && controllerEditGame.getFormEditGame().isVisible()) {
+            Controller.getInstance().getControllerEditGame().openEditOddsDialog();
+        } else {
+            Controller.getInstance().getControllerCreateGame().openAddOddsDialog();
+        }
+    }
+    
+    public void confirmAddOrEditOdds(){
+        ArrayList<Odds> listOfOdds=controllerAddOdds.getOdds();
+        if (controllerEditGame!=null && controllerEditGame.getFormEditGame().isVisible()) {
+            Controller.getInstance().getControllerEditGame().updateOdds(listOfOdds);
+        } else {
+            Controller.getInstance().getControllerCreateGame().setOdds(listOfOdds);
+        }
+    }
+    
+    public void confirmAddOrEditGame(){
+        if (controllerEditGame!=null && controllerEditGame.getFormEditGame().isVisible()) {
+            Controller.getInstance().getControllerEditGame().saveChanges();
+        } else {
+            Controller.getInstance().getControllerCreateGame().createOdds();
+        }
+    }
+    
 }

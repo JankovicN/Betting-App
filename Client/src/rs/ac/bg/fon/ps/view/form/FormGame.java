@@ -69,7 +69,7 @@ public class FormGame extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel1.setText("Date of play  ( dd/MM/yyyy HH:mm)");
+        jLabel1.setText("Date of play  ( dd.MM.yyyy HH:mm)");
 
         lblOver.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         lblOver.setText("Is the match over?");
@@ -312,9 +312,9 @@ public class FormGame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        
-        Controller.getInstance().getControllerCreateGame().createOdds();
-        
+
+        Controller.getInstance().confirmAddOrEditGame();
+
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnCreateTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTeamActionPerformed
@@ -347,24 +347,15 @@ public class FormGame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtHomeGoalsActionPerformed
 
     private void btnAddOddsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOddsActionPerformed
-        try {
-            if (Controller.getInstance().getControllerCreateGame().validateConfirmTeams()) {
-                Controller.getInstance().openDialogAddOdds();
-            }else{
-                JOptionPane.showMessageDialog(this, "You must confirm teams before adding odds!", "Teams not confirmed!", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
-        }
+        Controller.getInstance().openAddOrEditOddsDialog();
     }//GEN-LAST:event_btnAddOddsActionPerformed
 
     private void btnConfirmTeamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTeamsActionPerformed
         try {
             if (Controller.getInstance().getControllerCreateGame().compareTeams()) {
                 Controller.getInstance().getControllerCreateGame().confirmTeams();
-            JOptionPane.showMessageDialog(this, "Teams confirmed successfully!");
-            }else{
+                JOptionPane.showMessageDialog(this, "Teams confirmed successfully!");
+            } else {
                 JOptionPane.showMessageDialog(this, "You must choose two different teams!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
@@ -503,5 +494,22 @@ public class FormGame extends javax.swing.JFrame {
     public JLabel getLblScore() {
         return lblScore;
     }
+
+    public JButton getBtnConfirmTeams() {
+        return btnConfirmTeams;
+    }
+
+    public JButton getBtnCreateTeam() {
+        return btnCreateTeam;
+    }
+
+    public javax.swing.JButton getBtnConfirm() {
+        return btnConfirm;
+    }
+
+    public void setBtnConfirm(javax.swing.JButton btnConfirm) {
+        this.btnConfirm = btnConfirm;
+    }
+    
 
 }
