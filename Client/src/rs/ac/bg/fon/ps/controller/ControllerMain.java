@@ -9,7 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.communication.Communication;
@@ -82,29 +85,34 @@ public class ControllerMain {
 
     }
 
-    public void filterTable() throws ParseException {
+    public void filterTable(){
 
         
-        String dateString = formMain.getDate();
-        JTable table = formMain.getTablePlayedTicket();
-        TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
-
-        if(dateString.isBlank()){
-        
-            tmpt.setListOfTickets(listOfTickets);
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
-        Date date = sdf.parse(dateString);
-        ArrayList<Ticket> list = new ArrayList<>(listOfTickets);
-        ListIterator<Ticket> iterator = listOfTickets.listIterator();
-        while(iterator.hasNext()){
-            if (!iterator.next().getDate().equals(date)) {
-                iterator.remove();
+        try {
+            String dateString = formMain.getDate();
+            JTable table = formMain.getTablePlayedTicket();
+            TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
+            
+            if(dateString.isBlank()){
+                
+                tmpt.setListOfTickets(listOfTickets);
+                return;
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            
+            Date date = sdf.parse(dateString);
+            ArrayList<Ticket> list = new ArrayList<>(listOfTickets);
+            ListIterator<Ticket> iterator = listOfTickets.listIterator();
+            while(iterator.hasNext()){
+                if (!iterator.next().getDate().equals(date)) {
+                    iterator.remove();
+                }
+            }
+            tmpt.setListOfTickets(list);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(formMain, "Invalid date format!\n Date must be in format dd.MM.yyyy\n dd - days, MM - months yyyy - years", "Invalid date format!", JOptionPane.ERROR_MESSAGE);
+             return;
         }
-        tmpt.setListOfTickets(list);
 
     }
 
@@ -114,7 +122,7 @@ public class ControllerMain {
         TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
 
         Ticket ticket = tmpt.getTicket(table.getSelectedRow());
-        Request request = new Request(Operations.GET_TICKET, ticket);
+        Request request = new Request(Operations.GET_TICKET_WITH_BETS, ticket);
         Response response = Communication.getInstance().sendRequest(request, "Request for ticket is sent..");
 
         if (response.getResponseType().equals(ResponseType.SUCCESS)) {
@@ -126,9 +134,14 @@ public class ControllerMain {
         }
     }
 
-    public void playNewTicket() throws Exception {
-        formMain.setVisible(false);
-        Controller.getInstance().openFormPlayTicket();
+    public void playNewTicket(){
+        try {
+            formMain.setVisible(false);
+            Controller.getInstance().openFormPlayTicket();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formMain, "Error opening form", "Error ", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void centerTableText(JTable table) {

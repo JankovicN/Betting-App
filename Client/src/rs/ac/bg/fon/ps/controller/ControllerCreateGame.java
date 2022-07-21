@@ -153,7 +153,7 @@ public class ControllerCreateGame {
     }
 
     public boolean addDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             Date date = sdf.parse(formCreateGame.getTxtDate().getText());
             game.setDateOfPlay(date);

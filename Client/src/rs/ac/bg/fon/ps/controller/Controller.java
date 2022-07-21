@@ -121,7 +121,7 @@ public class Controller {
     
     public void openDialogEditOdds() throws Exception{
         if (this.controllerAddOdds == null) {
-            this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerEditGame.getFormEditGame(), false), controllerEditGame.getGame());
+            this.controllerAddOdds = new ControllerAddOdds(new DialogAddOdds(this.controllerEditGame.getFormEditGame(), true), controllerEditGame.getGame());
         }
         this.controllerAddOdds.openDialogEditOdds();
     }

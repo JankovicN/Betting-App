@@ -6,6 +6,7 @@ package rs.ac.bg.fon.ps.domain;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -314,13 +315,13 @@ public class Ticket implements GeneralDomainObject {
         if (rs.next()) {
             do {
                 Ticket t = new Ticket();
-                t.setTicketID(rs.getInt("ticketID"));
-                t.setWin(rs.getBoolean("win"));
-                t.setWager(rs.getBigDecimal("wager"));
-                t.setCombinedOdds(rs.getDouble("combinedOdds"));
-                t.setPotentialWin(rs.getBigDecimal("potentialWin"));
-                t.setDate(rs.getDate("date"));
-                t.setState(rs.getString("state"));
+                t.setTicketID(rs.getInt(addAlias("ticketID")));
+                t.setWin(rs.getBoolean(addAlias("win")));
+                t.setWager(rs.getBigDecimal(addAlias("wager")));
+                t.setCombinedOdds(rs.getDouble(addAlias("combinedOdds")));
+                t.setPotentialWin(rs.getBigDecimal(addAlias("potentialWin")));
+                t.setDate(rs.getDate(addAlias("date")));
+                t.setState(rs.getString(addAlias("state")));
                 System.out.println("ticket -> " + t);
                 list.add(t);
             } while (rs.next());
@@ -369,4 +370,48 @@ public class Ticket implements GeneralDomainObject {
     public String getProcessCondition() {
         return getPrimaryKeyColumnName() + "=" + ticketID + " AND state = unprocessed";
     }
+
+    public List<GeneralDomainObject> readResultSetForUpdate(ResultSet rs) throws SQLException {
+
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            Ticket t = new Ticket();
+            t.setTicketID(rs.getInt(t.addAlias("ticketID")));
+            t.setWin(rs.getBoolean(t.addAlias("win")));
+            t.setWager(rs.getBigDecimal(t.addAlias("wager")));
+            t.setCombinedOdds(rs.getDouble(t.addAlias("combinedOdds")));
+            t.setPotentialWin(rs.getBigDecimal(t.addAlias("potentialWin")));
+            t.setDate(rs.getDate(t.addAlias("date")));
+            t.setState(rs.getString(t.addAlias("state")));
+            ArrayList<Bet> listOfTicketBets = new ArrayList<>();
+            System.out.println("ticket -> " + t);
+            do {
+                Game game = new Game();
+                game.setGameID(rs.getInt(game.addAlias("gameID")));
+                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+
+                BetType bt = new BetType();
+
+                Odds o = new Odds();
+                o.setGame(game);
+                o.setType(bt);
+                o.setOdds(rs.getDouble(o.addAlias("odds")));
+
+                Bet b = new Bet();
+                b.setBetID(rs.getInt(b.addAlias("betID")));
+                b.setTicket(t);
+                b.setBetOdds(rs.getDouble(b.addAlias("betOdds")));
+                b.setPassed(rs.getBoolean(b.addAlias("passed")));
+                b.setOdds(o);
+                listOfTicketBets.add(b);
+            } while (rs.next());
+            t.setListOfBets(listOfTicketBets);
+            list.add(t);
+            return list;
+        } else {
+            return null;
+        }
+    }
+
 }

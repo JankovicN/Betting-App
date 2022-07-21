@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.controller;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,10 +107,12 @@ public class ControllerPlayTicket {
 
     private void updateOdds(double currentOdds, double updatedOdds) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / currentOdds * updatedOdds);
-        formPlayTicket.getLblCombinedOdds().setText(String.valueOf(ticket.getCombinedOdds()));
+        System.out.println(String.format("%,.2f",ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f",ticket.getCombinedOdds()));
 
         if (ticket.getWager() != null) {
-            ticket.setPotentialWin(BigDecimal.valueOf(ticket.getCombinedOdds() * ticket.getWager().doubleValue()));
+            BigDecimal combined = BigDecimal.valueOf(ticket.getCombinedOdds());
+            ticket.setPotentialWin(combined.multiply(ticket.getWager()));
             formPlayTicket.getTxtWager().setText("");
             formPlayTicket.getLblPotentialWin().setText("-");
         }
@@ -117,10 +120,12 @@ public class ControllerPlayTicket {
 
     private void addOdd(double odds) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() * odds);
-        formPlayTicket.getLblCombinedOdds().setText(String.valueOf(ticket.getCombinedOdds()));
+        System.out.println(String.format("%,.2f",ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f",ticket.getCombinedOdds()));
 
         if (ticket.getWager() != null) {
-            ticket.setPotentialWin(BigDecimal.valueOf(ticket.getCombinedOdds() * ticket.getWager().doubleValue()));
+            BigDecimal combined = BigDecimal.valueOf(ticket.getCombinedOdds());
+            ticket.setPotentialWin(combined.multiply(ticket.getWager()));
             formPlayTicket.getTxtWager().setText("");
             formPlayTicket.getLblPotentialWin().setText("-");
         }
@@ -128,7 +133,7 @@ public class ControllerPlayTicket {
 
     private void removeOdds(int selectedRow) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / listOfBets.get(selectedRow).getBetOdds());
-        formPlayTicket.getLblCombinedOdds().setText(String.valueOf(ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f",ticket.getCombinedOdds()));
         formPlayTicket.getTxtWager().setText("");
         formPlayTicket.getLblPotentialWin().setText("-");
         listOfBets.remove(selectedRow);
@@ -240,8 +245,8 @@ public class ControllerPlayTicket {
             ticket.setWager(BigDecimal.valueOf(wager));
             BigDecimal potentialWin = BigDecimal.valueOf(wager * ticket.getCombinedOdds());
             ticket.setPotentialWin(potentialWin);
-
-            formPlayTicket.getLblPotentialWin().setText(String.valueOf(potentialWin));
+            DecimalFormat df = new DecimalFormat("#,###.00");
+            formPlayTicket.getLblPotentialWin().setText(df.format(potentialWin));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(formPlayTicket, "Wager must be a number!", "Error ", JOptionPane.ERROR_MESSAGE);
         }

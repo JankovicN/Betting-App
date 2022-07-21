@@ -12,7 +12,7 @@ public class Operations {
 
     public static final int LOGIN = 1;
     public static final int GET_USER_TICKETS = 2;
-    public static final int GET_TICKET = 3;
+    public static final int GET_TICKET_WITH_BETS = 3;
     public static final int GET_TEAMS = 4;
     public static final int ADD_TEAM = 5;
     public static final int GET_BETTYPE = 6;
@@ -22,5 +22,9 @@ public class Operations {
     public static final int GET_GAMES_NOT_STARTED = 10;
     public static final int CREATE_TICKET = 11;
     public static final int PROCESS_TICKET = 12;
-    public static final int GET_ODDS_FOR_GAME = 13;
+    public static final int GET_BETS_FOR_GAME = 13;
+    public static final int UPDATE_GAME = 14;
+    public static final int GET_TICKET = 15;
+    public static final int UPDATE_TICKET=16;
+    public static final int UPDATE_BET=17;
 }

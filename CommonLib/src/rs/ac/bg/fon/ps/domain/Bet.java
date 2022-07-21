@@ -20,7 +20,7 @@ public class Bet implements GeneralDomainObject {
     private double betOdds;
     private boolean passed;
     private Odds odds;
-    
+
     public Bet() {
         this.ticket = new Ticket();
         this.odds = new Odds();
@@ -125,12 +125,12 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "ticketID, betOdds, passed, game, type";
+        return "ticketID, betOdds, passed, gameID, typeID";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("ticketID") + ", " + addAlias("betOdds") + ", " + addAlias("passed") + ", " + addAlias("game") + ", " + addAlias("types");
+        return addAlias("ticketID") + ", " + addAlias("betOdds") + ", " + addAlias("passed") + ", " + addAlias("gameID") + ", " + addAlias("typeID");
     }
 
     @Override
@@ -140,7 +140,8 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getUpdateCondition() {
-        return this.addAlias(getTicket().getPrimaryKeyColumnName()) + "=" + this.getTicket().getPrimaryKey();
+        return this.addAlias(getTicket().getPrimaryKeyColumnName()) + " = " + this.getTicket().getPrimaryKey() + " AND "
+                + addAlias("gameID") + " = " + odds.getGame().getGameID() + " AND " + addAlias("typeID") + " = " + odds.getType().getTypeID();
     }
 
     @Override
@@ -152,7 +153,7 @@ public class Bet implements GeneralDomainObject {
     @Override
     public String getInsertValues() {
         return "(" + this.getTicket().getTicketID() + ","
-                + this.getOdds().getOdds()+ ","
+                + this.getOdds().getOdds() + ","
                 + "0 ,"
                 + this.getOdds().getGame().getGameID() + ","
                 + this.getOdds().getType().getTypeID()
@@ -176,12 +177,12 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getForeignKey() {
-        return "game";
+        return "gameID";
     }
 
     @Override
     public String getSecondForeignKey() {
-        return "type";
+        return "typeID";
     }
 
     @Override
@@ -250,7 +251,7 @@ public class Bet implements GeneralDomainObject {
                 b.setBetOdds(rs.getDouble(b.addAlias("betOdds")));
                 b.setPassed(rs.getBoolean(b.addAlias("passed")));
                 b.setOdds(o);
-                
+
                 list.add(b);
             } while (rs.next());
             return list;
@@ -265,11 +266,17 @@ public class Bet implements GeneralDomainObject {
 
         if (rs.next()) {
             do {
+                Game game = new Game();
+                game.setGameID(rs.getInt(addAlias("gameID")));
+
+                BetType bt = new BetType();
+                bt.setTypeID(rs.getInt(addAlias("typeID")));
                 Odds odds = new Odds();
-                odds = (Odds) odds.readResultSet(rs).get(0);
+                odds.setGame(game);
+                odds.setType(bt);
 
                 Ticket t = new Ticket();
-                t = (Ticket) t.readResultSet(rs).get(0);
+                t.setTicketID(rs.getInt(addAlias("ticketID")));
 
                 Bet b = new Bet();
                 b.setBetID(rs.getInt(addAlias("betID")));
@@ -277,7 +284,7 @@ public class Bet implements GeneralDomainObject {
                 b.setBetOdds(rs.getDouble(addAlias("betOdds")));
                 b.setPassed(rs.getBoolean(addAlias("passed")));
                 b.setOdds(odds);
-
+                list.add(b);
             } while (rs.next());
             return list;
         } else {
@@ -323,5 +330,9 @@ public class Bet implements GeneralDomainObject {
     @Override
     public int getSecondPrimaryKey() {
         return this.getTicket().getTicketID();
+    }
+
+    public String getSelectConditionForGame(int gameID) {
+        return addAlias("gameID") + " = " + gameID;
     }
 }

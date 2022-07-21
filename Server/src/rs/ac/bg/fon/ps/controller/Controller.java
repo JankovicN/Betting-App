@@ -18,16 +18,21 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 import rs.ac.bg.fon.ps.operations.BetType.GetAllBetTypes;
 import rs.ac.bg.fon.ps.operations.User.GetAllUsers;
 import rs.ac.bg.fon.ps.operations.User.LoginUser;
+import rs.ac.bg.fon.ps.operations.bet.GetBetsForGame;
+import rs.ac.bg.fon.ps.operations.bet.UpdateBet;
 import rs.ac.bg.fon.ps.operations.game.AddGame;
 import rs.ac.bg.fon.ps.operations.game.GetGamesNotStarted;
+import rs.ac.bg.fon.ps.operations.game.UpdateGame;
 import rs.ac.bg.fon.ps.operations.odds.CreateOdds;
 import rs.ac.bg.fon.ps.operations.odds.GetOddsForGame;
 import rs.ac.bg.fon.ps.operations.team.AddTeam;
 import rs.ac.bg.fon.ps.operations.team.GetTeams;
 import rs.ac.bg.fon.ps.operations.ticket.CreateTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicket;
+import rs.ac.bg.fon.ps.operations.ticket.GetTicketWithBets;
 import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
 import rs.ac.bg.fon.ps.operations.ticket.ProcessTicket;
+import rs.ac.bg.fon.ps.operations.ticket.UpdateTicket;
 import rs.ac.bg.fon.ps.view.form.FormServer;
 
 /**
@@ -74,14 +79,15 @@ public class Controller {
         AbstractGenericOperation operation = new GetUserTickets();
         operation.execute(user);
         ArrayList<Ticket> listOfTickets = ((GetUserTickets) operation).getList();
+        System.out.println(listOfTickets);
         return listOfTickets;
     }
 
-    public Ticket getTicket(Ticket ticket) throws Exception {
+    public Ticket getTicketWithBets(Ticket ticket) throws Exception {
         Ticket requestedTicket = ticket;
-        AbstractGenericOperation operation = new GetTicket();
+        AbstractGenericOperation operation = new GetTicketWithBets();
         operation.execute(requestedTicket);
-        requestedTicket=((GetTicket)operation).getTicket();
+        requestedTicket=((GetTicketWithBets)operation).getTicket();
         return requestedTicket;
     }
 
@@ -163,6 +169,33 @@ public class Controller {
     public void processTicket(Ticket ticket) throws Exception {
         AbstractGenericOperation operation = new ProcessTicket();
         operation.execute(ticket);
+    }
+
+    public void updateGame(Game game) throws Exception {
+        AbstractGenericOperation operation = new UpdateGame();
+        operation.execute(game);
+    }
+
+    public ArrayList<Bet> getBetsForGame(int gameID) throws Exception {
+        AbstractGenericOperation operation = new GetBetsForGame();
+        operation.execute(gameID);
+        return ((GetBetsForGame) operation).getListOfBets();
+    }
+
+    public Ticket getTicket(int ticketID) throws Exception {
+        AbstractGenericOperation operation = new GetTicket();
+        operation.execute(ticketID);
+        return ((GetTicket) operation).getTicket();
+    }
+
+    public void updateTicket(Ticket ticket) throws Exception {
+        AbstractGenericOperation operation = new UpdateTicket();
+        operation.execute(ticket);
+    }
+
+    public void updateBet(Bet bet) throws Exception {
+        AbstractGenericOperation operation = new UpdateBet();
+        operation.execute(bet);
     }
     
 }

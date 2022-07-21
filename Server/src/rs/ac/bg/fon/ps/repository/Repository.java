@@ -27,6 +27,7 @@ public interface Repository<T> {
     List<T> getAllJoin(T bet,T odds,T match,T type,T team) throws Exception;
     List<T> getAllJoin(T bet,T odds,T match,T type,T team,T ticket) throws Exception;
     List<T> getAllJoin(T bet,T odds,T match,T type,T team,T ticket, T user) throws Exception;
-    
+    List<T> getAllJoin(T bet,T odds,T match,T type,T team,T ticket, T user, String condition) throws Exception;
+    List<T> getJoinForTicket(T ticket,T bet, T odds,T match,T type) throws Exception;
     int addReturnKey(T param) throws Exception;// insert into table and return primary key
 }

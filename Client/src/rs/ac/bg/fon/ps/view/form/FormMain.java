@@ -25,7 +25,7 @@ public class FormMain extends javax.swing.JFrame {
      */
     public FormMain() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
     }
 
@@ -205,7 +205,7 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemCreateMatchActionPerformed
 
     private void menuItemViewMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewMatchActionPerformed
-        
+
         try {
             Controller.getInstance().openFormViewGames();
             this.dispose();
@@ -221,13 +221,7 @@ public class FormMain extends javax.swing.JFrame {
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
 
-        try {
-            Controller.getInstance().getControllerMain().filterTable();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid date!", JOptionPane.ERROR_MESSAGE);
-        }
-
+        Controller.getInstance().getControllerMain().filterTable();
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void btnViewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTicketActionPerformed
@@ -236,18 +230,14 @@ public class FormMain extends javax.swing.JFrame {
             Controller.getInstance().getControllerMain().viewTicket();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error getting selected ticket!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error getting tickets from server!\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnViewTicketActionPerformed
 
     private void btnPlayNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNewActionPerformed
-        try {
-            Controller.getInstance().getControllerMain().playNewTicket();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening form", JOptionPane.ERROR_MESSAGE);
-        }
+
+        Controller.getInstance().getControllerMain().playNewTicket();
     }//GEN-LAST:event_btnPlayNewActionPerformed
 
     /**

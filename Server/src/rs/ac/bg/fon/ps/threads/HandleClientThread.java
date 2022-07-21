@@ -78,8 +78,8 @@ public class HandleClientThread extends Thread {
             case Operations.GET_USER_TICKETS:
                 getUserTickets(request, response);
                 break;
-            case Operations.GET_TICKET:
-                getTicket(request, response);
+            case Operations.GET_TICKET_WITH_BETS:
+                getTicketWithBets(request, response);
                 break;
             case Operations.GET_TEAMS:
                 getTeams(request, response);
@@ -108,9 +108,22 @@ public class HandleClientThread extends Thread {
             case Operations.PROCESS_TICKET:
                 processTicket(request, response);
                 break;
-            case Operations.GET_ODDS_FOR_GAME:
-                getOddsForGame(request, response);
+            case Operations.UPDATE_GAME:
+                updateGame(request, response);
                 break;
+            case Operations.GET_BETS_FOR_GAME:
+                getBetsForGame(request, response);
+                break;
+            case Operations.GET_TICKET:
+                getTicket(request, response);
+                break;
+            case Operations.UPDATE_TICKET:
+                updateTicket(request, response);
+                break;
+            case Operations.UPDATE_BET:
+                updateBet(request, response);
+                break;
+                
         }
     }
 
@@ -137,10 +150,10 @@ public class HandleClientThread extends Thread {
         response.setResult(listOfTickets);
     }
 
-    private void getTicket(Request request, Response response) throws Exception {
+    private void getTicketWithBets(Request request, Response response) throws Exception {
 
         Ticket requestedTicket = (Ticket) request.getArgument();
-        Ticket ticket = Controller.getInstance().getTicket(requestedTicket);
+        Ticket ticket = Controller.getInstance().getTicketWithBets(requestedTicket);
         System.out.println("Requst for ticket was successful!");
         response.setResult(ticket);
     }
@@ -197,5 +210,32 @@ public class HandleClientThread extends Thread {
     private void processTicket(Request request, Response response) throws Exception {
         Controller.getInstance().processTicket((Ticket) request.getArgument());
         System.out.println("Request for processing ticket was successful");
+    }
+
+    private void updateGame(Request request, Response response) throws Exception {
+        Controller.getInstance().updateGame((Game) request.getArgument());
+        System.out.println("Request for updating game was successful");
+    }
+
+    private void getBetsForGame(Request request, Response response) throws Exception {
+        ArrayList<Bet> listOfBets = Controller.getInstance().getBetsForGame((int)request.getArgument());
+        System.out.println("Request for placed bets for game was successful");
+        response.setResult(listOfBets);
+    }
+
+    private void getTicket(Request request, Response response) throws Exception {
+        Ticket ticket = Controller.getInstance().getTicket((int) request.getArgument());
+        System.out.println("Request for ticket by id was successful");
+        response.setResult(ticket);
+    }
+
+    private void updateTicket(Request request, Response response) throws Exception {
+        Controller.getInstance().updateTicket((Ticket) request.getArgument());
+        System.out.println("Request for updating Ticket was successful");
+    }
+
+    private void updateBet(Request request, Response response) throws Exception {
+        Controller.getInstance().updateBet((Bet) request.getArgument());
+        System.out.println("Request for updating Bet was successful");
     }
 }
