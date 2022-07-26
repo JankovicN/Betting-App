@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -19,7 +17,6 @@ import rs.ac.bg.fon.communication.Communication;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
-import rs.ac.bg.fon.ps.domain.Role;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.model.TableModelPlayedTickets;
 import rs.ac.bg.fon.ps.operations.Operations;
@@ -60,88 +57,90 @@ public class ControllerMain {
 
         JTable table = formMain.getTablePlayedTicket();
         TableModelPlayedTickets tmpt = new TableModelPlayedTickets();
+        try {
+            Request request = new Request(Operations.GET_USER_TICKETS, null);
+            Response response = Communication.getInstance().sendRequest(request, "Request for tickets played by user is sent..");
 
-        Request request = new Request(Operations.GET_USER_TICKETS, null);
-        Response response = Communication.getInstance().sendRequest(request, "Request for tickets played by user is sent..");
+            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
 
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-
-            ArrayList<Ticket> listOfTickets = (ArrayList<Ticket>) response.getResult();
-            System.out.println("list size " + listOfTickets.size());
-            for (Ticket ticket : listOfTickets) {
-                if (!ticket.getState().equals("processed")) {
-                    listOfTickets.remove(ticket);
+                ArrayList<Ticket> listOfTickets = (ArrayList<Ticket>) response.getResult();
+                System.out.println("list size " + listOfTickets.size());
+                for (Ticket ticket : listOfTickets) {
+                    if (!ticket.getState().equals("processed")) {
+                        listOfTickets.remove(ticket);
+                    }
                 }
+                tmpt.setListOfTickets(listOfTickets);
+                this.listOfTickets = listOfTickets;
+                table.setModel(tmpt);
+                centerTableText(table);
+                table.setRowSelectionAllowed(true);
+                formMain.setTablePlayedTicket(table);
+            } else {
+                throw response.getException();
             }
-            tmpt.setListOfTickets(listOfTickets);
-            this.listOfTickets=listOfTickets;
-            table.setModel(tmpt);
-            centerTableText(table);
-            table.setRowSelectionAllowed(true);
-            formMain.setTablePlayedTicket(table);
-        } else {
-            throw response.getException();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formMain, "Error getting tickets played by you!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
-    public void filterTable(){
+    public void filterTable() {
 
-        
         try {
             String dateString = formMain.getDate();
             JTable table = formMain.getTablePlayedTicket();
             TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
-            
-            if(dateString.isBlank()){
-                
+
+            if (dateString.isBlank()) {
+
                 tmpt.setListOfTickets(listOfTickets);
                 return;
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            
+
             Date date = sdf.parse(dateString);
             ArrayList<Ticket> list = new ArrayList<>(listOfTickets);
             ListIterator<Ticket> iterator = listOfTickets.listIterator();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 if (!iterator.next().getDate().equals(date)) {
                     iterator.remove();
                 }
             }
             tmpt.setListOfTickets(list);
         } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(formMain, "Invalid date format!\n Date must be in format dd.MM.yyyy\n dd - days, MM - months yyyy - years", "Invalid date format!", JOptionPane.ERROR_MESSAGE);
-             return;
+            JOptionPane.showMessageDialog(formMain, "Invalid date format!\n Date must be in format dd.MM.yyyy\n dd - days, MM - months yyyy - years", "Invalid input!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
     }
 
-    public void viewTicket() throws Exception {
-
-        JTable table = formMain.getTablePlayedTicket();
-        TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
-
-        Ticket ticket = tmpt.getTicket(table.getSelectedRow());
-        Request request = new Request(Operations.GET_TICKET_WITH_BETS, ticket);
-        Response response = Communication.getInstance().sendRequest(request, "Request for ticket is sent..");
-
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-
-            ticket = (Ticket) response.getResult();
-            Controller.getInstance().openFormViewTicket(ticket);
-        } else {
-            throw response.getException();
-        }
-    }
-
-    public void playNewTicket(){
+    public void viewTicket() {
         try {
-            formMain.setVisible(false);
-            Controller.getInstance().openFormPlayTicket();
+            JTable table = formMain.getTablePlayedTicket();
+            TableModelPlayedTickets tmpt = (TableModelPlayedTickets) table.getModel();
+
+            Ticket ticket = tmpt.getTicket(table.getSelectedRow());
+            Request request = new Request(Operations.GET_TICKET_WITH_BETS, ticket);
+            Response response = Communication.getInstance().sendRequest(request, "Request for ticket is sent..");
+
+            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+
+                ticket = (Ticket) response.getResult();
+                Controller.getInstance().openFormViewTicket(ticket);
+            } else {
+                throw response.getException();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formMain, "Error opening form", "Error ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formMain,"Error displaying selected ticket! " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public void playNewTicket() throws Exception {
+            formMain.setVisible(false);
+            Controller.getInstance().openFormPlayTicket();
     }
 
     private void centerTableText(JTable table) {

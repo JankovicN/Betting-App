@@ -22,7 +22,6 @@ public class FormViewGames extends javax.swing.JFrame {
      */
     public FormViewGames() {
         initComponents();
-        
         this.setLocationRelativeTo(null);
     }
 
@@ -193,17 +192,7 @@ public class FormViewGames extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDateActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-
-        try {
-            Controller.getInstance().getControllerViewGames().filter();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid date !", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "error!", JOptionPane.ERROR_MESSAGE);
-        }
-
+        Controller.getInstance().getControllerViewGames().filter();
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void txtTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTeamActionPerformed
@@ -212,16 +201,22 @@ public class FormViewGames extends javax.swing.JFrame {
 
     private void btnEditGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditGameActionPerformed
         try {
-            // FILTER BASED ON SELECTED RADIO BUTTON
             Controller.getInstance().openFormEditGame();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening edit game form!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error opening form for editing.\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEditGameActionPerformed
 
     private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
-        // TODO add your handling code here:
+        try {
+            // FILTER BASED ON SELECTED RADIO BUTTON
+            Controller.getInstance().openFormMain();
+            this.dispose();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error returning to Main window!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
     /**

@@ -64,36 +64,42 @@ public class ControllerViewGames {
         }
     }
 
-    public void filter() throws ParseException {
+    public void filter() {
 
-        ArrayList<Game> filteredList = new ArrayList<>();
-        String teamName = formViewGames.getTxtTeam().getText().toLowerCase();
-        String date = formViewGames.getTxtDate().getText().toLowerCase() + ".2022";
-        if (teamName.isBlank() && date.isBlank()) {
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        for (Game g : listOfGames) {
-            if (!teamName.isBlank() && date.isBlank()) {
-                if (checkTeamFilter(g, teamName)) {
-                    addGameToList(filteredList, g);
-                }
-            } else if (teamName.isBlank() && !date.isBlank()) {
-                String dateString = sdf.format(g.getDateOfPlay());
-                Date gameDate = sdf.parse(dateString);
-                Date filterDate = sdf.parse(date);
-                if (checkDateFilter(gameDate, filterDate)) {
-                    addGameToList(filteredList, g);
-                }
-            } else {
-                String dateString = sdf.format(g.getDateOfPlay());
-                Date gameDate = sdf.parse(dateString);
-                Date filterDate = sdf.parse(date);
-                if (checkDateFilter(gameDate, filterDate) && checkTeamFilter(g, teamName)) {
-                    addGameToList(filteredList, g);
+        try {
+            ArrayList<Game> filteredList = new ArrayList<>();
+            String teamName = formViewGames.getTxtTeam().getText().toLowerCase();
+            String date = formViewGames.getTxtDate().getText().toLowerCase() + ".2022";
+            if (teamName.isBlank() && date.isBlank()) {
+                return;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            for (Game g : listOfGames) {
+                if (!teamName.isBlank() && date.isBlank()) {
+                    if (checkTeamFilter(g, teamName)) {
+                        addGameToList(filteredList, g);
+                    }
+                } else if (teamName.isBlank() && !date.isBlank()) {
+                    String dateString = sdf.format(g.getDateOfPlay());
+                    Date gameDate = sdf.parse(dateString);
+                    Date filterDate = sdf.parse(date);
+                    if (checkDateFilter(gameDate, filterDate)) {
+                        addGameToList(filteredList, g);
+                    }
+                } else {
+                    String dateString = sdf.format(g.getDateOfPlay());
+                    Date gameDate = sdf.parse(dateString);
+                    Date filterDate = sdf.parse(date);
+                    if (checkDateFilter(gameDate, filterDate) && checkTeamFilter(g, teamName)) {
+                        addGameToList(filteredList, g);
+                    }
                 }
             }
-        }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formViewGames, "Invalid date format!\n Date must be in format dd.MM.yyyy\n dd - days, MM - months yyyy - years", "Invalid date", JOptionPane.ERROR_MESSAGE);
+        } 
+
     }
 
     private boolean checkTeamFilter(Game game, String teamName) {
@@ -128,16 +134,16 @@ public class ControllerViewGames {
         if (selected != -1) {
             return listOfGames.get(selected);
         } else {
-            JOptionPane.showMessageDialog(formViewGames, "No game seleceted", "Game selection error! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formViewGames, "No game seleceted\n Please select a game", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
 
-    public void openFormEditGame(){
+    public void openFormEditGame() {
         Game game = getSelectedGame();
         if (game != null) {
             Controller.getInstance().openFormEditGame();
         }
     }
-    
+
 }

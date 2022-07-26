@@ -125,17 +125,17 @@ public class FormLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+
         try {
-            User user= Controller.getInstance().getControllerLogin().login();
-            JOptionPane.showMessageDialog(this, "Welcome "+ user.getUsername()+"!");
+            User user = Controller.getInstance().getControllerLogin().login();
+            JOptionPane.showMessageDialog(this, "Welcome " + user.getUsername() + "!");
             this.dispose();
             Controller.getInstance().openFormMain();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,ex.getMessage(), "Login error! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Login error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
@@ -188,11 +188,11 @@ public class FormLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    public String getUsername(){
+    public String getUsername() {
         return txtUsername.getText().trim();
     }
-    
-    public String getPassword(){
+
+    public String getPassword() {
         return String.valueOf(txtPassword.getPassword());
     }
 }

@@ -51,7 +51,7 @@ public class ControllerPlayTicket {
     }
 
     public void openForm() throws Exception {
-        
+
         System.out.println("Opened Form Play Ticket");
         formPlayTicket.setVisible(true);
         setupForm();
@@ -74,14 +74,19 @@ public class ControllerPlayTicket {
 
     }
 
-    public void getGames() throws Exception {
-        Request request = new Request(Operations.GET_GAMES_NOT_STARTED, null);
-        Response response = Communication.getInstance().sendRequest(request, "Request for games is sent..");
+    public void getGames() {
+        try {
+            Request request = new Request(Operations.GET_GAMES_NOT_STARTED, null);
+            Response response = Communication.getInstance().sendRequest(request, "Request for games is sent..");
 
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-            listOfGames = (ArrayList<Game>) response.getResult();
-        } else {
-            throw response.getException();
+            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                listOfGames = (ArrayList<Game>) response.getResult();
+            } else {
+                throw response.getException();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formPlayTicket, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -107,8 +112,8 @@ public class ControllerPlayTicket {
 
     private void updateOdds(double currentOdds, double updatedOdds) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / currentOdds * updatedOdds);
-        System.out.println(String.format("%,.2f",ticket.getCombinedOdds()));
-        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f",ticket.getCombinedOdds()));
+        System.out.println(String.format("%,.2f", ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f", ticket.getCombinedOdds()));
 
         if (ticket.getWager() != null) {
             BigDecimal combined = BigDecimal.valueOf(ticket.getCombinedOdds());
@@ -120,8 +125,8 @@ public class ControllerPlayTicket {
 
     private void addOdd(double odds) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() * odds);
-        System.out.println(String.format("%,.2f",ticket.getCombinedOdds()));
-        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f",ticket.getCombinedOdds()));
+        System.out.println(String.format("%,.2f", ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("%,.2f", ticket.getCombinedOdds()));
 
         if (ticket.getWager() != null) {
             BigDecimal combined = BigDecimal.valueOf(ticket.getCombinedOdds());
@@ -133,7 +138,7 @@ public class ControllerPlayTicket {
 
     private void removeOdds(int selectedRow) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / listOfBets.get(selectedRow).getBetOdds());
-        formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f",ticket.getCombinedOdds()));
+        formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f", ticket.getCombinedOdds()));
         formPlayTicket.getTxtWager().setText("");
         formPlayTicket.getLblPotentialWin().setText("-");
         listOfBets.remove(selectedRow);
@@ -155,7 +160,7 @@ public class ControllerPlayTicket {
             removeOdds(selected);
             JOptionPane.showMessageDialog(formPlayTicket, "Bet removed");
         } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "No bet selected..");
+            JOptionPane.showMessageDialog(formPlayTicket, "No bet seleceted!\n Please select the bet you want to remove!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -168,7 +173,7 @@ public class ControllerPlayTicket {
         if (selected != -1) {
             return listOfGames.get(selected);
         } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "No game seleceted", "Game selection error! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "No game seleceted\n Please select a game!", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -201,41 +206,46 @@ public class ControllerPlayTicket {
         tableGames.setModel(tmg);
     }
 
-    public void filterByDate() throws Exception {
+    public void filterByDate() {
 
-        getGames();
-        if (formPlayTicket.getRbAllTime().isSelected()) {
-            setupTableGames(listOfGames);
-        } else {
-            Date today = new Date();
-            ArrayList<Game> filteredList = new ArrayList<>();
-            if (formPlayTicket.getRbToday().isSelected()) {
-                for (Game g : listOfGames) {
-                    if (g.getDateOfPlay().equals(today)) {
-                        addGameToList(filteredList, g);
-                    }
-                }
+        try {
+            getGames();
+            if (formPlayTicket.getRbAllTime().isSelected()) {
+                setupTableGames(listOfGames);
             } else {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                Calendar c = Calendar.getInstance();
-                c.setTime(today);
-                c.add(Calendar.DATE, 1);
-                Date tommorow = c.getTime();
+                Date today = new Date();
+                ArrayList<Game> filteredList = new ArrayList<>();
+                if (formPlayTicket.getRbToday().isSelected()) {
+                    for (Game g : listOfGames) {
+                        if (g.getDateOfPlay().equals(today)) {
+                            addGameToList(filteredList, g);
+                        }
+                    }
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(today);
+                    c.add(Calendar.DATE, 1);
+                    Date tommorow = c.getTime();
 
-                c.add(Calendar.DATE, 1);
-                Date afterTommorow = c.getTime();
+                    c.add(Calendar.DATE, 1);
+                    Date afterTommorow = c.getTime();
 
-                for (Game g : listOfGames) {
-                    if (sdf.format(g.getDateOfPlay()).equals(sdf.format(today))
-                            || sdf.format(g.getDateOfPlay()).equals(sdf.format(tommorow))
-                            || sdf.format(g.getDateOfPlay()).equals(sdf.format(afterTommorow))) {
-                        addGameToList(filteredList, g);
+                    for (Game g : listOfGames) {
+                        if (sdf.format(g.getDateOfPlay()).equals(sdf.format(today))
+                                || sdf.format(g.getDateOfPlay()).equals(sdf.format(tommorow))
+                                || sdf.format(g.getDateOfPlay()).equals(sdf.format(afterTommorow))) {
+                            addGameToList(filteredList, g);
+                        }
                     }
                 }
+                setupTableGames(filteredList);
             }
-            setupTableGames(filteredList);
-        }
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formPlayTicket, "Error filtering games", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void updatePotentialWin() {
@@ -248,7 +258,8 @@ public class ControllerPlayTicket {
             DecimalFormat df = new DecimalFormat("#,###.00");
             formPlayTicket.getLblPotentialWin().setText(df.format(potentialWin));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(formPlayTicket, "Wager must be a number!", "Error ", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(formPlayTicket, "Wager must be a number!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

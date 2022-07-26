@@ -8,8 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import rs.ac.bg.fon.communication.Communication;
@@ -85,7 +83,7 @@ public class ControllerEditGame {
             Controller.getInstance().openDialogEditOdds();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formEditGame, ex.getMessage(), "Error opening DialogEditOdds!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formEditGame, "Error opening window for editing odds!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -97,11 +95,11 @@ public class ControllerEditGame {
 
         int homeGoals = Integer.parseInt(formEditGame.getTxtHomeGoals().getText());
         int awayGoals = Integer.parseInt(formEditGame.getTxtAwayGoals().getText());
-        if (homeGoals>=0 && awayGoals>=0) {
+        if (homeGoals >= 0 && awayGoals >= 0) {
             game.setHomeGoals(homeGoals);
             game.setAwayGoals(awayGoals);
-        }else{
-            JOptionPane.showMessageDialog(formEditGame,"Invalid home/away goal input!\nGoals cannot be negative", "Invalid input!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(formEditGame, "Invalid input for home/away goal!\nGoals cannot be negative", "Invalid input", JOptionPane.ERROR_MESSAGE);
             return;
         }
         String dateString = formEditGame.getTxtDate().getText();
@@ -111,35 +109,23 @@ public class ControllerEditGame {
                 game.setDateOfPlay(date);
             } catch (ParseException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(formEditGame, "Invalid date format!\n Date must be in format dd.MM.yyyy HH:mm\n dd - days, MM - months yyyy - years\n HH - hours, mm - minutes", "Invalid date format!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(formEditGame, "Invalid date format!\n Date must be in format dd.MM.yyyy HH:mm\n dd - days, MM - months yyyy - years\n HH - hours, mm - minutes", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
-        
+
         game.setIsOver(isOver());
         updateGame();
 
         if (isOver()) {
-
             try {
                 updateBet();
-
-                // SVE OVO SE DESAVA U NOVOM THREADU
-                // GET ALL BETS FOR GAME
-                // GO THROUGH BETS AND CHECK IF BET HAS PASSED
-                // YES: GET ALL BETS FOR TICKET
-                // UPDATE BET: passed -> true
-                // CHECK IF ALL BETS HAVE PASSED
-                // YES: UPDATE TICKET: processed -> completed && win -> true
-                // NO:
-                // UPDATE BET: passed -> false
-                // UPDATE TICKET: processed -> completed && win -> false
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(formEditGame, ex.getMessage(), "Error updating game! ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(formEditGame, "Error saving changes!", "Error! ", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            // UPDATE ODDS
+            // TODO UPDATE ODDS
             System.out.println("not over");
         }
 
@@ -180,7 +166,7 @@ public class ControllerEditGame {
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(formEditGame, ex.getMessage(), "Error updating bets! ", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(formEditGame, "Error updating bets!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -216,31 +202,43 @@ public class ControllerEditGame {
             }
 
             private ArrayList<Bet> getBetsForGame() throws Exception {
-                Request request = new Request(Operations.GET_BETS_FOR_GAME, game.getGameID());
-                Response response = Communication.getInstance().sendRequest(request, "GET_BETS_FOR_GAME: Request for bets placed on game is sent..");
+                try {
+                    Request request = new Request(Operations.GET_BETS_FOR_GAME, game.getGameID());
+                    Response response = Communication.getInstance().sendRequest(request, "GET_BETS_FOR_GAME: Request for bets placed on game is sent..");
 
-                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                    return (ArrayList<Bet>) response.getResult();
+                    if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                        return (ArrayList<Bet>) response.getResult();
 
-                } else {
-                    throw response.getException();
+                    } else {
+                        throw response.getException();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(formEditGame, "Error bets for game!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
                 }
             }
 
-            private Ticket getTicket(int ticketID) throws Exception {
-                Request request = new Request(Operations.GET_TICKET, ticketID);
-                Response response = Communication.getInstance().sendRequest(request, "GET_TICKET: Request for bets placed on ticket is sent..");
+            private Ticket getTicket(int ticketID) {
+                try {
+                    Request request = new Request(Operations.GET_TICKET, ticketID);
+                    Response response = Communication.getInstance().sendRequest(request, "GET_TICKET: Request for bets placed on ticket is sent..");
 
-                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                    return (Ticket) response.getResult();
+                    if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                        return (Ticket) response.getResult();
 
-                } else {
-                    throw response.getException();
+                    } else {
+                        throw response.getException();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(formEditGame, "Error getting tickets from server!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
                 }
             }
 
             private boolean checkTicketBets(ArrayList<Bet> listOfTicketBets) {
-                System.out.println("checkTicketBets: "+listOfTicketBets);
+                System.out.println("checkTicketBets: " + listOfTicketBets);
                 for (Bet b : listOfTicketBets) {
                     if (!b.getOdds().getGame().isIsOver()) {
                         return false;
@@ -252,24 +250,34 @@ public class ControllerEditGame {
             }
 
             private void updateTicket(Ticket ticket) throws Exception {
-                Request request = new Request(Operations.UPDATE_TICKET, ticket);
-                Response response = Communication.getInstance().sendRequest(request, "Request for bets placed on game is sent..");
+                try {
+                    Request request = new Request(Operations.UPDATE_TICKET, ticket);
+                    Response response = Communication.getInstance().sendRequest(request, "Request for bets placed on game is sent..");
 
-                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                    System.out.println("Ticket updated successfully!");
-                } else {
-                    throw response.getException();
+                    if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                        System.out.println("Ticket updated successfully!");
+                    } else {
+                        throw response.getException();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(formEditGame, "Error updating ticket!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
             private void updateBet(Bet bet) throws Exception {
-                Request request = new Request(Operations.UPDATE_BET, bet);
-                Response response = Communication.getInstance().sendRequest(request, "Request for bets placed on game is sent..");
+                try {
+                    Request request = new Request(Operations.UPDATE_BET, bet);
+                    Response response = Communication.getInstance().sendRequest(request, "Request for bets placed on game is sent..");
 
-                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                    System.out.println("Bet updated successfully!");
-                } else {
-                    throw response.getException();
+                    if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                        System.out.println("Bet updated successfully!");
+                    } else {
+                        throw response.getException();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(formEditGame, "Error updating bet!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -288,7 +296,7 @@ public class ControllerEditGame {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formEditGame, ex.getMessage(), "Error updating game! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formEditGame, "Error updating game!\n" + ex.getMessage(), "Error updating game! ", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

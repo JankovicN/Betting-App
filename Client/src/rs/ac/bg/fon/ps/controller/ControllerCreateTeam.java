@@ -33,12 +33,12 @@ public class ControllerCreateTeam {
         System.out.println("Opened Dialog Create Team ");
         this.dialogCreateTeam.setVisible(true);
     }
-    
-        public void addTeam(String teamName) {
+
+    public void addTeam(String teamName) {
 
         for (Team team : teams) {
             if (team.getTeamName().equals(teamName)) {
-                JOptionPane.showMessageDialog(dialogCreateTeam, "Team already exists!", "Create team", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(dialogCreateTeam, "Team already exists!", "Information", JOptionPane.OK_OPTION);
                 return;
             }
         }
@@ -61,8 +61,8 @@ public class ControllerCreateTeam {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(dialogCreateTeam, ex.getMessage(), "Error adding team! ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialogCreateTeam, "Error adding team!\n" + ex.getMessage(), "Error adding team! ", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
 }

@@ -4,16 +4,11 @@
  */
 package rs.ac.bg.fon.ps.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -117,12 +112,22 @@ public class ControllerCreateGame {
     }
 
     public void confirmTeams() {
-        this.game = new Game();
-        game.setHome((Team) formCreateGame.getCmbHomeTeam().getSelectedItem());
-        game.setAway((Team) formCreateGame.getCmbAwayTeam().getSelectedItem());
-        listOfOdds = new ArrayList<>();
-        if (Controller.getInstance().getControllerAddOdds() != null) {
-            Controller.getInstance().getControllerAddOdds().resetOdds();
+        try {
+            if (compareTeams()) {
+                this.game = new Game();
+                game.setHome((Team) formCreateGame.getCmbHomeTeam().getSelectedItem());
+                game.setAway((Team) formCreateGame.getCmbAwayTeam().getSelectedItem());
+                listOfOdds = new ArrayList<>();
+                if (Controller.getInstance().getControllerAddOdds() != null) {
+                    Controller.getInstance().getControllerAddOdds().resetOdds();
+                }
+                JOptionPane.showMessageDialog(formCreateGame, "Teams confirmed successfully!");
+            } else {
+                JOptionPane.showMessageDialog(formCreateGame, "You must choose two different teams!", "Information", JOptionPane.OK_OPTION);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formCreateGame, "Error confirming teams!\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -140,11 +145,11 @@ public class ControllerCreateGame {
                 Controller.getInstance().openDialogAddOdds();
 
             } else {
-                JOptionPane.showMessageDialog(formCreateGame, "You must confirm teams before adding odds!", "Teams not confirmed!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(formCreateGame, "You must confirm teams before adding odds!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formCreateGame, "Error opening window for adding odds", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -159,7 +164,7 @@ public class ControllerCreateGame {
             game.setDateOfPlay(date);
             return true;
         } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(formCreateGame, "Invalid date format!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formCreateGame, "Invalid date format!\n Date must be in format dd.MM.yyyy HH:mm\n dd - days, MM - months yyyy - years\n HH - hours, mm - minutes", "Invalid input", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
@@ -187,7 +192,7 @@ public class ControllerCreateGame {
 
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error creating game ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(formCreateGame, "Error creating game!\n" + ex.getMessage(), "Error creating game ", JOptionPane.ERROR_MESSAGE);
             }
 
             try {
@@ -204,7 +209,7 @@ public class ControllerCreateGame {
 
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(formCreateGame, ex.getMessage(), "Error creating odds ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(formCreateGame, "Error creating odds!\n" + ex.getMessage(), "Error creating odds ", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(formCreateGame, "Please confirm teams and add odds to create game! :D", "Error", JOptionPane.ERROR_MESSAGE);

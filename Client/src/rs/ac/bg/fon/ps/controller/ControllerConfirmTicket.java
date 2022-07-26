@@ -6,8 +6,6 @@ package rs.ac.bg.fon.ps.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -78,21 +76,25 @@ public class ControllerConfirmTicket {
         table.setDefaultRenderer(Object.class, centerRenderer);
     }
 
-    public void playTicket() throws Exception {
+    public void playTicket() {
+        try {
+            Request request = new Request(Operations.CREATE_TICKET, ticket.getListOfBets());
+            Response response = Communication.getInstance().sendRequest(request, "Request for creating ticket is sent..");
 
-        Request request = new Request(Operations.CREATE_TICKET, ticket.getListOfBets());
-        Response response = Communication.getInstance().sendRequest(request, "Request for creating ticket is sent..");
+            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                ticket = (Ticket) response.getResult();
+                proccesTicket();
+                JOptionPane.showMessageDialog(dialogViewTicket, "Ticket played successfully");
+                dialogViewTicket.dispose();
+                Controller.getInstance().openFormMain();
 
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-            ticket = (Ticket) response.getResult();
-            proccesTicket();
-            JOptionPane.showMessageDialog(dialogViewTicket, "Ticket played successfully");
-            dialogViewTicket.dispose();
-            Controller.getInstance().openFormMain();
-
-        } else {
-            JOptionPane.showMessageDialog(dialogViewTicket, "Error playing ticket!", "Error ", JOptionPane.ERROR_MESSAGE);
-            throw response.getException();
+            } else {
+                JOptionPane.showMessageDialog(dialogViewTicket, "Error playing ticket!", "Error ", JOptionPane.ERROR_MESSAGE);
+                throw response.getException();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(dialogViewTicket, "Error playing ticket!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -112,7 +114,7 @@ public class ControllerConfirmTicket {
             public void run() {
                 try {
                     sleep(sleepTime);
-                    
+
                     Request request = new Request(Operations.PROCESS_TICKET, ticket);
                     Response response = Communication.getInstance().sendRequest(request, "Request for processing ticket is sent...");
                     if (response.getResponseType().equals(ResponseType.SUCCESS)) {
@@ -123,6 +125,7 @@ public class ControllerConfirmTicket {
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    JOptionPane.showMessageDialog(dialogViewTicket, "Error processing ticket!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }.start();

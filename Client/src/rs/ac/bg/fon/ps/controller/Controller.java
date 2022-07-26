@@ -173,6 +173,7 @@ public class Controller {
             this.controllerEditGame.openForm();
         }
         
+        
     }
     
     public void openAddOrEditOddsDialog(){

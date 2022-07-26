@@ -11,8 +11,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.ps.domain.Bet;
 import rs.ac.bg.fon.ps.domain.Ticket;
-import rs.ac.bg.fon.ps.model.TableModelNewTicket;
-import rs.ac.bg.fon.ps.model.TableModelPlayedTickets;
 import rs.ac.bg.fon.ps.model.TableModelViewTicket;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
 

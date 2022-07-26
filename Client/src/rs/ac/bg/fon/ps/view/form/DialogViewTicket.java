@@ -195,14 +195,7 @@ public class DialogViewTicket extends javax.swing.JDialog {
 
     private void btnPlayTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayTicketActionPerformed
 
-        try {
-            //PLAY TICKET, SAVE IT TO DATABASE
-            Controller.getInstance().getControllerConfirmTicket().playTicket();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error playing ticket", JOptionPane.ERROR_MESSAGE);
-        }
-
+        Controller.getInstance().getControllerConfirmTicket().playTicket();
     }//GEN-LAST:event_btnPlayTicketActionPerformed
 
     /**
@@ -334,6 +327,4 @@ public class DialogViewTicket extends javax.swing.JDialog {
         this.btnPlayTicket = btnPlayTicket;
     }
 
-    
-    
 }

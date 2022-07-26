@@ -11,7 +11,6 @@ import rs.ac.bg.fon.communication.Communication;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
 import rs.ac.bg.fon.ps.communication.ResponseType;
-import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.model.TableModelOdds;
@@ -54,28 +53,33 @@ public class ControllerGameOdds {
     }
 
     public void setOdds() throws Exception {
-        Request request = new Request(Operations.GET_ODDS, game);
-        Response response = Communication.getInstance().sendRequest(request, "Request for odds sent..");
+        try {
+            Request request = new Request(Operations.GET_ODDS, game);
+            Response response = Communication.getInstance().sendRequest(request, "Request for odds sent..");
 
-        if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-            this.listOfOdds = (ArrayList<Odds>) response.getResult();
-        } else {
-            throw response.getException();
+            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                this.listOfOdds = (ArrayList<Odds>) response.getResult();
+            } else {
+                throw response.getException();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(dialogGameOdds, "Error getting odds from server!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private Odds getSelectedOdds() {
         JTable table = dialogGameOdds.getTblOdds();
         int row = table.getSelectedRow();
         return listOfOdds.get(row);
     }
-    
-    public void confirmOdds(){
-    
-        if(dialogGameOdds.getTblOdds().getSelectedRow()!=-1){
+
+    public void confirmOdds() {
+
+        if (dialogGameOdds.getTblOdds().getSelectedRow() != -1) {
             Controller.getInstance().getControllerPlayTicket().addBet(getSelectedOdds());
-        }else{
-            JOptionPane.showMessageDialog(dialogGameOdds, "No odds selected..");
+        } else {
+            JOptionPane.showMessageDialog(dialogGameOdds, "Please select odds");
         }
         dialogGameOdds.dispose();
     }

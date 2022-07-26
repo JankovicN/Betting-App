@@ -9,7 +9,6 @@ import javax.swing.JTable;
 import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.Odds;
 
-
 /**
  *
  * @author nikol
@@ -112,7 +111,6 @@ public class DialogAddOdds extends javax.swing.JDialog {
     private void btndodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndodajActionPerformed
         Controller.getInstance().confirmAddOrEditOdds();
         this.dispose();
-        
     }//GEN-LAST:event_btndodajActionPerformed
 
     /**
@@ -165,8 +163,7 @@ public class DialogAddOdds extends javax.swing.JDialog {
     private javax.swing.JTable tblOdds;
     // End of variables declaration//GEN-END:variables
 
-    
-    public void setlblGame(String game){
+    public void setlblGame(String game) {
         lblGame.setText(game);
     }
 
@@ -177,7 +174,5 @@ public class DialogAddOdds extends javax.swing.JDialog {
     public void setTblOdds(JTable tblOdds) {
         this.tblOdds = tblOdds;
     }
-    
-    
 
 }

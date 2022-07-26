@@ -322,7 +322,7 @@ public class FormGame extends javax.swing.JFrame {
             Controller.getInstance().openDialogCreateTeam();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening DialogCreateTeam!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error opening window for team creation!\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCreateTeamActionPerformed
 
@@ -351,17 +351,7 @@ public class FormGame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddOddsActionPerformed
 
     private void btnConfirmTeamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTeamsActionPerformed
-        try {
-            if (Controller.getInstance().getControllerCreateGame().compareTeams()) {
-                Controller.getInstance().getControllerCreateGame().confirmTeams();
-                JOptionPane.showMessageDialog(this, "Teams confirmed successfully!");
-            } else {
-                JOptionPane.showMessageDialog(this, "You must choose two different teams!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening DialogAddOdds!", JOptionPane.ERROR_MESSAGE);
-        }
+        Controller.getInstance().getControllerCreateGame().confirmTeams();
     }//GEN-LAST:event_btnConfirmTeamsActionPerformed
 
     private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
@@ -371,7 +361,7 @@ public class FormGame extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error returning to main form!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error returning to Main window!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
@@ -510,6 +500,5 @@ public class FormGame extends javax.swing.JFrame {
     public void setBtnConfirm(javax.swing.JButton btnConfirm) {
         this.btnConfirm = btnConfirm;
     }
-    
 
 }

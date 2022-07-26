@@ -199,7 +199,7 @@ public class FormMain extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening table!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error opening window for game creation!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_menuItemCreateMatchActionPerformed
@@ -211,7 +211,7 @@ public class FormMain extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening table!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error opening window for viewing games!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_menuItemViewMatchActionPerformed
 
@@ -226,18 +226,17 @@ public class FormMain extends javax.swing.JFrame {
 
     private void btnViewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTicketActionPerformed
 
-        try {
-            Controller.getInstance().getControllerMain().viewTicket();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error getting tickets from server!\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+        Controller.getInstance().getControllerMain().viewTicket();
     }//GEN-LAST:event_btnViewTicketActionPerformed
 
     private void btnPlayNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNewActionPerformed
 
-        Controller.getInstance().getControllerMain().playNewTicket();
+        try {
+            Controller.getInstance().getControllerMain().playNewTicket();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error opening window for playing new ticket!\n Please try again!" , "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnPlayNewActionPerformed
 
     /**

@@ -5,11 +5,8 @@
 package rs.ac.bg.fon.ps.controller;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import rs.ac.bg.fon.communication.Communication;
 import rs.ac.bg.fon.ps.communication.Request;
 import rs.ac.bg.fon.ps.communication.Response;
@@ -17,7 +14,6 @@ import rs.ac.bg.fon.ps.communication.ResponseType;
 import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
-import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.model.TableModelAddOdds;
 import rs.ac.bg.fon.ps.operations.Operations;
 import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
@@ -29,7 +25,7 @@ import rs.ac.bg.fon.ps.view.form.DialogAddOdds;
 public class ControllerAddOdds {
 
     private final DialogAddOdds dialogAddOdds;
-    private Game game;
+    private final Game game;
     private ArrayList<Odds> listOfOdds;
 
     public ControllerAddOdds(DialogAddOdds dialogAddOdds, Game game) {
@@ -48,10 +44,14 @@ public class ControllerAddOdds {
         return listOfOdds;
     }
 
-    private void setupDialogAddOdds() throws Exception {
-
-        dialogAddOdds.setlblGame(game.toString());
-        setupTable();
+    private void setupDialogAddOdds() {
+        try {
+            dialogAddOdds.setlblGame(game.toString());
+            setupTable();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(dialogAddOdds.getParent(), "Error setting up window for adding odds!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void resetOdds() {
@@ -62,19 +62,24 @@ public class ControllerAddOdds {
         JTable table = dialogAddOdds.getTblOdds();
         TableModelAddOdds tmo = new TableModelAddOdds();
         if (listOfOdds.isEmpty()) {
-            Request request = new Request(Operations.GET_BETTYPE, null);
-            Response response = Communication.getInstance().sendRequest(request, "Request for bet types sent..");
+            try {
+                Request request = new Request(Operations.GET_BETTYPE, null);
+                Response response = Communication.getInstance().sendRequest(request, "Request for bet types sent..");
 
-            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
 
-                ArrayList<BetType> listOfBetTypes = (ArrayList<BetType>) response.getResult();
+                    ArrayList<BetType> listOfBetTypes = (ArrayList<BetType>) response.getResult();
 
-                for (BetType betType : listOfBetTypes) {
-                    Odds o = new Odds(game, betType, 1.0);
-                    listOfOdds.add(o);
+                    for (BetType betType : listOfBetTypes) {
+                        Odds o = new Odds(game, betType, 1.0);
+                        listOfOdds.add(o);
+                    }
+                } else {
+                    throw response.getException();
                 }
-            } else {
-                throw response.getException();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(dialogAddOdds.getParent(), "Error getting bet types from server!\n" + ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
         tmo.setListOfOdds(listOfOdds);
@@ -86,25 +91,30 @@ public class ControllerAddOdds {
         JTable table = dialogAddOdds.getTblOdds();
         TableModelAddOdds tmo = new TableModelAddOdds();
         if (listOfOdds.isEmpty()) {
-            Request request = new Request(Operations.GET_BETTYPE, null);
-            Response response = Communication.getInstance().sendRequest(request, "Request for bet types sent..");
+            try {
+                Request request = new Request(Operations.GET_BETTYPE, null);
+                Response response = Communication.getInstance().sendRequest(request, "Request for bet types sent..");
 
-            if (response.getResponseType().equals(ResponseType.SUCCESS)) {
+                if (response.getResponseType().equals(ResponseType.SUCCESS)) {
 
-                ArrayList<BetType> listOfBetTypes = (ArrayList<BetType>) response.getResult();
+                    ArrayList<BetType> listOfBetTypes = (ArrayList<BetType>) response.getResult();
 
-                for (BetType betType : listOfBetTypes) {
-                    Odds o = new Odds(game, betType, 1.0);
-                    for (Odds go : gameOdds) {
-                        if (go.getType().getTypeID() == o.getType().getTypeID()) {
-                            o.setOdds(go.getOdds());
-                            break;
+                    for (BetType betType : listOfBetTypes) {
+                        Odds o = new Odds(game, betType, 1.0);
+                        for (Odds go : gameOdds) {
+                            if (go.getType().getTypeID() == o.getType().getTypeID()) {
+                                o.setOdds(go.getOdds());
+                                break;
+                            }
                         }
+                        listOfOdds.add(o);
                     }
-                    listOfOdds.add(o);
+                } else {
+                    throw response.getException();
                 }
-            } else {
-                throw response.getException();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(dialogAddOdds.getParent(), "Error getting bet types from server!\n" + ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
         tmo.setListOfOdds(listOfOdds);
@@ -113,14 +123,19 @@ public class ControllerAddOdds {
     }
 
     public void openDialogEditOdds() throws Exception {
-        this.dialogAddOdds.setVisible(true);
-        setupDialogEditOdds();
+        try {
+            this.dialogAddOdds.setVisible(true);
+            setupDialogEditOdds();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(dialogAddOdds.getParent(), "Error setting up window for editing odds!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void setupDialogEditOdds() {
 
         dialogAddOdds.setlblGame(game.toString());
-        
+
         try {
             ArrayList<Odds> gameOdds;
             Request request = new Request(Operations.GET_ODDS, game);
@@ -134,7 +149,7 @@ public class ControllerAddOdds {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(dialogAddOdds.getParent(), ex.getMessage(), "Error searching for odds!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialogAddOdds.getParent(), "Error getting odds from server!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }

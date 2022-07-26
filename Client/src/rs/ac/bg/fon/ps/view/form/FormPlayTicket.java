@@ -339,40 +339,37 @@ public class FormPlayTicket extends javax.swing.JFrame {
 
     private void btnRemoveBetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveBetActionPerformed
 
-        //REMOVE BET FROM TICKET TABLE
         Controller.getInstance().getControllerPlayTicket().removeBetFromTable();
-        
     }//GEN-LAST:event_btnRemoveBetActionPerformed
 
     private void btnAddGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGameActionPerformed
-        
+
         try {
             //OPEN DIALOG FOR SELECTED GAME
             Controller.getInstance().getControllerPlayTicket().openDialogOdds();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening dialog Odds", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error opening window for adding odds!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnAddGameActionPerformed
 
     private void btnFilterByTeamNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterByTeamNameActionPerformed
-        
-        // CONTROLLER FILTER TABLE BY TEAM NAME
+
         Controller.getInstance().getControllerPlayTicket().filterByTeamName();
-        
+
     }//GEN-LAST:event_btnFilterByTeamNameActionPerformed
 
     private void btnPlayTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayTicketActionPerformed
-        
+
         try {
             //PLAY TICKET, SAVE IT TO DATABASE
             Controller.getInstance().openDialogConfirmTicket();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error opening form for confirming ticket!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error confiriming ticket.\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnPlayTicketActionPerformed
 
     private void rbTodayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTodayActionPerformed
@@ -380,15 +377,8 @@ public class FormPlayTicket extends javax.swing.JFrame {
     }//GEN-LAST:event_rbTodayActionPerformed
 
     private void btnFilterByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterByDateActionPerformed
-        
-        try {
-            // FILTER BASED ON SELECTED RADIO BUTTON
-            Controller.getInstance().getControllerPlayTicket().filterByDate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error filtering by date", JOptionPane.ERROR_MESSAGE);
-        }
-        
+
+        Controller.getInstance().getControllerPlayTicket().filterByDate();
     }//GEN-LAST:event_btnFilterByDateActionPerformed
 
     private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
@@ -398,7 +388,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error returning to main form!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error returning to Main window!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
@@ -506,15 +496,15 @@ public class FormPlayTicket extends javax.swing.JFrame {
     public JTextField getTxtTeam() {
         return txtTeam;
     }
-  
-    public void setupWager(){
+
+    public void setupWager() {
         txtWager.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            Controller.getInstance().getControllerPlayTicket().updatePotentialWin();
-                
+                Controller.getInstance().getControllerPlayTicket().updatePotentialWin();
+
             }
         });
     }
-    
+
 }
