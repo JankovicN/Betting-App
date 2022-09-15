@@ -4,6 +4,7 @@
  */
 package rs.ac.bg.fon.ps.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import rs.ac.bg.fon.ps.domain.Ticket;
@@ -12,12 +13,13 @@ import rs.ac.bg.fon.ps.domain.Ticket;
  *
  * @author nikol
  */
-public class TableModelPlayedTickets extends AbstractTableModel {
-
+public class TableModelActiveTickets extends AbstractTableModel {
+    
     ArrayList<Ticket> listOfTickets;
-    String[] columns = new String[]{"TicketID", "Played on", "Wager", "Odds", "Potential win", "Win"};
+    String[] columns = new String[]{"TicketID", "Played on", "Wager", "Odds", "Potential win", "UserID", "Username"};
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public TableModelPlayedTickets() {
+    public TableModelActiveTickets() {
         listOfTickets = new ArrayList<>();
     }
 
@@ -40,7 +42,7 @@ public class TableModelPlayedTickets extends AbstractTableModel {
             case 0:
                 return ticket.getTicketID();
             case 1:
-                return ticket.getDate();
+                return sdf.format(ticket.getDate());
             case 2:
                 return ticket.getWager();
             case 3:
@@ -48,15 +50,9 @@ public class TableModelPlayedTickets extends AbstractTableModel {
             case 4:
                 return ticket.getPotentialWin();
             case 5:
-                if (ticket.getState().equals("processed")) {
-                    return "?";
-                } else {
-                    if (ticket.isWin()) {
-                        return "WIN";
-                    } else {
-                        return "LOST";
-                    }
-                }
+                return ticket.getUser().getUserID();
+            case 6:
+                return ticket.getUser().getUsername();
             default:
                 throw new AssertionError();
         }

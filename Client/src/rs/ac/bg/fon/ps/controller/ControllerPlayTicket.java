@@ -76,7 +76,7 @@ public class ControllerPlayTicket {
 
     public void getGames() {
         try {
-            Request request = new Request(Operations.GET_GAMES_NOT_STARTED, null);
+            Request request = new Request(Operations.GET_ACTIVE_GAMES, null);
             Response response = Communication.getInstance().sendRequest(request, "Request for games is sent..");
 
             if (response.getResponseType().equals(ResponseType.SUCCESS)) {

@@ -11,7 +11,7 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
  *
  * @author nikol
  */
-public class ProcessTicket extends AbstractGenericOperation  {
+public class ProcessTickets extends AbstractGenericOperation  {
 
     @Override
     protected void executeOperation(Object param) throws Exception {

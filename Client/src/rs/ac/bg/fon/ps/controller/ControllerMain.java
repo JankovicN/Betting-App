@@ -65,11 +65,11 @@ public class ControllerMain {
 
                 ArrayList<Ticket> listOfTickets = (ArrayList<Ticket>) response.getResult();
                 System.out.println("list size " + listOfTickets.size());
-                for (Ticket ticket : listOfTickets) {
-                    if (!ticket.getState().equals("processed")) {
-                        listOfTickets.remove(ticket);
-                    }
-                }
+//                for (Ticket ticket : listOfTickets) {
+//                    if (!ticket.getState().equals("processed")) {
+//                        listOfTickets.remove(ticket);
+//                    }
+//                }
                 tmpt.setListOfTickets(listOfTickets);
                 this.listOfTickets = listOfTickets;
                 table.setModel(tmpt);
@@ -132,9 +132,12 @@ public class ControllerMain {
             } else {
                 throw response.getException();
             }
-        } catch (Exception ex) {
+        } catch (IndexOutOfBoundsException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formMain,"Error displaying selected ticket! " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formMain," No ticket selected! ", "Error", JOptionPane.ERROR_MESSAGE);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(formMain,"Error displaying selected ticket! \n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

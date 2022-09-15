@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.repository;
 
 import java.util.List;
+import rs.ac.bg.fon.ps.domain.GeneralDomainObject;
 
 /**
  *
@@ -21,6 +22,7 @@ public interface Repository<T> {
     List<T> searchByForeignKey(T param, T foreign) throws Exception;
     List<T> searchByForeignKeyBasic(T param, T foreign) throws Exception;
     List<T> getAll(T param) throws Exception;
+    List<T> getAllJoinConditionBasic(T ticket, T user, String condition) throws Exception;
     List<T> getAllJoinCondition(T game,T team, String condition) throws Exception;
     List<T> getAllJoin(T odds,T game,T team,T type) throws Exception;
     List<T> getAllJoinCondition(T odds,T game,T team,T type, String condition) throws Exception;

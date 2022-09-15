@@ -18,14 +18,15 @@ import rs.ac.bg.fon.ps.users.Users;
  *
  * @author nikol
  */
-public class ServerThread extends Thread{
-    
+public class ServerThread extends Thread {
+
     ServerSocket serverSocket;
     String port;
+    ProcessThread processThread;
 
     public ServerThread() throws IOException {
         readConfigProperties();
-        serverSocket=new ServerSocket(Integer.parseInt(port));
+        serverSocket = new ServerSocket(Integer.parseInt(port));
         System.out.println("Waiting for connection...");
     }
 
@@ -33,10 +34,12 @@ public class ServerThread extends Thread{
     public void run() {
 
         try {
+            processThread = new ProcessThread(serverSocket);
+            processThread.start();
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connected!");
-                HandleClientThread clientThread= new HandleClientThread(this, socket);
+                HandleClientThread clientThread = new HandleClientThread(this, socket);
                 clientThread.start();
                 Users.getInstance().addClientThread(clientThread);
                 System.out.println("logged in");
@@ -47,13 +50,13 @@ public class ServerThread extends Thread{
     }
 
     public void stopServer() throws IOException {
-    
+
         for (HandleClientThread client : Users.getInstance().getClientThreads()) {
             client.getSocket().close();
         }
-        serverSocket.close();   
+        serverSocket.close();
     }
-    
+
     private void readConfigProperties() {
 
         try {

@@ -102,11 +102,11 @@ public class HandleClientThread extends Thread {
             case Operations.GET_GAMES_NOT_STARTED:
                 getGamesNotStarted(request, response);
                 break;
+            case Operations.GET_ACTIVE_GAMES:
+                getActiveGames(request, response);
+                break;
             case Operations.CREATE_TICKET:
                 createTicket(request, response);
-                break;
-            case Operations.PROCESS_TICKET:
-                processTicket(request, response);
                 break;
             case Operations.UPDATE_GAME:
                 updateGame(request, response);
@@ -123,7 +123,13 @@ public class HandleClientThread extends Thread {
             case Operations.UPDATE_BET:
                 updateBet(request, response);
                 break;
-                
+            case Operations.GET_UNPROCESSED_TICKETS:
+                getUnprocessedTickets(request, response);
+                break;
+            case Operations.CANCEL_TICKET:
+                cancelTicket(request, response);
+                break;
+
         }
     }
 
@@ -207,18 +213,13 @@ public class HandleClientThread extends Thread {
         response.setResult(ticket);
     }
 
-    private void processTicket(Request request, Response response) throws Exception {
-        Controller.getInstance().processTicket((Ticket) request.getArgument());
-        System.out.println("Request for processing ticket was successful");
-    }
-
     private void updateGame(Request request, Response response) throws Exception {
         Controller.getInstance().updateGame((Game) request.getArgument());
         System.out.println("Request for updating game was successful");
     }
 
     private void getBetsForGame(Request request, Response response) throws Exception {
-        ArrayList<Bet> listOfBets = Controller.getInstance().getBetsForGame((int)request.getArgument());
+        ArrayList<Bet> listOfBets = Controller.getInstance().getBetsForGame((int) request.getArgument());
         System.out.println("Request for placed bets for game was successful");
         response.setResult(listOfBets);
     }
@@ -237,5 +238,22 @@ public class HandleClientThread extends Thread {
     private void updateBet(Request request, Response response) throws Exception {
         Controller.getInstance().updateBet((Bet) request.getArgument());
         System.out.println("Request for updating Bet was successful");
+    }
+
+    private void getActiveGames(Request request, Response response) throws Exception {
+        ArrayList<Game> listOfGames = Controller.getInstance().getActiveGames();
+        System.out.println("Request for active games was successful");
+        response.setResult(listOfGames);
+    }
+
+    private void getUnprocessedTickets(Request request, Response response) throws Exception {
+        ArrayList<Ticket> listOfTickets = Controller.getInstance().getUnprocessedTickets();
+        System.out.println("Request for unprocessed tickets was successful");
+        response.setResult(listOfTickets);
+    }
+
+    private void cancelTicket(Request request, Response response) throws Exception {
+        Controller.getInstance().cancelTicket((Ticket) request.getArgument());
+        System.out.println("Request for canceling Ticket was successful");
     }
 }

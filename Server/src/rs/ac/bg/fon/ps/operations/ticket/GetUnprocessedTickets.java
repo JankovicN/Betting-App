@@ -13,38 +13,30 @@ import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
  *
  * @author nikol
  */
-public class GetUserTickets extends AbstractGenericOperation {
-
+public class GetUnprocessedTickets extends AbstractGenericOperation {
+    
     private ArrayList<Ticket> listOfTickets;
 
-    public GetUserTickets() {
+    public GetUnprocessedTickets() {
         listOfTickets=new ArrayList<>();
     }
     
-    public ArrayList<Ticket> getList(){
+    public ArrayList<Ticket> getListOfTickets(){
         return listOfTickets;
     }
     
     @Override
     protected void executeOperation(Object param) throws Exception {
         
-        User user = (User) param;
-        ArrayList<Ticket> list =(ArrayList<Ticket>) repository.searchByForeignKeyBasic(new Ticket(), user);
+        ArrayList<Ticket> list =(ArrayList<Ticket>) repository.getAllJoinConditionBasic(new Ticket(),new User(), (new Ticket()).getCancelCondition());
         
         if(list!=null){
-            for (Ticket ticket : list) {
-                if(!ticket.getState().equals("unprocessed") && !ticket.getState().equals("canceled")){
-                    listOfTickets.add(ticket);
-                    System.out.println("added ticket to list");
-                }
-            }
+            listOfTickets=list;
         }
-        
     }
 
     @Override
     protected void precondicions(Object param) throws Exception {
         return;
     }
-
 }

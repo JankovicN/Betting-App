@@ -47,6 +47,7 @@ public class TableModelViewTicket extends AbstractTableModel{
                 return bet.getBetOdds();
             }
             case 3 -> {
+                System.out.println(bet.getOdds().getGame().isIsOver());
                 if (!bet.getOdds().getGame().isIsOver()){
                     return "?";
                 } else {

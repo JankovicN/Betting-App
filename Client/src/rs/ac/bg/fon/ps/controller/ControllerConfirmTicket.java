@@ -83,7 +83,6 @@ public class ControllerConfirmTicket {
 
             if (response.getResponseType().equals(ResponseType.SUCCESS)) {
                 ticket = (Ticket) response.getResult();
-                proccesTicket();
                 JOptionPane.showMessageDialog(dialogViewTicket, "Ticket played successfully");
                 dialogViewTicket.dispose();
                 Controller.getInstance().openFormMain();
@@ -99,36 +98,5 @@ public class ControllerConfirmTicket {
 
     }
 
-    private void proccesTicket() {
-
-        Date date = new Date();
-        long fiveMins = 300000;
-        long dateOfPlay = ticket.getListOfBets().get(0).getOdds().getGame().getDateOfPlay().getTime();
-        if (dateOfPlay - date.getTime() < fiveMins) {
-            fiveMins = dateOfPlay - date.getTime();
-        }
-        long sleepTime = fiveMins;
-
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    sleep(sleepTime);
-
-                    Request request = new Request(Operations.PROCESS_TICKET, ticket);
-                    Response response = Communication.getInstance().sendRequest(request, "Request for processing ticket is sent...");
-                    if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                        System.out.println("Ticket processed successfully!");
-                    } else {
-                        System.out.println("Error while processing ticket!");
-                        throw response.getException();
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(dialogViewTicket, "Error processing ticket!\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }.start();
-    }
 
 }

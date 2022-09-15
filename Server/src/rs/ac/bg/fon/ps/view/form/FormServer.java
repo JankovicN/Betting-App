@@ -6,15 +6,12 @@ package rs.ac.bg.fon.ps.view.form;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.model.TableModelUsers;
+import rs.ac.bg.fon.ps.threads.ProcessThread;
 import rs.ac.bg.fon.ps.threads.ServerThread;
 
 /**
@@ -27,6 +24,7 @@ public class FormServer extends javax.swing.JFrame {
      * Creates new form FormServer
      */
     ServerThread serverThread;
+    ProcessThread processThread;
     private TableModelUsers tmu;
 
     public FormServer() {
@@ -59,9 +57,6 @@ public class FormServer extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemConfig = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        itemUtakmice = new javax.swing.JMenuItem();
-        itemTiketi = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -160,21 +155,6 @@ public class FormServer extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Funkcionalnosti");
-
-        itemUtakmice.setText("Pogledaj utakmice");
-        jMenu2.add(itemUtakmice);
-
-        itemTiketi.setText("Pogledaj tikete");
-        itemTiketi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTiketiActionPerformed(evt);
-            }
-        });
-        jMenu2.add(itemTiketi);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -225,10 +205,6 @@ public class FormServer extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnStartActionPerformed
 
-    private void itemTiketiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTiketiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemTiketiActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -269,12 +245,9 @@ public class FormServer extends javax.swing.JFrame {
     private javax.swing.JButton btnStart;
     private javax.swing.JButton btnStop;
     private javax.swing.JMenuItem itemConfig;
-    private javax.swing.JMenuItem itemTiketi;
-    private javax.swing.JMenuItem itemUtakmice;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

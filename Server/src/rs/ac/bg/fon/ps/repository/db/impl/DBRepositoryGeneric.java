@@ -257,8 +257,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             throw new Exception("Error getting all objects from database!");
         }
     }
-
-    @Override
+@Override
     public List<GeneralDomainObject> getAllJoinCondition(GeneralDomainObject game, GeneralDomainObject team, String condition) throws Exception {
 
         try {
@@ -273,6 +272,25 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             ResultSet rs = statement.executeQuery(query);
 
             return game.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+    @Override
+    public List<GeneralDomainObject> getAllJoinConditionBasic(GeneralDomainObject ticket, GeneralDomainObject user, String condition) throws Exception {
+
+        try {
+            String query = "SELECT * FROM " + ticket.getTableName() + " " + ticket.getAlias()
+                    + " JOIN " + user.getTableName() + " " + user.getAlias() + " ON " + ticket.getForeignKeyWithAlias() + "=" + user.getPrimaryKeyColumnNameWithAlias()
+                    + " WHERE " + condition;
+            System.out.println(query);
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return (new Ticket()).readResultSetUser(rs);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new Exception("Error getting all objects from database!");

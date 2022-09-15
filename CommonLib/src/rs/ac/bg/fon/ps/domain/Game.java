@@ -347,4 +347,9 @@ public class Game implements GeneralDomainObject {
     public int getSecondPrimaryKey() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public String getActiveCondition() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return addAlias("dateOfPlay") + " > " + " '" + sdf.format(new Date()) + "' AND "+ addAlias("isOver") + " = false";
+    }
 }

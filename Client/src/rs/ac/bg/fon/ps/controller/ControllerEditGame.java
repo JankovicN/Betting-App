@@ -268,7 +268,7 @@ public class ControllerEditGame {
             private void updateBet(Bet bet) throws Exception {
                 try {
                     Request request = new Request(Operations.UPDATE_BET, bet);
-                    Response response = Communication.getInstance().sendRequest(request, "Request for bets placed on game is sent..");
+                    Response response = Communication.getInstance().sendRequest(request, "UPDATE_BET: Request for bets placed on game is sent..");
 
                     if (response.getResponseType().equals(ResponseType.SUCCESS)) {
                         System.out.println("Bet updated successfully!");

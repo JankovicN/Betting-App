@@ -16,6 +16,7 @@ import rs.ac.bg.fon.ps.view.form.FormGame;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
+import rs.ac.bg.fon.ps.view.form.FormCancelTicket;
 import rs.ac.bg.fon.ps.view.form.FormPlayTicket;
 import rs.ac.bg.fon.ps.view.form.FormViewGames;
 
@@ -37,6 +38,7 @@ public class Controller {
     private ControllerConfirmTicket controllerConfirmTicket;
     private ControllerViewGames controllerViewGames;
     private ControllerEditGame controllerEditGame;
+    private ControllerCancelTicket controllerCancelTicket;
     private User currentUser;
 
     public Controller() {
@@ -85,6 +87,15 @@ public class Controller {
 
     public ControllerViewTicket getControllerViewTicket() {
         return controllerViewTicket;
+    }
+    
+    public void openFormCancelTicket() throws Exception {
+        this.controllerCancelTicket = new ControllerCancelTicket(new FormCancelTicket());
+        this.controllerCancelTicket.openForm();
+    }
+
+    public ControllerCancelTicket getControllerCancelTicket() {
+        return controllerCancelTicket;
     }
 
     public void openFormCreateGame() throws Exception {

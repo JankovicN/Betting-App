@@ -49,7 +49,7 @@ public class ControllerViewTicket {
         dialogViewTicket.getLblDate().setText(String.valueOf(ticket.getDate()));
         dialogViewTicket.getBtnPlayTicket().setVisible(false);
         if (!ticket.getState().equals("completed")) {
-            dialogViewTicket.getLblPassed().setText("");
+            dialogViewTicket.getLblPassed().setText("?");
         } else {
             if (ticket.isWin()) {
                 dialogViewTicket.getLblPassed().setText("WIN");

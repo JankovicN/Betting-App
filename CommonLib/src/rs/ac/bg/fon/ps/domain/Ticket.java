@@ -8,6 +8,11 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -221,13 +226,13 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return "  date= \'" + sdf.format(date) + "\',  win= " + win + ", state = \'" + state + "\'";
     }
 
     @Override
     public String getInsertValues() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return "(" + this.isWin() + ","
                 + this.getWager() + ","
                 + this.getCombinedOdds() + ","
@@ -294,7 +299,7 @@ public class Ticket implements GeneralDomainObject {
                 t.setWager(rs.getBigDecimal("wager"));
                 t.setCombinedOdds(rs.getDouble("combinedOdds"));
                 t.setPotentialWin(rs.getBigDecimal("potentialWin"));
-                t.setDate(rs.getDate("date"));
+                t.setDate(rs.getTimestamp("date"));
                 t.setState(rs.getString("state"));
                 t.setUser(u);
 
@@ -320,7 +325,34 @@ public class Ticket implements GeneralDomainObject {
                 t.setWager(rs.getBigDecimal(addAlias("wager")));
                 t.setCombinedOdds(rs.getDouble(addAlias("combinedOdds")));
                 t.setPotentialWin(rs.getBigDecimal(addAlias("potentialWin")));
-                t.setDate(rs.getDate(addAlias("date")));
+                t.setDate(rs.getTimestamp(addAlias("date")));
+                t.setState(rs.getString(addAlias("state")));
+                System.out.println("ticket -> " + t);
+                list.add(t);
+            } while (rs.next());
+            return list;
+        } else {
+            return null;
+        }
+
+    }
+    
+    public List<GeneralDomainObject> readResultSetUser(ResultSet rs) throws Exception {
+
+        List<GeneralDomainObject> list = new ArrayList<>();
+
+        if (rs.next()) {
+            do {
+                User u = new User();
+                u.setUserID(rs.getInt(u.addAlias("userID")));
+                u.setUsername(rs.getString(u.addAlias("username")));
+                Ticket t = new Ticket();
+                t.setTicketID(rs.getInt(addAlias("ticketID")));
+                t.setWin(rs.getBoolean(addAlias("win")));
+                t.setWager(rs.getBigDecimal(addAlias("wager")));
+                t.setCombinedOdds(rs.getDouble(addAlias("combinedOdds")));
+                t.setPotentialWin(rs.getBigDecimal(addAlias("potentialWin")));
+                t.setDate(rs.getTimestamp(addAlias("date")));
                 t.setState(rs.getString(addAlias("state")));
                 System.out.println("ticket -> " + t);
                 list.add(t);
@@ -368,9 +400,18 @@ public class Ticket implements GeneralDomainObject {
     }
 
     public String getProcessCondition() {
-        return getPrimaryKeyColumnName() + "=" + ticketID + " AND state = unprocessed";
+        LocalDateTime ticketLocalDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime dateTime = ticketLocalDate.minus(Duration.of(5, ChronoUnit.MINUTES));
+        Date tmfn = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return  "date <= \'" + sdf.format(tmfn) + "\' AND state = \'unprocessed\'";
     }
 
+    public String getCancelCondition(){
+        return " state = \'unprocessed\'";
+    }
+    
     public List<GeneralDomainObject> readResultSetForUpdate(ResultSet rs) throws SQLException {
 
         List<GeneralDomainObject> list = new ArrayList<>();
@@ -382,7 +423,7 @@ public class Ticket implements GeneralDomainObject {
             t.setWager(rs.getBigDecimal(t.addAlias("wager")));
             t.setCombinedOdds(rs.getDouble(t.addAlias("combinedOdds")));
             t.setPotentialWin(rs.getBigDecimal(t.addAlias("potentialWin")));
-            t.setDate(rs.getDate(t.addAlias("date")));
+            t.setDate(rs.getTimestamp(t.addAlias("date")));
             t.setState(rs.getString(t.addAlias("state")));
             ArrayList<Bet> listOfTicketBets = new ArrayList<>();
             System.out.println("ticket -> " + t);

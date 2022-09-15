@@ -27,4 +27,7 @@ public class Operations {
     public static final int GET_TICKET = 15;
     public static final int UPDATE_TICKET=16;
     public static final int UPDATE_BET=17;
+    public static final int GET_ACTIVE_GAMES=18;
+    public static final int GET_UNPROCESSED_TICKETS=19;
+    public static final int CANCEL_TICKET=20;
 }
