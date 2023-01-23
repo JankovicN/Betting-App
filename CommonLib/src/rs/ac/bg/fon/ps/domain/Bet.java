@@ -5,7 +5,14 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,20 +25,20 @@ public class Bet implements GeneralDomainObject {
     private int betID;
     private Ticket ticket;
     private double betOdds;
-    private boolean passed;
+    private String state;
     private Odds odds;
 
     public Bet() {
         this.ticket = new Ticket();
         this.odds = new Odds();
-        this.passed = false;
+        this.state = "unprocessed";
     }
 
-    public Bet(int betID, Ticket ticket, double betOdds, boolean passed, Odds odds) {
+    public Bet(int betID, Ticket ticket, double betOdds, String state, Odds odds) {
         this.betID = betID;
         this.ticket = ticket;
         this.betOdds = betOdds;
-        this.passed = passed;
+        this.state = state;
         this.odds = odds;
     }
 
@@ -59,12 +66,12 @@ public class Bet implements GeneralDomainObject {
         this.betOdds = betOdds;
     }
 
-    public boolean isPassed() {
-        return passed;
+    public String getState() {
+        return state;
     }
 
-    public void setPassed(boolean passed) {
-        this.passed = passed;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public Ticket getTicket() {
@@ -81,7 +88,7 @@ public class Bet implements GeneralDomainObject {
         hash = 43 * hash + this.betID;
         hash = 43 * hash + Objects.hashCode(this.ticket);
         hash = 43 * hash + (int) (Double.doubleToLongBits(this.betOdds) ^ (Double.doubleToLongBits(this.betOdds) >>> 32));
-        hash = 43 * hash + (this.passed ? 1 : 0);
+        hash = 43 * hash + Objects.hashCode(this.state);
         hash = 43 * hash + Objects.hashCode(this.odds);
         return hash;
     }
@@ -104,7 +111,7 @@ public class Bet implements GeneralDomainObject {
         if (Double.doubleToLongBits(this.betOdds) != Double.doubleToLongBits(other.betOdds)) {
             return false;
         }
-        if (this.passed != other.passed) {
+        if (!this.state.equals(other.state)) {
             return false;
         }
         if (!Objects.equals(this.ticket, other.ticket)) {
@@ -115,7 +122,7 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String toString() {
-        return "Ticket: " + ticket.getTicketID() + "  Passed: " + passed + "\nGame: " + odds.getGame().toString() + "   Type: " + odds.getType().toString() + "  Odds: " + betOdds;
+        return "Ticket: " + ticket.getTicketID() + "  State: " + state + "\nGame: " + odds.getGame().toString() + "   Type: " + odds.getType().toString() + "  Odds: " + betOdds;
     }
 
     @Override
@@ -125,12 +132,12 @@ public class Bet implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return "ticketID, betOdds, passed, gameID, typeID";
+        return "ticketID, betOdds, state, gameID, typeID";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("ticketID") + ", " + addAlias("betOdds") + ", " + addAlias("passed") + ", " + addAlias("gameID") + ", " + addAlias("typeID");
+        return addAlias("ticketID") + ", " + addAlias("betOdds") + ", " + addAlias("state") + ", " + addAlias("gameID") + ", " + addAlias("typeID");
     }
 
     @Override
@@ -143,18 +150,26 @@ public class Bet implements GeneralDomainObject {
         return this.addAlias(getTicket().getPrimaryKeyColumnName()) + " = " + this.getTicket().getPrimaryKey() + " AND "
                 + addAlias("gameID") + " = " + odds.getGame().getGameID() + " AND " + addAlias("typeID") + " = " + odds.getType().getTypeID();
     }
+    
+    public String getUpdateStateCondition() {
+        return this.addAlias(getTicket().getPrimaryKeyColumnName()) + " = " + this.getTicket().getPrimaryKey();
+    }
 
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
         Bet updatedBet = (Bet) gdo;
-        return addAlias("passed") + "=" + updatedBet.isPassed();
+        return addAlias("state") + "=\'" + updatedBet.getState()+"\'";
+    }
+    
+    public String getBetStateUpdateValues(){
+        return " state" + "=\'" + state+"\'";
     }
 
     @Override
     public String getInsertValues() {
         return "(" + this.getTicket().getTicketID() + ","
                 + this.getOdds().getOdds() + ","
-                + "0 ,"
+                + "\'unprocessed\' ,"
                 + this.getOdds().getGame().getGameID() + ","
                 + this.getOdds().getType().getTypeID()
                 + ")";
@@ -216,7 +231,7 @@ public class Bet implements GeneralDomainObject {
                 game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
                 game.setAway(away);
                 game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
-                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+                game.setState(rs.getString(game.addAlias("state")));
 
                 BetType bt = new BetType();
                 bt.setTypeID(rs.getInt(bt.addAlias("typeID")));
@@ -237,7 +252,7 @@ public class Bet implements GeneralDomainObject {
 
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt(t.addAlias("ticketID")));
-                t.setWin(rs.getBoolean(t.addAlias("win")));
+                t.setState(rs.getString(t.addAlias("state")));
                 t.setWager(rs.getBigDecimal(t.addAlias("wager")));
                 t.setCombinedOdds(rs.getDouble(t.addAlias("combinedOdds")));
                 t.setPotentialWin(rs.getBigDecimal(t.addAlias("potentialWin")));
@@ -249,7 +264,7 @@ public class Bet implements GeneralDomainObject {
                 b.setBetID(rs.getInt(b.addAlias("betID")));
                 b.setTicket(t);
                 b.setBetOdds(rs.getDouble(b.addAlias("betOdds")));
-                b.setPassed(rs.getBoolean(b.addAlias("passed")));
+                b.setState(rs.getString(b.addAlias("state")));
                 b.setOdds(o);
 
                 list.add(b);
@@ -266,15 +281,6 @@ public class Bet implements GeneralDomainObject {
 
         if (rs.next()) {
             do {
-                Game game = new Game();
-                game.setGameID(rs.getInt(addAlias("gameID")));
-
-                BetType bt = new BetType();
-                bt.setTypeID(rs.getInt(addAlias("typeID")));
-                Odds odds = new Odds();
-                odds.setGame(game);
-                odds.setType(bt);
-
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt(addAlias("ticketID")));
 
@@ -282,8 +288,7 @@ public class Bet implements GeneralDomainObject {
                 b.setBetID(rs.getInt(addAlias("betID")));
                 b.setTicket(t);
                 b.setBetOdds(rs.getDouble(addAlias("betOdds")));
-                b.setPassed(rs.getBoolean(addAlias("passed")));
-                b.setOdds(odds);
+                b.setState(rs.getString(addAlias("state")));
                 list.add(b);
             } while (rs.next());
             return list;
@@ -334,5 +339,16 @@ public class Bet implements GeneralDomainObject {
 
     public String getSelectConditionForGame(int gameID) {
         return addAlias("gameID") + " = " + gameID;
+    }
+    
+    public String getProcessedCondition(){
+        return addAlias("state") + " = " + "\'processed\'";
+    }
+    public String getUnprocessedCondition(){
+        return addAlias("state") + " = " + "\'unprocessed\'";
+    }
+
+    public String getProcessedAndFTCondition() {
+        return getProcessedCondition()+ " AND "+ (new Game()).addAlias("state")+ " = \'FT\'";
     }
 }

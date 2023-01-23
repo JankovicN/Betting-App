@@ -23,6 +23,7 @@ public class ServerThread extends Thread {
     ServerSocket serverSocket;
     String port;
     ProcessThread processThread;
+    UpdateGamesThread updateGamesThread;
 
     public ServerThread() throws IOException {
         readConfigProperties();
@@ -34,8 +35,8 @@ public class ServerThread extends Thread {
     public void run() {
 
         try {
-            processThread = new ProcessThread(serverSocket);
-            processThread.start();
+            initializeThreads();
+            startThreads();
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connected!");
@@ -65,5 +66,15 @@ public class ServerThread extends Thread {
         } catch (IOException e) {
             Logger.getLogger(DBConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    private void initializeThreads() throws InterruptedException {
+        processThread = new ProcessThread(serverSocket);
+        updateGamesThread = new UpdateGamesThread(serverSocket);
+    }
+
+    private void startThreads() {
+        processThread.start();
+        updateGamesThread.start();
     }
 }

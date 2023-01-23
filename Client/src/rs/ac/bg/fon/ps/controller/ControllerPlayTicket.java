@@ -138,10 +138,15 @@ public class ControllerPlayTicket {
 
     private void removeOdds(int selectedRow) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / listOfBets.get(selectedRow).getBetOdds());
-        formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f", ticket.getCombinedOdds()));
+        listOfBets.remove(selectedRow);
+        if(listOfBets.isEmpty()){
+            formPlayTicket.getLblCombinedOdds().setText("-");
+        }else{
+            formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f", ticket.getCombinedOdds()));
+        }
         formPlayTicket.getTxtWager().setText("");
         formPlayTicket.getLblPotentialWin().setText("-");
-        listOfBets.remove(selectedRow);
+        
     }
 
     private void updateBet(Bet bet) {

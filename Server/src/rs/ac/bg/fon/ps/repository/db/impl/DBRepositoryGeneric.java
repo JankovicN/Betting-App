@@ -82,7 +82,7 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
             sb.append("UPDATE ")
-                    .append(param.getTableName()).append(" SET ")
+                    .append(param.getTableName()+ " " + param.getAlias()).append(" SET ")
                     .append(param.getUpdateValues(param))
                     .append(" WHERE ")
                     .append(condition);
@@ -466,6 +466,76 @@ public class DBRepositoryGeneric implements DBRepository<GeneralDomainObject> {
             ResultSet rs = statement.executeQuery(query);
 
             return bet.readResultSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+
+    @Override
+    public List<GeneralDomainObject> getJoinForTicketCondition(GeneralDomainObject ticket, GeneralDomainObject bet, GeneralDomainObject odds, GeneralDomainObject match, GeneralDomainObject type, String condition) throws Exception {
+        
+        try {
+            String query = "SELECT * FROM " +ticket.getTableName() + " " + ticket.getAlias()
+                    + " JOIN " + bet.getTableName() + " " + bet.getAlias() + " ON " + bet.getSecondPrimarykeyColumnNameWithAlias() + "=" + ticket.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + odds.getTableName() + " " + odds.getAlias() + " ON " + bet.getForeignKeyWithAlias() + "=" + odds.getPrimaryKeyColumnNameWithAlias()
+                    + " AND " + bet.getSecondForeignKeyWithAlias() + "=" + odds.getSecondPrimarykeyColumnNameWithAlias()
+                    + " JOIN " + match.getTableName() + " " + match.getAlias() + " ON " + odds.getPrimaryKeyColumnNameWithAlias() + "=" + match.getPrimaryKeyColumnNameWithAlias()
+                    + " JOIN " + type.getTableName() + " " + type.getAlias() + " ON " + odds.getSecondPrimarykeyColumnNameWithAlias() + "=" + type.getPrimaryKeyColumnNameWithAlias()
+                    + " WHERE " + condition;
+            System.out.println(query);
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return ((Ticket)ticket).readResultSetForUpdate(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new Exception("Error getting all objects from database!");
+        }
+    }
+
+    @Override
+    public void updateJoin(GeneralDomainObject param, GeneralDomainObject foreign, String condition) throws Exception {
+        try {
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            StringBuilder sb = new StringBuilder();
+            sb.append("UPDATE ")
+                    .append(param.getAlias()).append(" SET ")
+                    .append(param.getUpdateValues(param))
+                    .append(" FROM ")
+                    .append(param.getTableName() + param.getAlias())
+                    .append(" INNER JOIN ")
+                    .append(foreign.getTableName() + foreign.getAlias())
+                    .append(" ON ")
+                    .append(param.getSecondPrimarykeyColumnNameWithAlias()+" = "+foreign.getPrimaryKeyColumnNameWithAlias())
+                    .append(" WHERE ")
+                    .append(condition);
+            String query = sb.toString();
+            System.out.println(query);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Error updating object in database!");
+        }
+    }
+
+    @Override
+    public List<GeneralDomainObject> getJoinForBet(GeneralDomainObject bet, GeneralDomainObject ticket, String ticketCondition, String betCondition) throws Exception {
+        try {
+            String query = "SELECT * FROM " + bet.getTableName() + " " + bet.getAlias()
+                    + " JOIN " + ticket.getTableName() + " " + ticket.getAlias() + " ON " + bet.getSecondPrimarykeyColumnNameWithAlias() + "=" + ticket.getPrimaryKeyColumnNameWithAlias()
+                    + " WHERE " + ticketCondition+ " AND  "+ betCondition;
+            System.out.println(query);
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            return bet.readResultSetBasic(rs);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new Exception("Error getting all objects from database!");

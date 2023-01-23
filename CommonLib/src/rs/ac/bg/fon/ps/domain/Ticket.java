@@ -28,8 +28,7 @@ public class Ticket implements GeneralDomainObject {
     private BigDecimal wager;
     private double combinedOdds;
     private BigDecimal potentialWin;
-    private Date date;
-    private boolean win;
+    private Date date; 
     private String state;
     private User user;
     private List<Bet> listOfBets;
@@ -40,18 +39,16 @@ public class Ticket implements GeneralDomainObject {
         this.user = new User();
         this.combinedOdds = 1;
         this.potentialWin = BigDecimal.ZERO;
-        this.win = false;
         this.date = new Date();
     }
 
-    public Ticket(int ticketID, BigDecimal wager, double combinedOdds, BigDecimal potentialWin, User user, Date date, boolean win, String state, List<Bet> listOfBets) {
+    public Ticket(int ticketID, BigDecimal wager, double combinedOdds, BigDecimal potentialWin, User user, Date date, String state, List<Bet> listOfBets) {
         this.ticketID = ticketID;
         this.wager = wager;
         this.combinedOdds = combinedOdds;
         this.potentialWin = potentialWin;
         this.user = user;
         this.date = date;
-        this.win = win;
         this.state = state;
         this.listOfBets = listOfBets;
     }
@@ -112,14 +109,6 @@ public class Ticket implements GeneralDomainObject {
         this.state = state;
     }
 
-    public boolean isWin() {
-        return win;
-    }
-
-    public void setWin(boolean win) {
-        this.win = win;
-    }
-
     public List<Bet> getListOfBets() {
         return listOfBets;
     }
@@ -137,7 +126,6 @@ public class Ticket implements GeneralDomainObject {
         hash = 79 * hash + Objects.hashCode(this.potentialWin);
         hash = 79 * hash + Objects.hashCode(this.user);
         hash = 79 * hash + Objects.hashCode(this.date);
-        hash = 79 * hash + (this.win ? 1 : 0);
         hash = 79 * hash + Objects.hashCode(this.state);
         hash = 79 * hash + Objects.hashCode(this.listOfBets);
         return hash;
@@ -161,9 +149,6 @@ public class Ticket implements GeneralDomainObject {
         if (Double.doubleToLongBits(this.combinedOdds) != Double.doubleToLongBits(other.combinedOdds)) {
             return false;
         }
-        if (this.win != other.win) {
-            return false;
-        }
         if (!Objects.equals(this.state, other.state)) {
             return false;
         }
@@ -184,7 +169,7 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String toString() {
-        return "TicketID: " + ticketID + "  Played on: " + date + "  Passed: " + win + "\n"
+        return "TicketID: " + ticketID + "  Played on: " + date + "\n"
                 + "Wager: " + wager + "  Combined odds: " + combinedOdds + "  Potential win: " + potentialWin;
     }
 
@@ -200,13 +185,12 @@ public class Ticket implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return " win, wager, combinedOdds, potentialWin, date, state, playedByUser";
+        return " wager, combinedOdds, potentialWin, date, state, playedByUser";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("win") + ", "
-                + addAlias("wager") + ", "
+        return addAlias("wager") + ", "
                 + addAlias("combinedOdds") + ", "
                 + addAlias("potentialWin") + ", "
                 + addAlias("date") + ","
@@ -227,14 +211,13 @@ public class Ticket implements GeneralDomainObject {
     @Override
     public String getUpdateValues(GeneralDomainObject gdo) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return "  date= \'" + sdf.format(date) + "\',  win= " + win + ", state = \'" + state + "\'";
+        return addAlias(" state ")+" = \'" + state + "\'";
     }
 
     @Override
     public String getInsertValues() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return "(" + this.isWin() + ","
-                + this.getWager() + ","
+        return "("+ this.getWager() + ","
                 + this.getCombinedOdds() + ","
                 + this.getPotentialWin() + ","
                 + "'" + sdf.format(date) + "',"
@@ -295,7 +278,6 @@ public class Ticket implements GeneralDomainObject {
 
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt("ticketID"));
-                t.setWin(rs.getBoolean("win"));
                 t.setWager(rs.getBigDecimal("wager"));
                 t.setCombinedOdds(rs.getDouble("combinedOdds"));
                 t.setPotentialWin(rs.getBigDecimal("potentialWin"));
@@ -321,7 +303,6 @@ public class Ticket implements GeneralDomainObject {
             do {
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt(addAlias("ticketID")));
-                t.setWin(rs.getBoolean(addAlias("win")));
                 t.setWager(rs.getBigDecimal(addAlias("wager")));
                 t.setCombinedOdds(rs.getDouble(addAlias("combinedOdds")));
                 t.setPotentialWin(rs.getBigDecimal(addAlias("potentialWin")));
@@ -348,7 +329,6 @@ public class Ticket implements GeneralDomainObject {
                 u.setUsername(rs.getString(u.addAlias("username")));
                 Ticket t = new Ticket();
                 t.setTicketID(rs.getInt(addAlias("ticketID")));
-                t.setWin(rs.getBoolean(addAlias("win")));
                 t.setWager(rs.getBigDecimal(addAlias("wager")));
                 t.setCombinedOdds(rs.getDouble(addAlias("combinedOdds")));
                 t.setPotentialWin(rs.getBigDecimal(addAlias("potentialWin")));
@@ -405,11 +385,15 @@ public class Ticket implements GeneralDomainObject {
         Date tmfn = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return  "date <= \'" + sdf.format(tmfn) + "\' AND state = \'unprocessed\'";
+        return  addAlias("date ")+" <= \'" + sdf.format(tmfn) + "\' AND "+addAlias(" state ")+" = \'unprocessed\'";
     }
 
     public String getCancelCondition(){
         return " state = \'unprocessed\'";
+    }
+   
+    public String getProcessedCondition(){
+        return addAlias("state")+" = \'processed\'";
     }
     
     public List<GeneralDomainObject> readResultSetForUpdate(ResultSet rs) throws SQLException {
@@ -419,7 +403,6 @@ public class Ticket implements GeneralDomainObject {
         if (rs.next()) {
             Ticket t = new Ticket();
             t.setTicketID(rs.getInt(t.addAlias("ticketID")));
-            t.setWin(rs.getBoolean(t.addAlias("win")));
             t.setWager(rs.getBigDecimal(t.addAlias("wager")));
             t.setCombinedOdds(rs.getDouble(t.addAlias("combinedOdds")));
             t.setPotentialWin(rs.getBigDecimal(t.addAlias("potentialWin")));
@@ -430,7 +413,7 @@ public class Ticket implements GeneralDomainObject {
             do {
                 Game game = new Game();
                 game.setGameID(rs.getInt(game.addAlias("gameID")));
-                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+                game.setState(rs.getString(game.addAlias("state")));
 
                 BetType bt = new BetType();
 
@@ -443,7 +426,7 @@ public class Ticket implements GeneralDomainObject {
                 b.setBetID(rs.getInt(b.addAlias("betID")));
                 b.setTicket(t);
                 b.setBetOdds(rs.getDouble(b.addAlias("betOdds")));
-                b.setPassed(rs.getBoolean(b.addAlias("passed")));
+                b.setState(rs.getString(b.addAlias("state")));
                 b.setOdds(o);
                 listOfTicketBets.add(b);
             } while (rs.next());

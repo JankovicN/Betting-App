@@ -195,7 +195,7 @@ public class Odds implements GeneralDomainObject {
                 game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
                 game.setAway(away);
                 game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
-                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+                game.setState(rs.getString(game.addAlias("state")));
 
                 BetType bt = new BetType();
                 bt.setTypeID(rs.getInt(bt.addAlias("typeID")));

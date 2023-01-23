@@ -6,25 +6,32 @@ package rs.ac.bg.fon.ps.operations.game;
 
 import java.util.ArrayList;
 import rs.ac.bg.fon.ps.domain.Game;
-import rs.ac.bg.fon.ps.domain.Odds;
+import rs.ac.bg.fon.ps.domain.Team;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 
 /**
  *
  * @author nikol
  */
-public class AddGame extends AbstractGenericOperation {
+public class GetGamesNotFinished extends AbstractGenericOperation {
 
-    int gameID = -1;
+    ArrayList<Game> listOfGames;
+
+    public GetGamesNotFinished() {
+        this.listOfGames = new ArrayList<>();
+    }
+
+    public ArrayList<Game> getListOfGames() {
+        return listOfGames;
+    }
 
     @Override
     protected void executeOperation(Object param) throws Exception {
-        ArrayList<Odds> odds = (ArrayList<Odds>) param;
-        Game game = odds.get(0).getGame();
-        gameID = repository.addReturnKey(game);
-        for (Odds odd : odds) {
-            odd.getGame().setGameID(gameID);
-            repository.add(odd);
+
+        ArrayList<Game> list = (ArrayList<Game>) repository.getAllJoinCondition(new Game(), new Team(), new Game().getNotFinishedCondition());
+
+        if (list != null) {
+            listOfGames = list;
         }
     }
 

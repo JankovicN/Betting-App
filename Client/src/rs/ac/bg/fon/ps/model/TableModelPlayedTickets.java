@@ -15,7 +15,7 @@ import rs.ac.bg.fon.ps.domain.Ticket;
 public class TableModelPlayedTickets extends AbstractTableModel {
 
     ArrayList<Ticket> listOfTickets;
-    String[] columns = new String[]{"TicketID", "Played on", "Wager", "Odds", "Potential win", "Win"};
+    String[] columns = new String[]{"TicketID", "Played on", "Wager", "Odds", "Potential win", "State"};
 
     public TableModelPlayedTickets() {
         listOfTickets = new ArrayList<>();
@@ -49,13 +49,12 @@ public class TableModelPlayedTickets extends AbstractTableModel {
                 return ticket.getPotentialWin();
             case 5:
                 if (ticket.getState().equals("processed")) {
-                    return "?";
+                    return "-";
                 } else {
-                    if (ticket.isWin()) {
+                    if (ticket.getState().equals("✓")) {
                         return "WIN";
-                    } else {
-                        return "LOST";
                     }
+                    return ticket.getState();
                 }
             default:
                 throw new AssertionError();

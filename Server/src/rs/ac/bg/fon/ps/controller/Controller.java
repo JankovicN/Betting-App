@@ -7,6 +7,7 @@ package rs.ac.bg.fon.ps.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import rs.ac.bg.fon.ps.domain.Bet;
 import rs.ac.bg.fon.ps.domain.BetType;
 import rs.ac.bg.fon.ps.domain.Game;
@@ -19,9 +20,11 @@ import rs.ac.bg.fon.ps.operations.BetType.GetAllBetTypes;
 import rs.ac.bg.fon.ps.operations.User.GetAllUsers;
 import rs.ac.bg.fon.ps.operations.User.LoginUser;
 import rs.ac.bg.fon.ps.operations.bet.GetBetsForGame;
+import rs.ac.bg.fon.ps.operations.bet.GetProcessedBets;
 import rs.ac.bg.fon.ps.operations.bet.UpdateBet;
 import rs.ac.bg.fon.ps.operations.game.AddGame;
 import rs.ac.bg.fon.ps.operations.game.GetActiveGames;
+import rs.ac.bg.fon.ps.operations.game.GetGamesNotFinished;
 import rs.ac.bg.fon.ps.operations.game.GetGamesNotStarted;
 import rs.ac.bg.fon.ps.operations.game.UpdateGame;
 import rs.ac.bg.fon.ps.operations.odds.CreateOdds;
@@ -30,6 +33,7 @@ import rs.ac.bg.fon.ps.operations.team.AddTeam;
 import rs.ac.bg.fon.ps.operations.team.GetTeams;
 import rs.ac.bg.fon.ps.operations.ticket.CancelTicket;
 import rs.ac.bg.fon.ps.operations.ticket.CreateTicket;
+import rs.ac.bg.fon.ps.operations.ticket.GetProcessedTickets;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicketWithBets;
 import rs.ac.bg.fon.ps.operations.ticket.GetUnprocessedTickets;
@@ -143,11 +147,10 @@ public class Controller {
         operation.execute(arrayList);
     }
 
-    public Game addGame(Game game) throws Exception {
+    public Game addGame(ArrayList<Odds> odds) throws Exception {
         AbstractGenericOperation operation = new AddGame();
-        operation.execute(game);
-        game.setGameID(((AddGame)operation).getGameID());
-        return game;
+        operation.execute(odds);
+        return odds.get(0).getGame();
     }
 
     public ArrayList<Odds> getOddsForGame(Game game) throws Exception {
@@ -218,4 +221,22 @@ public class Controller {
         operation.execute(new Ticket());
     }
     
+    public ArrayList<Game> getNotFinishedGames() throws Exception {
+        AbstractGenericOperation operation = new GetGamesNotFinished();
+        operation.execute(null);
+        return ((GetGamesNotFinished) operation).getListOfGames();
+    }
+    
+    public ArrayList<Bet> getProcessedBets()throws Exception {
+        AbstractGenericOperation operation = new GetProcessedBets();
+        operation.execute(new Bet());
+        return ((GetProcessedBets) operation).getListOfBets();
+    }
+
+    public List<Ticket> getProcessedTickets() throws Exception {
+        AbstractGenericOperation operation = new GetProcessedTickets();
+        operation.execute(new Ticket());
+        return ((GetProcessedTickets) operation).getListOfTickets();
+    }
+
 }

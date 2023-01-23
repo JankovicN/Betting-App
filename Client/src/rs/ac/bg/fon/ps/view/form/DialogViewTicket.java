@@ -135,7 +135,7 @@ public class DialogViewTicket extends javax.swing.JDialog {
         lblWager.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         lblWager.setText("wager");
 
-        lblPassed.setFont(new java.awt.Font("Roboto", 1, 30)); // NOI18N
+        lblPassed.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
         lblPassed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblPassed.setText("passed");
 
@@ -177,13 +177,13 @@ public class DialogViewTicket extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(lblCombinedOdds))
-                .addGap(18, 18, 18)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblWager)
                     .addComponent(lblPassed, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPlayTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(lblPotentialWin))

@@ -52,7 +52,6 @@ public class FormMain extends javax.swing.JFrame {
         menuBarAdmin = new javax.swing.JMenuBar();
         menuAdmin = new javax.swing.JMenu();
         menuItemCreateMatch = new javax.swing.JMenuItem();
-        menuItemViewMatch = new javax.swing.JMenuItem();
         menuItemCancelTicket = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -180,14 +179,6 @@ public class FormMain extends javax.swing.JFrame {
         });
         menuAdmin.add(menuItemCreateMatch);
 
-        menuItemViewMatch.setText("View Matches");
-        menuItemViewMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemViewMatchActionPerformed(evt);
-            }
-        });
-        menuAdmin.add(menuItemViewMatch);
-
         menuItemCancelTicket.setText("Cancel Ticket");
         menuItemCancelTicket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,17 +216,6 @@ public class FormMain extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_menuItemCreateMatchActionPerformed
-
-    private void menuItemViewMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemViewMatchActionPerformed
-
-        try {
-            Controller.getInstance().openFormViewGames();
-            this.dispose();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error opening window for viewing games!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_menuItemViewMatchActionPerformed
 
     private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
         // TODO add your handling code here:
@@ -320,7 +300,6 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBarAdmin;
     private javax.swing.JMenuItem menuItemCancelTicket;
     private javax.swing.JMenuItem menuItemCreateMatch;
-    private javax.swing.JMenuItem menuItemViewMatch;
     private javax.swing.JTable tblPlayedTickets;
     private javax.swing.JTextField txtDate;
     // End of variables declaration//GEN-END:variables

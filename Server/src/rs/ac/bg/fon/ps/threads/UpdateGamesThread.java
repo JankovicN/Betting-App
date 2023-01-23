@@ -4,33 +4,36 @@
  */
 package rs.ac.bg.fon.ps.threads;
 
+import static java.lang.Thread.sleep;
 import java.net.ServerSocket;
-import rs.ac.bg.fon.ps.controller.Controller;
+import rs.ac.bg.fon.ps.service.UpdateGamesService;
 
 /**
  *
  * @author nikol
  */
-public class ProcessThread extends Thread {
+public class UpdateGamesThread extends Thread {
 
     ServerSocket serverSocket;
+    private UpdateGamesService updateGamesService;
 
-    public ProcessThread(ServerSocket serverSocket) {
+    public UpdateGamesThread(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        updateGamesService = new UpdateGamesService();
     }
 
     @Override
     public void run() {
 
         try {
+            sleep(3000);
             while (!serverSocket.isClosed()) {
-                
-                Controller.getInstance().processTickets();
-                sleep(2*60000);
+                updateGamesService.update();
+
+                sleep(2 * 60000);
             }
-            System.out.println("ProcessThread: ServerSocket is closed!");
         } catch (Exception e) {
-            System.out.println("Error in process thread: \n"+e.getMessage());
+            System.out.println(e.getMessage());
         }
 
     }

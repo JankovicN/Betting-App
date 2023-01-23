@@ -101,6 +101,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
 
         btnAddGame.setBackground(new java.awt.Color(0, 102, 0));
         btnAddGame.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        btnAddGame.setForeground(new java.awt.Color(255, 255, 255));
         btnAddGame.setText("ADD GAME TO TICKET");
         btnAddGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -255,9 +256,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
 
         btnBackToMain.setBackground(new java.awt.Color(255, 255, 255));
         btnBackToMain.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnBackToMain.setIcon(new javax.swing.ImageIcon("C:\\Users\\nikol\\Pictures\\Untitled.png")); // NOI18N
         btnBackToMain.setBorder(null);
-        btnBackToMain.setRolloverIcon(new javax.swing.ImageIcon("C:\\Users\\nikol\\Pictures\\Untitled - Copy.png")); // NOI18N
         btnBackToMain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackToMainActionPerformed(evt);
@@ -310,12 +309,13 @@ public class FormPlayTicket extends javax.swing.JFrame {
                             .addComponent(txtTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnFilterByTeamName))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(rbToday)
-                            .addComponent(rbAllTime)
-                            .addComponent(btnFilterByDate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rb3Days))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnFilterByDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(rbToday)
+                                .addComponent(rbAllTime)
+                                .addComponent(rb3Days)))
                         .addGap(36, 36, 36)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnBackToMain))

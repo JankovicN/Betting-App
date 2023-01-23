@@ -16,7 +16,7 @@ public class TableModelViewTicket extends AbstractTableModel{
     
     private ArrayList<Bet> listOfBets;
 
-    private String[] columns = new String[]{"Game", "Type", "Odds", "Passed"};
+    private String[] columns = new String[]{"Game", "Type", "Odds", "State"};
 
     public TableModelViewTicket(){
         listOfBets = new ArrayList<>();
@@ -47,14 +47,14 @@ public class TableModelViewTicket extends AbstractTableModel{
                 return bet.getBetOdds();
             }
             case 3 -> {
-                System.out.println(bet.getOdds().getGame().isIsOver());
-                if (!bet.getOdds().getGame().isIsOver()){
+                System.out.println(bet.getOdds().getGame().getState());
+                if (!bet.getOdds().getGame().getState().equals("FT")){
                     return "?";
                 } else {
-                    if (bet.isPassed()) {
+                    if (bet.getState().equals("✓")) {
                         return "WIN";
                     } else {
-                        return "LOST";
+                        return "X";
                     }
                 }
             }

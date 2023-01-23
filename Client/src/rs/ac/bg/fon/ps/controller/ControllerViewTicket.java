@@ -48,10 +48,10 @@ public class ControllerViewTicket {
         dialogViewTicket.getLblTicketID().setText(String.valueOf(ticket.getTicketID()));
         dialogViewTicket.getLblDate().setText(String.valueOf(ticket.getDate()));
         dialogViewTicket.getBtnPlayTicket().setVisible(false);
-        if (!ticket.getState().equals("completed")) {
+        if (ticket.getState().equals("processed")) {
             dialogViewTicket.getLblPassed().setText("?");
         } else {
-            if (ticket.isWin()) {
+            if (ticket.getState().equals("✓")) {
                 dialogViewTicket.getLblPassed().setText("WIN");
                 dialogViewTicket.getLblPassed().setForeground(Color.GREEN);
             } else {

@@ -23,25 +23,26 @@ public class Game implements GeneralDomainObject {
     private int homeGoals;
     private Team away;
     private int awayGoals;
-    private boolean isOver;
+    private String state;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Game() {
         this.home = new Team();
         this.homeGoals = 0;
         this.away = new Team();
         this.awayGoals = 0;
-        isOver = false;
+        state = "NS";
     }
 
-    public Game(int matchID, Date dateOfPlay, Team home, int homeGoals, Team away, int awayGoals, boolean isOver) {
+    public Game(int matchID, Date dateOfPlay, Team home, int homeGoals, Team away, int awayGoals, String state) {
         this.gameID = matchID;
         this.dateOfPlay = dateOfPlay;
         this.home = home;
         this.homeGoals = homeGoals;
         this.away = away;
         this.awayGoals = awayGoals;
-        this.isOver = isOver;
+        this.state = state;
     }
 
     public Team getAway() {
@@ -92,12 +93,12 @@ public class Game implements GeneralDomainObject {
         this.awayGoals = awayGoals;
     }
 
-    public boolean isIsOver() {
-        return isOver;
+    public String getState() {
+        return state;
     }
 
-    public void setIsOver(boolean isOver) {
-        this.isOver = isOver;
+    public void setState(String state) {
+        this.state = state;
     }
 
     @Override
@@ -109,7 +110,7 @@ public class Game implements GeneralDomainObject {
         hash = 53 * hash + this.homeGoals;
         hash = 53 * hash + Objects.hashCode(this.away);
         hash = 53 * hash + this.awayGoals;
-        hash = 53 * hash + (this.isOver ? 1 : 0);
+        hash = 53 * hash + Objects.hashCode(this.state);
         return hash;
     }
 
@@ -134,7 +135,7 @@ public class Game implements GeneralDomainObject {
         if (this.awayGoals != other.awayGoals) {
             return false;
         }
-        if (this.isOver != other.isOver) {
+        if (!this.state.equals(other.state)) {
             return false;
         }
         if (!Objects.equals(this.dateOfPlay, other.dateOfPlay)) {
@@ -163,12 +164,12 @@ public class Game implements GeneralDomainObject {
 
     @Override
     public String getColumnNamesForInsert() {
-        return " dateOfPlay, home, homeGoals, away, awayGoals, isOver";
+        return " dateOfPlay, home, homeGoals, away, awayGoals, state";
     }
 
     @Override
     public String getColumnNamesForInsertWithAlias() {
-        return addAlias("gameID") + ", " + addAlias("dateOfPlay") + ", " + addAlias("home") + ", " + addAlias("homeGoals") + ", " + addAlias("away") + ", " + addAlias("awayGoals") + "," + addAlias("isOver");
+        return addAlias("gameID") + ", " + addAlias("dateOfPlay") + ", " + addAlias("home") + ", " + addAlias("homeGoals") + ", " + addAlias("away") + ", " + addAlias("awayGoals") + "," + addAlias("state-");
     }
 
     @Override
@@ -190,7 +191,7 @@ public class Game implements GeneralDomainObject {
                 + addAlias("homeGoals") + "=" + updatedGame.getHomeGoals() + ","
                 + addAlias("away") + "=" + updatedGame.getAway().getTeamID() + ","
                 + addAlias("awayGoals") + "=" + updatedGame.getAwayGoals() + ","
-                + addAlias("isOver") + "=" + updatedGame.isIsOver();
+                + addAlias("state") + "='" + updatedGame.getState()+"'";
     }
 
     @Override
@@ -202,7 +203,7 @@ public class Game implements GeneralDomainObject {
                 + this.getHomeGoals() + ","
                 + this.getAway().getTeamID() + ","
                 + this.getAwayGoals() + ","
-                + this.isIsOver() + ")";
+                + "'"+this.getState() + "')";
     }
 
     @Override
@@ -257,15 +258,14 @@ public class Game implements GeneralDomainObject {
                 Game game = new Game();
                 game.setGameID(rs.getInt(this.addAlias("gameID")));
                 String date = rs.getString(this.addAlias("dateOfPlay"));
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date sqlDate = sdf.parse(date);
+                Date sqlDate = sqlDateFormat.parse(date);
                 SimpleDateFormat sdfTableView = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                 game.setDateOfPlay(sqlDate);
                 game.setHome(homeTeam);
                 game.setHomeGoals(rs.getInt(this.addAlias("homeGoals")));
                 game.setAway(awayTeam);
                 game.setAwayGoals(rs.getInt(this.addAlias("awayGoals")));
-                game.setIsOver(rs.getBoolean(this.addAlias("isOver")));
+                game.setState(rs.getString(this.addAlias("state")));
 
                 list.add(game);
             } while (rs.next());
@@ -296,7 +296,7 @@ public class Game implements GeneralDomainObject {
                 game.setHomeGoals(rs.getInt(game.addAlias("homeGoals")));
                 game.setAway(away);
                 game.setAwayGoals(rs.getInt(game.addAlias("awayGoals")));
-                game.setIsOver(rs.getBoolean(game.addAlias("isOver")));
+                game.setState(rs.getString(game.addAlias("state")));
                 System.out.println("Game: " + game);
 
                 list.add(game);
@@ -314,8 +314,11 @@ public class Game implements GeneralDomainObject {
     }
 
     public String getNotStartedCondition() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return addAlias("dateOfPlay") + " > " + " '" + sdf.format(new Date()) + "'";
+        return addAlias("state") + " = " + " \'NS\'";
+    }
+
+    public String getNotFinishedCondition() {
+        return addAlias("state") + " != " + " \'FT\'" + " AND " + addAlias("dateOfPlay") + " < '" + sqlDateFormat.format(new Date())+"'";
     }
 
     @Override
@@ -349,7 +352,28 @@ public class Game implements GeneralDomainObject {
     }
 
     public String getActiveCondition() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return addAlias("dateOfPlay") + " > " + " '" + sdf.format(new Date()) + "' AND "+ addAlias("isOver") + " = false";
+        return addAlias("state") + " = \'NS\'";
+    }
+
+    public void setGoals() {
+        homeGoals = generateRandomNumber();
+        awayGoals = generateRandomNumber();
+    }
+
+    private int generateRandomNumber() {
+        double range = Math.random();
+
+        if (range < 0.5) {
+            return randomWithRange(0, 2);
+        } else if (range < 0.9) {
+            return randomWithRange(1, 3);
+        } else {
+            return randomWithRange(2, 6);
+        }
+    }
+
+    private int randomWithRange(int min, int max) {
+        int range = (max - min) + 1;
+        return (int) (Math.random() * range) + min;
     }
 }

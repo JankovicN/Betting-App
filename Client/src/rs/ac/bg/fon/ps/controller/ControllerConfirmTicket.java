@@ -19,6 +19,7 @@ import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.model.TableModelViewTicket;
 import rs.ac.bg.fon.ps.operations.Operations;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
+import rs.ac.bg.fon.ps.view.form.FormPlayTicket;
 
 /**
  *
@@ -85,6 +86,7 @@ public class ControllerConfirmTicket {
                 ticket = (Ticket) response.getResult();
                 JOptionPane.showMessageDialog(dialogViewTicket, "Ticket played successfully");
                 dialogViewTicket.dispose();
+                ((FormPlayTicket) dialogViewTicket.getParent()).dispose();
                 Controller.getInstance().openFormMain();
 
             } else {

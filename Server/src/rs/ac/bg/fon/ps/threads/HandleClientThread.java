@@ -190,7 +190,7 @@ public class HandleClientThread extends Thread {
     }
 
     private void createGame(Request request, Response response) throws Exception {
-        Game newGame = Controller.getInstance().addGame((Game) request.getArgument());
+        Game newGame = Controller.getInstance().addGame((ArrayList<Odds>) request.getArgument());
         System.out.println("Request for adding game was successful!");
         response.setResult(newGame);
     }

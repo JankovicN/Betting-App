@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import rs.ac.bg.fon.ps.controller.Controller;
 
@@ -42,45 +43,34 @@ public class FormGame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        lblOver = new javax.swing.JLabel();
-        rbtnOver = new javax.swing.JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         cmbHomeTeam = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         cmbAwayTeam = new javax.swing.JComboBox();
         btnCreateTeam = new javax.swing.JButton();
-        btnConfirmTeams = new javax.swing.JButton();
+        lblDateOfPlay = new javax.swing.JLabel();
+        txtDateDay = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtDateMonth = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtDateYear = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtDateMinutes = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtDateHour = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        lblTimeOfPlay = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
-        btnAddOdds = new javax.swing.JButton();
         lblTitle = new javax.swing.JLabel();
-        lblAwayGoals = new javax.swing.JLabel();
-        lblHomeGoals = new javax.swing.JLabel();
-        txtAwayGoals = new javax.swing.JTextField();
-        txtDate = new javax.swing.JTextField();
-        txtHomeGoals = new javax.swing.JTextField();
-        lblScore = new javax.swing.JLabel();
         btnBackToMain = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblOdds = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        jLabel1.setText("Date of play  ( dd.MM.yyyy HH:mm)");
-
-        lblOver.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        lblOver.setText("Is the match over?");
-
-        rbtnOver.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        rbtnOver.setText("Yes");
-        rbtnOver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnOverActionPerformed(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Team information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto Light", 1, 20))); // NOI18N
@@ -108,51 +98,151 @@ public class FormGame extends javax.swing.JFrame {
             }
         });
 
-        btnConfirmTeams.setBackground(new java.awt.Color(0, 102, 0));
-        btnConfirmTeams.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        btnConfirmTeams.setForeground(new java.awt.Color(255, 255, 255));
-        btnConfirmTeams.setText("Confirm teams");
-        btnConfirmTeams.addActionListener(new java.awt.event.ActionListener() {
+        lblDateOfPlay.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        lblDateOfPlay.setText("Date of play  ");
+
+        txtDateDay.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDateDay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateDay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfirmTeamsActionPerformed(evt);
+                txtDateDayActionPerformed(evt);
             }
         });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Day");
+
+        txtDateMonth.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDateMonth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateMonthActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Month");
+
+        txtDateYear.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDateYear.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateYearActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Year");
+
+        txtDateMinutes.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDateMinutes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateMinutes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateMinutesActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Minutes");
+
+        txtDateHour.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDateHour.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateHour.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateHourActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Hour");
+
+        lblTimeOfPlay.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        lblTimeOfPlay.setText("Time of play  ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCreateTeam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnConfirmTeams, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                        .addComponent(cmbHomeTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbAwayTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(53, 53, 53))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(lblDateOfPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDateMonth, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                                .addGap(4, 4, 4))
+                            .addComponent(txtDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTimeOfPlay)
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDateMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cmbHomeTeam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCreateTeam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbAwayTeam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDateOfPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTimeOfPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDateMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbHomeTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbAwayTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnConfirmTeams, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCreateTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         btnConfirm.setBackground(new java.awt.Color(0, 102, 0));
@@ -166,57 +256,14 @@ public class FormGame extends javax.swing.JFrame {
             }
         });
 
-        btnAddOdds.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnAddOdds.setText("ADD ODDS");
-        btnAddOdds.setPreferredSize(new java.awt.Dimension(115, 220));
-        btnAddOdds.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddOddsActionPerformed(evt);
-            }
-        });
-
         lblTitle.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("CREATE GAME");
-
-        lblAwayGoals.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        lblAwayGoals.setText("Away Goals");
-
-        lblHomeGoals.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        lblHomeGoals.setText("Home Goals");
-
-        txtAwayGoals.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        txtAwayGoals.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtAwayGoals.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAwayGoalsActionPerformed(evt);
-            }
-        });
-
-        txtDate.setFont(new java.awt.Font("Roboto", 0, 20)); // NOI18N
-        txtDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDateActionPerformed(evt);
-            }
-        });
-
-        txtHomeGoals.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        txtHomeGoals.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtHomeGoals.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtHomeGoalsActionPerformed(evt);
-            }
-        });
-
-        lblScore.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblScore.setText(":");
+        lblTitle.setText("CREATE GAME             ");
 
         btnBackToMain.setBackground(new java.awt.Color(255, 255, 255));
         btnBackToMain.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btnBackToMain.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/go_back.png"))); // NOI18N
         btnBackToMain.setBorder(null);
-        btnBackToMain.setPreferredSize(new java.awt.Dimension(75, 35));
         btnBackToMain.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/go_back_hover.png"))); // NOI18N
         btnBackToMain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -224,80 +271,51 @@ public class FormGame extends javax.swing.JFrame {
             }
         });
 
+        tblOdds.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblOdds);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(250, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(btnBackToMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnBackToMain)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnConfirm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(140, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 916, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtDate))
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(100, 100, 100)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtHomeGoals, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(16, 16, 16)
-                                        .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(15, 15, 15)
-                                        .addComponent(txtAwayGoals, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(lblOver)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbtnOver))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(lblHomeGoals)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblAwayGoals))
-                                    .addComponent(btnAddOdds, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
+                .addGap(0, 250, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(btnBackToMain, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnAddOdds, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblHomeGoals)
-                            .addComponent(lblAwayGoals))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtAwayGoals, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtHomeGoals, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblScore))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbtnOver)
-                            .addComponent(lblOver))
-                        .addGap(40, 40, 40)
-                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBackToMain, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitle))
+                .addGap(130, 130, 130)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(177, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -325,30 +343,10 @@ public class FormGame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
-    private void txtHomeGoalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHomeGoalsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtHomeGoalsActionPerformed
-
-    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDateActionPerformed
-
-    private void txtAwayGoalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAwayGoalsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAwayGoalsActionPerformed
-
-    private void btnAddOddsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOddsActionPerformed
-        Controller.getInstance().openAddOrEditOddsDialog();
-    }//GEN-LAST:event_btnAddOddsActionPerformed
-
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
 
-        Controller.getInstance().confirmAddOrEditGame();
+        Controller.getInstance().confirmGame();
     }//GEN-LAST:event_btnConfirmActionPerformed
-
-    private void btnConfirmTeamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTeamsActionPerformed
-        Controller.getInstance().getControllerCreateGame().confirmTeams();
-    }//GEN-LAST:event_btnConfirmTeamsActionPerformed
 
     private void btnCreateTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTeamActionPerformed
         try {
@@ -363,9 +361,25 @@ public class FormGame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbAwayTeamActionPerformed
 
-    private void rbtnOverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnOverActionPerformed
+    private void txtDateMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateMonthActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbtnOverActionPerformed
+    }//GEN-LAST:event_txtDateMonthActionPerformed
+
+    private void txtDateDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateDayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateDayActionPerformed
+
+    private void txtDateYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateYearActionPerformed
+
+    private void txtDateHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateHourActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateHourActionPerformed
+
+    private void txtDateMinutesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateMinutesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateMinutesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,72 +418,38 @@ public class FormGame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddOdds;
     private javax.swing.JButton btnBackToMain;
     private javax.swing.JButton btnConfirm;
-    private javax.swing.JButton btnConfirmTeams;
     private javax.swing.JButton btnCreateTeam;
     private javax.swing.JComboBox cmbAwayTeam;
     private javax.swing.JComboBox cmbHomeTeam;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblAwayGoals;
-    private javax.swing.JLabel lblHomeGoals;
-    private javax.swing.JLabel lblOver;
-    private javax.swing.JLabel lblScore;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDateOfPlay;
+    private javax.swing.JLabel lblTimeOfPlay;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JRadioButton rbtnOver;
-    private javax.swing.JTextField txtAwayGoals;
-    private javax.swing.JTextField txtDate;
-    private javax.swing.JTextField txtHomeGoals;
+    private javax.swing.JTable tblOdds;
+    private javax.swing.JTextField txtDateDay;
+    private javax.swing.JTextField txtDateHour;
+    private javax.swing.JTextField txtDateMinutes;
+    private javax.swing.JTextField txtDateMonth;
+    private javax.swing.JTextField txtDateYear;
     // End of variables declaration//GEN-END:variables
 
-    public JLabel getlblHomeGoals() {
-        return lblHomeGoals;
-    }
-
-    public JLabel getlblAwayGoals() {
-        return lblAwayGoals;
-    }
-
-    public JButton getBtnAddOdds() {
-        return btnAddOdds;
-    }
-
-    public JLabel getLblAwayGoals() {
-        return lblAwayGoals;
-    }
-
-    public JLabel getLblHomeGoals() {
-        return lblHomeGoals;
-    }
-
-    public JLabel getLblOver() {
-        return lblOver;
-    }
+    
 
     public JLabel getLblTitle() {
         return lblTitle;
     }
 
-    public JRadioButton getRbtnOver() {
-        return rbtnOver;
-    }
-
-    public JTextField getTxtAwayGoals() {
-        return txtAwayGoals;
-    }
-
-    public JTextField getTxtHomeGoals() {
-        return txtHomeGoals;
-    }
-
-    public JLabel getlblOver() {
-        return lblOver;
-    }
 
     public JComboBox getCmbAwayTeam() {
         return cmbAwayTeam;
@@ -479,17 +459,6 @@ public class FormGame extends javax.swing.JFrame {
         return cmbHomeTeam;
     }
 
-    public JTextField getTxtDate() {
-        return txtDate;
-    }
-
-    public JLabel getLblScore() {
-        return lblScore;
-    }
-
-    public JButton getBtnConfirmTeams() {
-        return btnConfirmTeams;
-    }
 
     public JButton getBtnCreateTeam() {
         return btnCreateTeam;
@@ -502,5 +471,35 @@ public class FormGame extends javax.swing.JFrame {
     public void setBtnConfirm(javax.swing.JButton btnConfirm) {
         this.btnConfirm = btnConfirm;
     }
+
+    public JTextField getTxtDateDay() {
+        return txtDateDay;
+    }
+
+    public JTextField getTxtDateHour() {
+        return txtDateHour;
+    }
+
+    public JTextField getTxtDateMinutes() {
+        return txtDateMinutes;
+    }
+
+    public JTextField getTxtDateMonth() {
+        return txtDateMonth;
+    }
+
+    public JTextField getTxtDateYear() {
+        return txtDateYear;
+    }
+
+    public JTable getTblOdds() {
+        return tblOdds;
+    }
+
+    public void setTblOdds(JTable tblOdds) {
+        this.tblOdds = tblOdds;
+    }
+    
+    
 
 }
