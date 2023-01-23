@@ -40,6 +40,7 @@ import rs.ac.bg.fon.ps.operations.ticket.GetUnprocessedTickets;
 import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
 import rs.ac.bg.fon.ps.operations.ticket.ProcessTickets;
 import rs.ac.bg.fon.ps.operations.ticket.UpdateTicket;
+import rs.ac.bg.fon.ps.view.form.FormDBConfig;
 import rs.ac.bg.fon.ps.view.form.FormServer;
 
 /**
@@ -50,6 +51,7 @@ public class Controller {
 
     private static Controller instance;
     private FormServer formServer;
+    private FormDBConfig formDBConfig;
     private final ArrayList<User> loggedInUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY HH:mm");
     
@@ -66,6 +68,15 @@ public class Controller {
     
     public void setFormServer(FormServer formServer) {
         this.formServer = formServer;
+    }
+    
+    public void openFormMain(){
+        this.formServer.setVisible(true);
+    }
+    
+    public void openDialogDBConfig() throws Exception {
+        this.formDBConfig= new FormDBConfig(formServer, false);
+        this.formDBConfig.setVisible(true);
     }
     
     public boolean isLoggedIn(User user){

@@ -175,7 +175,13 @@ public class FormServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConfigActionPerformed
-        // TODO add your handling code here:
+        try {
+            Controller.getInstance().openDialogDBConfig();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error opening window for game creation!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_itemConfigActionPerformed
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed

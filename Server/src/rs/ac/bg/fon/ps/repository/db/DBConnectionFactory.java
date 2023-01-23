@@ -48,8 +48,8 @@ public class DBConnectionFactory {
             url=properties.getURL();
             username= properties.getUsername();
             password=properties.getPassword();
-        } catch (IOException e) {
-            Logger.getLogger(DBConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Exception e) {
+            System.out.println("DBConnectionFactory Exception: \n"+e.getMessage());
         }
     }
 }

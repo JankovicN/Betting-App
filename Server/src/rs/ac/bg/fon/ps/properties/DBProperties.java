@@ -16,32 +16,35 @@ import java.util.logging.Logger;
  * @author nikol
  */
 public class DBProperties {
-    
+
     private Properties properties;
 
-    public DBProperties() throws IOException {
-        
+    public DBProperties() {
+
         try {
-            properties=new Properties();
+            properties = new Properties();
             properties.load(new FileInputStream("config/dbconfig.properties"));
         } catch (FileNotFoundException ex) {
-            
+
             //TODO if there is no file
-            Logger.getLogger(DBProperties.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("DBProperties FileNotFoundException: \n" + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("DBProperties IOException: \n" + ex.getMessage());
+        }catch (Exception ex) {
+            System.out.println("DBProperties Exception: \n" + ex.getMessage());
         }
     }
-    
+
     public String getURL() {
-       return properties.getProperty(DBConstants.DB_URL);
+        return properties.getProperty(DBConstants.DB_URL);
     }
-    
+
     public String getUsername() {
-       return properties.getProperty(DBConstants.DB_USERNAME);
+        return properties.getProperty(DBConstants.DB_USERNAME);
     }
-     
+
     public String getPassword() {
-       return properties.getProperty(DBConstants.DB_PASSWORD);
+        return properties.getProperty(DBConstants.DB_PASSWORD);
     }
-    
-    
+
 }
