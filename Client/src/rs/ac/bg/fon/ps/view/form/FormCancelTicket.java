@@ -19,6 +19,7 @@ public class FormCancelTicket extends javax.swing.JFrame {
      */
     public FormCancelTicket() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

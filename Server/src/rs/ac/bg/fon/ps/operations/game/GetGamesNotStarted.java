@@ -28,7 +28,7 @@ public class GetGamesNotStarted extends AbstractGenericOperation {
     @Override
     protected void executeOperation(Object param) throws Exception {
 
-        ArrayList<Game> list = (ArrayList<Game>) repository.getAllJoinCondition(new Game(), new Team(), new Game().getNotStartedCondition());
+        ArrayList<Game> list = (ArrayList<Game>) repository.getAllJoinCondition((Game) param, new Team(), new Game().getNotStartedCondition());
 
         if (list != null) {
             listOfGames = list;
@@ -36,8 +36,10 @@ public class GetGamesNotStarted extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Game)) {
+            throw new Exception("Invalid data for Game!");
+        }
     }
 
 }

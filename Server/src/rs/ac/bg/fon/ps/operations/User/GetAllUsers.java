@@ -30,8 +30,10 @@ public class GetAllUsers extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof User)) {
+            throw new Exception("Invalid data for User!");
+        }
     }
 
     public ArrayList<User> getListOfUsers() {

@@ -27,7 +27,6 @@ import rs.ac.bg.fon.ps.operations.game.GetActiveGames;
 import rs.ac.bg.fon.ps.operations.game.GetGamesNotFinished;
 import rs.ac.bg.fon.ps.operations.game.GetGamesNotStarted;
 import rs.ac.bg.fon.ps.operations.game.UpdateGame;
-import rs.ac.bg.fon.ps.operations.odds.CreateOdds;
 import rs.ac.bg.fon.ps.operations.odds.GetOddsForGame;
 import rs.ac.bg.fon.ps.operations.team.AddTeam;
 import rs.ac.bg.fon.ps.operations.team.GetTeams;
@@ -153,11 +152,6 @@ public class Controller {
         return listOfBetTypes;
     }
 
-    public void createOdds(ArrayList<Odds> arrayList) throws Exception {
-        AbstractGenericOperation operation = new CreateOdds();
-        operation.execute(arrayList);
-    }
-
     public Game addGame(ArrayList<Odds> odds) throws Exception {
         AbstractGenericOperation operation = new AddGame();
         operation.execute(odds);
@@ -172,14 +166,14 @@ public class Controller {
 
     public ArrayList<Game> getGamesNotStarted() throws Exception {
         AbstractGenericOperation operation = new GetGamesNotStarted();
-        operation.execute(null);
+        operation.execute(new Game());
         return ((GetGamesNotStarted) operation).getListOfGames();
         
     }
 
-    public Ticket createTicket(ArrayList<Bet> listOfBets) throws Exception {
+    public Ticket createTicket(Ticket ticket) throws Exception {
         AbstractGenericOperation operation = new CreateTicket();
-        operation.execute(listOfBets);
+        operation.execute(ticket);
         return((CreateTicket) operation).getTicket();
     }
 
@@ -212,7 +206,7 @@ public class Controller {
 
     public ArrayList<Game> getActiveGames() throws Exception {
         AbstractGenericOperation operation = new GetActiveGames();
-        operation.execute(null);
+        operation.execute(new Game());
         return ((GetActiveGames) operation).getListOfGames();
     }
 
@@ -234,7 +228,7 @@ public class Controller {
     
     public ArrayList<Game> getNotFinishedGames() throws Exception {
         AbstractGenericOperation operation = new GetGamesNotFinished();
-        operation.execute(null);
+        operation.execute(new Game());
         return ((GetGamesNotFinished) operation).getListOfGames();
     }
     

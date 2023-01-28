@@ -90,9 +90,6 @@ public class HandleClientThread extends Thread {
             case Operations.GET_BETTYPE:
                 getBetType(request, response);
                 break;
-            case Operations.CREATE_ODDS:
-                createOdds(request, response);
-                break;
             case Operations.CREATE_GAME:
                 createGame(request, response);
                 break;
@@ -119,9 +116,6 @@ public class HandleClientThread extends Thread {
                 break;
             case Operations.UPDATE_TICKET:
                 updateTicket(request, response);
-                break;
-            case Operations.UPDATE_BET:
-                updateBet(request, response);
                 break;
             case Operations.GET_UNPROCESSED_TICKETS:
                 getUnprocessedTickets(request, response);
@@ -184,11 +178,6 @@ public class HandleClientThread extends Thread {
         response.setResult(listOfBetTypes);
     }
 
-    private void createOdds(Request request, Response response) throws Exception {
-        Controller.getInstance().createOdds((ArrayList<Odds>) request.getArgument());
-        System.out.println("Request for rreating odds was successful!");
-    }
-
     private void createGame(Request request, Response response) throws Exception {
         Game newGame = Controller.getInstance().addGame((ArrayList<Odds>) request.getArgument());
         System.out.println("Request for adding game was successful!");
@@ -208,7 +197,7 @@ public class HandleClientThread extends Thread {
     }
 
     private void createTicket(Request request, Response response) throws Exception {
-        Ticket ticket = Controller.getInstance().createTicket((ArrayList<Bet>) request.getArgument());
+        Ticket ticket = Controller.getInstance().createTicket((Ticket) request.getArgument());
         System.out.println("Request for creting ticket was successful");
         response.setResult(ticket);
     }
@@ -235,10 +224,6 @@ public class HandleClientThread extends Thread {
         System.out.println("Request for updating Ticket was successful");
     }
 
-    private void updateBet(Request request, Response response) throws Exception {
-        Controller.getInstance().updateBet((Bet) request.getArgument());
-        System.out.println("Request for updating Bet was successful");
-    }
 
     private void getActiveGames(Request request, Response response) throws Exception {
         ArrayList<Game> listOfGames = Controller.getInstance().getActiveGames();

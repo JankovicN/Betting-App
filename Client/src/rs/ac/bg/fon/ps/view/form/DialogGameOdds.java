@@ -20,6 +20,7 @@ public class DialogGameOdds extends javax.swing.JDialog {
     public DialogGameOdds(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

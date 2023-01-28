@@ -4,6 +4,7 @@
  */
 package rs.ac.bg.fon.ps.operations.bet;
 
+import java.util.ArrayList;
 import rs.ac.bg.fon.ps.domain.Bet;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 
@@ -20,8 +21,11 @@ public class UpdateBet extends AbstractGenericOperation{
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        
+        if (param == null || !(param instanceof Bet)) {
+            throw new Exception("Invalid data for Bet!");
+        }
     }
     
 }

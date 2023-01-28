@@ -10,12 +10,14 @@ import rs.ac.bg.fon.ps.domain.Game;
 import rs.ac.bg.fon.ps.domain.Odds;
 import rs.ac.bg.fon.ps.domain.Ticket;
 import rs.ac.bg.fon.ps.domain.User;
+import rs.ac.bg.fon.ps.view.form.DialogAlterGame;
 import rs.ac.bg.fon.ps.view.form.DialogCreateTeam;
 import rs.ac.bg.fon.ps.view.form.DialogGameOdds;
 import rs.ac.bg.fon.ps.view.form.FormGame;
 import rs.ac.bg.fon.ps.view.form.FormLogin;
 import rs.ac.bg.fon.ps.view.form.FormMain;
 import rs.ac.bg.fon.ps.view.form.DialogViewTicket;
+import rs.ac.bg.fon.ps.view.form.FormAllGames;
 import rs.ac.bg.fon.ps.view.form.FormCancelTicket;
 import rs.ac.bg.fon.ps.view.form.FormPlayTicket;
 
@@ -35,6 +37,8 @@ public class Controller {
     private ControllerPlayTicket controllerPlayTicket;
     private ControllerConfirmTicket controllerConfirmTicket;
     private ControllerCancelTicket controllerCancelTicket;
+    private ControllerAllGames controllerAllGames;
+    private ControllerAlterGame controllerAlterGame;
     private User currentUser;
 
     public Controller() {
@@ -143,6 +147,24 @@ public class Controller {
 
     public ControllerGameOdds getControllerGameOdds() {
         return controllerGameOdds;
+    }
+
+    public void openFormAllGames() throws Exception {
+        this.controllerAllGames = new ControllerAllGames(new FormAllGames());
+        this.controllerAllGames.openForm();
+    }
+
+    public ControllerAllGames getControllerAllGames() {
+        return controllerAllGames;
+    }
+
+    public void openDialogAlterGame() throws Exception {
+        this.controllerAlterGame = new ControllerAlterGame(controllerAllGames.getSelectedGame(), new DialogAlterGame(this.controllerAllGames.getFormAllGames(), false));
+        this.controllerAlterGame.openForm();
+    }
+
+    public ControllerAlterGame getControllerAlterGame() {
+        return controllerAlterGame;
     }
 
 }

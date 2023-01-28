@@ -28,7 +28,7 @@ public class GetUnprocessedTickets extends AbstractGenericOperation {
     @Override
     protected void executeOperation(Object param) throws Exception {
         
-        ArrayList<Ticket> list =(ArrayList<Ticket>) repository.getAllJoinConditionBasic(new Ticket(),new User(), (new Ticket()).getCancelCondition());
+        ArrayList<Ticket> list =(ArrayList<Ticket>) repository.getAllJoinConditionBasic((Ticket) param,new User(), (new Ticket()).getCancelCondition());
         
         if(list!=null){
             listOfTickets=list;
@@ -36,7 +36,9 @@ public class GetUnprocessedTickets extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Ticket)) {
+            throw new Exception("Invalid data for Ticket!");
+        }
     }
 }

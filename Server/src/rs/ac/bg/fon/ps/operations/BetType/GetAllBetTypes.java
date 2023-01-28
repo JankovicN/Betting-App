@@ -26,7 +26,7 @@ public class GetAllBetTypes extends AbstractGenericOperation{
        
     @Override
     protected void executeOperation(Object param) throws Exception {
-         ArrayList<BetType> list = (ArrayList<BetType>) repository.getAll(new BetType());
+         ArrayList<BetType> list = (ArrayList<BetType>) repository.getAll((BetType)param);
 
         if (list != null) {
             this.listOfBetTypes = list;
@@ -34,8 +34,10 @@ public class GetAllBetTypes extends AbstractGenericOperation{
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof BetType)) {
+            throw new Exception("Invalid data for User!");
+        }
     }
     
 }

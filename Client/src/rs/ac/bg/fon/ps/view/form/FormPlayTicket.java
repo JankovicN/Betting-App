@@ -63,6 +63,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
         rbAllTime = new javax.swing.JRadioButton();
         btnFilterByDate = new javax.swing.JButton();
         btnBackToMain = new javax.swing.JButton();
+        btnBackToMain1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,7 +183,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -263,6 +264,17 @@ public class FormPlayTicket extends javax.swing.JFrame {
             }
         });
 
+        btnBackToMain1.setBackground(new java.awt.Color(255, 255, 255));
+        btnBackToMain1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnBackToMain1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/go_back.png"))); // NOI18N
+        btnBackToMain1.setBorder(null);
+        btnBackToMain1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/go_back_hover.png"))); // NOI18N
+        btnBackToMain1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackToMain1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -270,7 +282,9 @@ public class FormPlayTicket extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(btnBackToMain)
-                .addGap(74, 74, 74)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBackToMain1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnAddGame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -282,9 +296,9 @@ public class FormPlayTicket extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(rbAllTime)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                                 .addComponent(rbToday)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                                 .addComponent(rb3Days))
                             .addComponent(txtTeam))
                         .addGap(18, 18, 18)
@@ -299,10 +313,15 @@ public class FormPlayTicket extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGap(24, 24, 24)
+                        .addComponent(btnBackToMain))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(btnBackToMain1))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -317,8 +336,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
                                 .addComponent(rbAllTime)
                                 .addComponent(rb3Days)))
                         .addGap(36, 36, 36)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnBackToMain))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(54, 54, 54)
                 .addComponent(btnAddGame, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -397,6 +415,16 @@ public class FormPlayTicket extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTeamActionPerformed
 
+    private void btnBackToMain1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMain1ActionPerformed
+        try {
+            Controller.getInstance().openFormMain();
+            this.dispose();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error returning to Main window!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBackToMain1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -436,6 +464,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
     private javax.swing.ButtonGroup bgDate;
     private javax.swing.JButton btnAddGame;
     private javax.swing.JButton btnBackToMain;
+    private javax.swing.JButton btnBackToMain1;
     private javax.swing.JButton btnFilterByDate;
     private javax.swing.JButton btnFilterByTeamName;
     private javax.swing.JButton btnPlayTicket;

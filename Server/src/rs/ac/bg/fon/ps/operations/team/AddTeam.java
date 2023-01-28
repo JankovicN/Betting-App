@@ -23,8 +23,10 @@ public class AddTeam extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Team)) {
+            throw new Exception("Invalid data for Team!");
+        }
     }
 
     public int getTeamID() {

@@ -34,7 +34,7 @@ public class GetProcessedBets  extends AbstractGenericOperation {
     protected void executeOperation(Object param) throws Exception {
 
         ArrayList<Bet> processedBets = 
-                (ArrayList<Bet>) repository.getAllJoin(new Bet(),
+                (ArrayList<Bet>) repository.getAllJoin((Bet)param ,
                         new Odds(), new Game(), new BetType(), new Team(), new Ticket(),new User(), 
                         (new Bet()).getProcessedAndFTCondition());
         if(processedBets!=null){
@@ -43,8 +43,10 @@ public class GetProcessedBets  extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Bet)) {
+            throw new Exception("Invalid data for Bet!");
+        }
     }
 
 }

@@ -36,8 +36,10 @@ public class GetGamesNotFinished extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Game)) {
+            throw new Exception("Invalid data for Game!");
+        }
     }
 
 }

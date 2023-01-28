@@ -20,8 +20,23 @@ public class UpdateGame extends AbstractGenericOperation{
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Game)) {
+            throw new Exception("Invalid data for Game!");
+        }
+        Game game = (Game) param;
+        if(game.getGameID()<=0){
+            throw new Exception("Invalid id for Game!");
+        }
+        if(game.getHome() == null ){
+            throw new Exception("Invalid data for home Team!");
+        }
+        if(game.getAway()== null ){
+            throw new Exception("Invalid data for away Team!");
+        }
+        if(game.getAway().getTeamName().equals(game.getHome().getTeamName())){
+            throw new Exception("Home and away must be different for game!");
+        }
     }
     
 }

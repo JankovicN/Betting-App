@@ -24,7 +24,7 @@ public abstract class AbstractGenericOperation {
     public final void execute(Object param) throws Exception{
     
         try {
-            precondicions(param);
+            preconditions(param);
             startTransaction();
             executeOperation(param);
             commitTransaction();
@@ -55,7 +55,7 @@ public abstract class AbstractGenericOperation {
         ((DBRepository)repository).connect();
     }
 
-    protected abstract void precondicions(Object param) throws Exception;
+    protected abstract void preconditions(Object param) throws Exception;
     
     
 }

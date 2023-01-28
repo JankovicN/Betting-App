@@ -29,8 +29,34 @@ public class AddGame extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof ArrayList)) {
+            throw new Exception("Invalid data for List of odds for game!");
+        }
+        ArrayList<Odds> odds = (ArrayList<Odds>) param;
+        if (odds.get(0) instanceof Odds) {
+            throw new Exception("Invalid data for Odds!");
+        }
+        
+        Game game =odds.get(0).getGame();
+        if (game instanceof Game) {
+            throw new Exception("Invalid data for Game!");
+        }
+        
+        for (Odds odd : odds) {
+            if(odd.getOdds()<1){
+                throw new Exception("Invalid data for Odds value!");
+            }
+        }
+        if(game.getHome() == null ){
+            throw new Exception("Invalid data for Home Team!");
+        }
+        if(game.getAway()== null ){
+            throw new Exception("Invalid data for Away Team!");
+        }
+        if(game.getAway().getTeamName().equals(game.getHome().getTeamName())){
+            throw new Exception("Home and Away must be different for Game!");
+        }
     }
 
 }

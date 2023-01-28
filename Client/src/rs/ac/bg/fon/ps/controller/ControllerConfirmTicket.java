@@ -79,7 +79,7 @@ public class ControllerConfirmTicket {
 
     public void playTicket() {
         try {
-            Request request = new Request(Operations.CREATE_TICKET, ticket.getListOfBets());
+            Request request = new Request(Operations.CREATE_TICKET, ticket);
             Response response = Communication.getInstance().sendRequest(request, "Request for creating ticket is sent..");
 
             if (response.getResponseType().equals(ResponseType.SUCCESS)) {

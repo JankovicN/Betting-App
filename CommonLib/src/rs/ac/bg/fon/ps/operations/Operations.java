@@ -16,7 +16,6 @@ public class Operations {
     public static final int GET_TEAMS = 4;
     public static final int ADD_TEAM = 5;
     public static final int GET_BETTYPE = 6;
-    public static final int CREATE_ODDS = 7;
     public static final int CREATE_GAME = 8;
     public static final int GET_ODDS = 9;
     public static final int GET_GAMES_NOT_STARTED = 10;

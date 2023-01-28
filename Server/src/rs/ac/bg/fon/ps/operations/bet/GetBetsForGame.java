@@ -42,8 +42,10 @@ public class GetBetsForGame extends AbstractGenericOperation {
     }
 
     @Override
-    protected void precondicions(Object param) throws Exception {
-        return;
+    protected void preconditions(Object param) throws Exception {
+        if (param == null || !(param instanceof Integer) || (int)param<0) {
+            throw new Exception("Invalid Game id!");
+        }
     }
 
 }
