@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.operations;
 
 import java.sql.SQLException;
+import rs.ac.bg.fon.ps.domain.GeneralDomainObject;
 import rs.ac.bg.fon.ps.repository.Repository;
 import rs.ac.bg.fon.ps.repository.db.DBRepository;
 import rs.ac.bg.fon.ps.repository.db.impl.DBRepositoryGeneric;

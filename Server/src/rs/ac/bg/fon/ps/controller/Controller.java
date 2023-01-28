@@ -33,7 +33,6 @@ import rs.ac.bg.fon.ps.operations.team.GetTeams;
 import rs.ac.bg.fon.ps.operations.ticket.CancelTicket;
 import rs.ac.bg.fon.ps.operations.ticket.CreateTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetProcessedTickets;
-import rs.ac.bg.fon.ps.operations.ticket.GetTicket;
 import rs.ac.bg.fon.ps.operations.ticket.GetTicketWithBets;
 import rs.ac.bg.fon.ps.operations.ticket.GetUnprocessedTickets;
 import rs.ac.bg.fon.ps.operations.ticket.GetUserTickets;
@@ -184,15 +183,12 @@ public class Controller {
 
     public ArrayList<Bet> getBetsForGame(int gameID) throws Exception {
         AbstractGenericOperation operation = new GetBetsForGame();
-        operation.execute(gameID);
+        Game game = new Game();
+        game.setGameID(gameID);
+        operation.execute(game);
         return ((GetBetsForGame) operation).getListOfBets();
     }
 
-    public Ticket getTicket(int ticketID) throws Exception {
-        AbstractGenericOperation operation = new GetTicket();
-        operation.execute(ticketID);
-        return ((GetTicket) operation).getTicket();
-    }
 
     public void updateTicket(Ticket ticket) throws Exception {
         AbstractGenericOperation operation = new UpdateTicket();

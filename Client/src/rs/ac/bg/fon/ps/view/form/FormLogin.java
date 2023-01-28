@@ -131,9 +131,12 @@ public class FormLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Welcome " + user.getUsername() + "!");
             this.dispose();
             Controller.getInstance().openFormMain();
-        } catch (Exception ex) {
+        } catch (java.net.ConnectException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Login error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error logging in, please try again", "Login error", JOptionPane.ERROR_MESSAGE);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Invalid credentials", "Login error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed

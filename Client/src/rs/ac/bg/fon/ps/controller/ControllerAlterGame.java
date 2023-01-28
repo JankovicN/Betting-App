@@ -74,7 +74,7 @@ public class ControllerAlterGame {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error filling CMB: \n" + e.getMessage());
+            JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da učita utakmicu!", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -100,7 +100,7 @@ public class ControllerAlterGame {
         dialogAlterGame.getTxtDateMinutes().setText(String.valueOf(minute));
     }
 
-    public void addDate() {
+    public Date getDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             String day = dialogAlterGame.getTxtDateDay().getText();
@@ -110,10 +110,11 @@ public class ControllerAlterGame {
             String minutes = dialogAlterGame.getTxtDateMinutes().getText();
             String dateString = day + "." + month + "." + year + " " + hours + ":" + minutes;
             Date date = sdf.parse(dateString);
-            game.setDateOfPlay(date);
+            return date;
         } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(dialogAlterGame, "Invalid date format!\n Date must be in format dd.MM.yyyy HH:mm\n dd - days, MM - months yyyy - years\n HH - hours, mm - minutes", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da učita utakmicu!", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
+        return new Date();
     }
 
     public boolean compareTeams() {
@@ -124,41 +125,43 @@ public class ControllerAlterGame {
         return game.getHome().getTeamName() != null && game.getAway().getTeamName() != null;
     }
 
-    public void updateGame(){
-        createGame();
-        try {
+    public void updateGame() {
+        if (validate()) {
+            createGame();
+            try {
                 Request request = new Request(Operations.UPDATE_GAME, game);
                 Response response = Communication.getInstance().sendRequest(request, "Request for updating game is sent..");
 
                 if (response.getResponseType().equals(ResponseType.SUCCESS)) {
-                    dialogAlterGame.dispose();
+                    JOptionPane.showMessageDialog(dialogAlterGame, "Sistem je zapamtio utakmicu");
                     Controller.getInstance().getControllerAllGames().refreshTable();
                 } else {
+                    JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da zapamti utakmicu!\n", "Error updating game ", JOptionPane.ERROR_MESSAGE);
                     throw response.getException();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(dialogAlterGame, "Error updating game!\n" + ex.getMessage(), "Error updating game ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da zapamti utakmicu!\n", "Error updating game ", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da zapamti utakmicu!", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
+
     private void createGame() {
         try {
-            if (validate()) {
-                game.setHome((Team) dialogAlterGame.getCmbHomeTeam().getSelectedItem());
-                game.setAway((Team) dialogAlterGame.getCmbAwayTeam().getSelectedItem());
-                addDate();
-            } else {
-                JOptionPane.showMessageDialog(dialogAlterGame, "You must choose two different teams!", "Information", JOptionPane.OK_OPTION);
-            }
+            game.setHome((Team) dialogAlterGame.getCmbHomeTeam().getSelectedItem());
+            game.setAway((Team) dialogAlterGame.getCmbAwayTeam().getSelectedItem());
+            game.setDateOfPlay(getDate());
+
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(dialogAlterGame, "Error confirming teams!\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialogAlterGame, "Sistem ne može da zapamti utakmicu!\n", "Error updating game ", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private boolean checkDate() {
-        return game.getDateOfPlay().after(new Date());
+        return getDate().after(new Date());
     }
 
     private boolean validate() {

@@ -386,7 +386,7 @@ public class FormPlayTicket extends javax.swing.JFrame {
             Controller.getInstance().openDialogConfirmTicket();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error confiriming ticket.\n Please try again!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da zapamti tiket!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnPlayTicketActionPerformed

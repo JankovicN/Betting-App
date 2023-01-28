@@ -139,14 +139,14 @@ public class ControllerPlayTicket {
     private void removeOdds(int selectedRow) {
         ticket.setCombinedOdds(ticket.getCombinedOdds() / listOfBets.get(selectedRow).getBetOdds());
         listOfBets.remove(selectedRow);
-        if(listOfBets.isEmpty()){
+        if (listOfBets.isEmpty()) {
             formPlayTicket.getLblCombinedOdds().setText("-");
-        }else{
+        } else {
             formPlayTicket.getLblCombinedOdds().setText(String.format("$,.2f", ticket.getCombinedOdds()));
         }
         formPlayTicket.getTxtWager().setText("");
         formPlayTicket.getLblPotentialWin().setText("-");
-        
+
     }
 
     private void updateBet(Bet bet) {
@@ -163,9 +163,9 @@ public class ControllerPlayTicket {
         if (selected != -1) {
             tmnt.removeBet(selected);
             removeOdds(selected);
-            JOptionPane.showMessageDialog(formPlayTicket, "Bet removed");
+            JOptionPane.showMessageDialog(formPlayTicket, "Uspesno uklonjena kvota!");
         } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "No bet seleceted!\n Please select the bet you want to remove!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "Kvota nije odabrana!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -178,7 +178,7 @@ public class ControllerPlayTicket {
         if (selected != -1) {
             return listOfGames.get(selected);
         } else {
-            JOptionPane.showMessageDialog(formPlayTicket, "No game seleceted\n Please select a game!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "Utakmica nije odabrana!", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -188,6 +188,9 @@ public class ControllerPlayTicket {
         Game game = getSelectedGame();
         if (game != null) {
             Controller.getInstance().openDialogGameOdds();
+            JOptionPane.showMessageDialog(formPlayTicket, "Sistem je ucitao utakmicu!");
+        } else {
+            JOptionPane.showMessageDialog(formPlayTicket, "Sistem ne moze da ucita podatke o izabranoj utakmici!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -202,6 +205,11 @@ public class ControllerPlayTicket {
             }
         }
         setupTableGames(filteredList);
+        if (filteredList.size() > 0) {
+            JOptionPane.showMessageDialog(formPlayTicket, "Sistem je nasao utakmice po zadatoj vrednosti");
+        } else {
+            JOptionPane.showMessageDialog(formPlayTicket, "Sistem nije nasao utakmicu po zadatoj vrednosti", "Invalid input!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void setupTableGames(ArrayList<Game> listOfGames) {
@@ -245,11 +253,16 @@ public class ControllerPlayTicket {
                     }
                 }
                 setupTableGames(filteredList);
+                if (filteredList.size() > 0) {
+                    JOptionPane.showMessageDialog(formPlayTicket, "Sistem je nasao utakmice po zadatoj vrednosti");
+                } else {
+                    JOptionPane.showMessageDialog(formPlayTicket, "Sistem nije nasao utakmicu po zadatoj vrednosti", "Invalid input!", JOptionPane.ERROR_MESSAGE);
+                }
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(formPlayTicket, "Error filtering games", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "Greska pri pretrayivanju utakmice", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -264,7 +277,7 @@ public class ControllerPlayTicket {
             formPlayTicket.getLblPotentialWin().setText(df.format(potentialWin));
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(formPlayTicket, "Wager must be a number!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formPlayTicket, "Ulog mora biti broj!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

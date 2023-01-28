@@ -34,12 +34,17 @@ public class ControllerCreateTeam {
         this.dialogCreateTeam.setVisible(true);
     }
 
-    public void addTeam(String teamName) {
+    public boolean addTeam(String teamName) {
 
+        if(teamName.length()==0){
+            
+                JOptionPane.showMessageDialog(dialogCreateTeam, "Sistem ne moze da zapamti tim!", "Information", JOptionPane.OK_OPTION);
+                return false;
+        }
         for (Team team : teams) {
             if (team.getTeamName().equals(teamName)) {
-                JOptionPane.showMessageDialog(dialogCreateTeam, "Team already exists!", "Information", JOptionPane.OK_OPTION);
-                return;
+                JOptionPane.showMessageDialog(dialogCreateTeam, "Tim vec postoji!", "Information", JOptionPane.OK_OPTION);
+                return false;
             }
         }
         try {
@@ -54,6 +59,8 @@ public class ControllerCreateTeam {
 
                 cmbAwayTeam.addItem(newTeam);
                 cmbHomeTeam.addItem(newTeam);
+                JOptionPane.showMessageDialog(dialogCreateTeam, "Sistem je zapamtio tim!");
+                return true;
 
             } else {
                 throw response.getException();
@@ -62,6 +69,7 @@ public class ControllerCreateTeam {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(dialogCreateTeam, "Error adding team!\n" + ex.getMessage(), "Error adding team! ", JOptionPane.ERROR_MESSAGE);
+                return false;
         }
     }
 

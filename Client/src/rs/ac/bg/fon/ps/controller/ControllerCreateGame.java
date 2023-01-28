@@ -162,6 +162,7 @@ public class ControllerCreateGame {
 
                 if (response.getResponseType().equals(ResponseType.SUCCESS)) {
                     Controller.getInstance().getControllerMain().openForm();
+                    JOptionPane.showMessageDialog(formCreateGame, "Game saved!\n");
                     formCreateGame.dispose();
                 } else {
                     throw response.getException();
@@ -173,7 +174,7 @@ public class ControllerCreateGame {
             }
 
         } else {
-            JOptionPane.showMessageDialog(formCreateGame, "Please confirm teams and add odds to create game! :D", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(formCreateGame, "Sistem ne moze da sacuva utakmicu", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }

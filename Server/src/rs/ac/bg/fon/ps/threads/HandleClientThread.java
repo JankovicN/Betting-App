@@ -111,9 +111,6 @@ public class HandleClientThread extends Thread {
             case Operations.GET_BETS_FOR_GAME:
                 getBetsForGame(request, response);
                 break;
-            case Operations.GET_TICKET:
-                getTicket(request, response);
-                break;
             case Operations.UPDATE_TICKET:
                 updateTicket(request, response);
                 break;
@@ -213,11 +210,6 @@ public class HandleClientThread extends Thread {
         response.setResult(listOfBets);
     }
 
-    private void getTicket(Request request, Response response) throws Exception {
-        Ticket ticket = Controller.getInstance().getTicket((int) request.getArgument());
-        System.out.println("Request for ticket by id was successful");
-        response.setResult(ticket);
-    }
 
     private void updateTicket(Request request, Response response) throws Exception {
         Controller.getInstance().updateTicket((Ticket) request.getArgument());

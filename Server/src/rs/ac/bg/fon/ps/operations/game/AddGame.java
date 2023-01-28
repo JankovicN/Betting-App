@@ -34,12 +34,12 @@ public class AddGame extends AbstractGenericOperation {
             throw new Exception("Invalid data for List of odds for game!");
         }
         ArrayList<Odds> odds = (ArrayList<Odds>) param;
-        if (odds.get(0) instanceof Odds) {
+        if (!(odds.get(0) instanceof Odds)) {
             throw new Exception("Invalid data for Odds!");
         }
         
         Game game =odds.get(0).getGame();
-        if (game instanceof Game) {
+        if (!(game instanceof Game)) {
             throw new Exception("Invalid data for Game!");
         }
         

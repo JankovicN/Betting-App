@@ -32,9 +32,8 @@ public class GetBetsForGame extends AbstractGenericOperation {
 
     @Override
     protected void executeOperation(Object param) throws Exception {
-
-        int gameID =  (int) param;
-        ArrayList<Bet> betsForGame = (ArrayList<Bet>) repository.getAllJoin(new Bet(),new Odds(), new Game(), new BetType(), new Team(), new Ticket(),new User(), (new Bet()).getSelectConditionForGame(gameID));
+        Game game = (Game) param;
+        ArrayList<Bet> betsForGame = (ArrayList<Bet>) repository.getAllJoin(new Bet(),new Odds(), new Game(), new BetType(), new Team(), new Ticket(),new User(), (new Bet()).getSelectConditionForGame(game.getGameID()));
         System.out.println(betsForGame);
         if(betsForGame!=null){
             listOfBets=betsForGame;
@@ -43,7 +42,7 @@ public class GetBetsForGame extends AbstractGenericOperation {
 
     @Override
     protected void preconditions(Object param) throws Exception {
-        if (param == null || !(param instanceof Integer) || (int)param<0) {
+        if (param == null || !(param instanceof Game) ) {
             throw new Exception("Invalid Game id!");
         }
     }

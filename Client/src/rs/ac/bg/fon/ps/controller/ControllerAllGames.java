@@ -98,7 +98,11 @@ public class ControllerAllGames {
                 addGameToList(filteredList, g);
             }
         }
-        setupTableGames(filteredList);
+        if (filteredList.size() == 0) {
+            JOptionPane.showMessageDialog(formAllGames, "Sistem ne moze da nađe utakmicu po zadatoj vrednosti", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        } else {
+            setupTableGames(filteredList);
+        }
     }
 
     public void setupTableGames(ArrayList<Game> listOfGames) {
@@ -161,7 +165,11 @@ public class ControllerAllGames {
                         }
                     }
                 }
-                setupTableGames(filteredList);
+                if (filteredList.size() == 0) {
+                    JOptionPane.showMessageDialog(formAllGames, "Sistem ne moze da nađe utakmicu po zadatoj vrednosti", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    setupTableGames(filteredList);
+        }
             }
 
         } catch (Exception ex) {
@@ -170,9 +178,9 @@ public class ControllerAllGames {
         }
     }
 
-
     void refreshTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        setupForm();
     }
+
 
 }

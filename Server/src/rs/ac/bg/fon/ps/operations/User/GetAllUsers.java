@@ -5,6 +5,7 @@
 package rs.ac.bg.fon.ps.operations.User;
 
 import java.util.ArrayList;
+import rs.ac.bg.fon.ps.domain.GeneralDomainObject;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.operations.AbstractGenericOperation;
 

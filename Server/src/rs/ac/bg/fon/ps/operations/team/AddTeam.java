@@ -27,6 +27,10 @@ public class AddTeam extends AbstractGenericOperation {
         if (param == null || !(param instanceof Team)) {
             throw new Exception("Invalid data for Team!");
         }
+        
+        Team newTeam = (Team) param;
+        if(newTeam.getTeamName().length()==0)
+            throw new Exception("Invalid data for Team!");
     }
 
     public int getTeamID() {

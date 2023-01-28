@@ -107,8 +107,9 @@ public class DialogCreateTeam extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCreateTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTeamActionPerformed
-        this.dispose();
-        Controller.getInstance().getControllerCreateTeam().addTeam(txtTeamName.getText());
+
+        if (Controller.getInstance().getControllerCreateTeam().addTeam(txtTeamName.getText()))
+            this.dispose();
     }//GEN-LAST:event_btnCreateTeamActionPerformed
 
     /**
@@ -164,7 +165,5 @@ public class DialogCreateTeam extends javax.swing.JDialog {
     public JTextField getTxtTeamName() {
         return txtTeamName;
     }
-
-    
 
 }
