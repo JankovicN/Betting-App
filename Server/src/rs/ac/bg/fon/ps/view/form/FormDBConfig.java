@@ -27,6 +27,7 @@ public class FormDBConfig extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         popuniPolja();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -136,7 +137,15 @@ public class FormDBConfig extends javax.swing.JDialog {
         String port = txtServerPort.getText();
         if (!checkProperties()) {
             if (url.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Polje za URL ne sme biti prazno!", "Greska", ERROR);
+                JOptionPane.showMessageDialog(this, "Polje za URL ne sme biti prazno!", "Greska", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (user.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Polje za Username ne sme biti prazno!", "Greska", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (port.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Polje za Server port ne sme biti prazno!", "Greska", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             FileOutputStream out = null;
@@ -152,16 +161,17 @@ public class FormDBConfig extends javax.swing.JDialog {
                 props.store(out, null);
                 out.close();
 
-                out = new FileOutputStream("config/server.properties");
-                in = new FileInputStream("config/server.properties");
+                out = new FileOutputStream("config/serverconfig.properties");
+                in = new FileInputStream("config/serverconfig.properties");
                 props = new Properties();
                 props.load(in);
                 in.close();
                 props.setProperty("port", port);
                 props.store(out, null);
                 out.close();
-                JOptionPane.showMessageDialog(this, "Uspesno promenjeni parametri za bazu!");
+                JOptionPane.showMessageDialog(null, "Uspesno promenjeni parametri za bazu!");
             } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Greska prilikom promene parametara za bazu!", "Greska", JOptionPane.ERROR_MESSAGE);
                 System.out.println("FormDBConfig Exception: \n" + ex.getMessage());
             } finally {
                 try {
@@ -248,6 +258,7 @@ public class FormDBConfig extends javax.swing.JDialog {
         String user = txtUsername.getText();
         String password = String.valueOf(txtPassword.getPassword());
         String port = txtServerPort.getText();
-        return props.getURL().equals(url) && props.getUsername().equals(user) && props.getPassword().equals(password) && serverProps.getPort().equals(port);
+        
+        return serverProps.getPort()!=null &&  props.getURL()!=null &&  props.getUsername()!=null && props.getPassword()!=null && props.getURL().equals(url) && props.getUsername().equals(user) && props.getPassword().equals(password) && serverProps.getPort().equals(port);
     }
 }

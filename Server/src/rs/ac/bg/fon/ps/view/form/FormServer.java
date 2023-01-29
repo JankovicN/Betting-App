@@ -192,7 +192,7 @@ public class FormServer extends javax.swing.JFrame {
                 setUpForm(false);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error while stopping server!");
+            JOptionPane.showMessageDialog(this, "Error while stopping server!","Error",JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnStopActionPerformed
@@ -206,7 +206,7 @@ public class FormServer extends javax.swing.JFrame {
                 setUpForm(true);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error while starting server!");
+            JOptionPane.showMessageDialog(this, "Error while starting server!","Error",JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnStartActionPerformed
@@ -288,7 +288,7 @@ public class FormServer extends javax.swing.JFrame {
             tmu = new TableModelUsers();
             tblClients.setModel(tmu);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error while setting up user table!");
+            JOptionPane.showMessageDialog(this, "Error while setting up user table!","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -39,7 +39,7 @@ public class DBConnectionFactory {
             }
             return connection;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class DBConnectionFactory {
             username = properties.getUsername();
             password = properties.getPassword();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", JOptionPane.ERROR_MESSAGE);
             System.out.println("DBConnectionFactory Exception: \n" + e.getMessage());
         }
     }

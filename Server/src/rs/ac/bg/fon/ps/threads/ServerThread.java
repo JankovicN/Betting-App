@@ -33,7 +33,7 @@ public class ServerThread extends Thread {
         serverSocket = new ServerSocket(Integer.parseInt(port));
         System.out.println("Waiting for connection...");
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", JOptionPane.ERROR_MESSAGE);
         }
     }
 
