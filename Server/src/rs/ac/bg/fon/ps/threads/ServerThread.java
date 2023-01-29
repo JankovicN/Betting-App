@@ -4,12 +4,14 @@
  */
 package rs.ac.bg.fon.ps.threads;
 
+import static java.awt.image.ImageObserver.ERROR;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.properties.ServerProperties;
 import rs.ac.bg.fon.ps.repository.db.DBConnectionFactory;
 import rs.ac.bg.fon.ps.users.Users;
@@ -26,9 +28,13 @@ public class ServerThread extends Thread {
     UpdateGamesThread updateGamesThread;
 
     public ServerThread() throws IOException {
+        try{
         readConfigProperties();
         serverSocket = new ServerSocket(Integer.parseInt(port));
         System.out.println("Waiting for connection...");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
+        }
     }
 
     @Override
@@ -60,12 +66,8 @@ public class ServerThread extends Thread {
 
     private void readConfigProperties() {
 
-        try {
-            ServerProperties properties = new ServerProperties();
-            port = properties.getPort();
-        } catch (IOException e) {
-            Logger.getLogger(DBConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
-        }
+        ServerProperties properties = new ServerProperties();
+        port = properties.getPort();
     }
 
     private void initializeThreads() throws InterruptedException {

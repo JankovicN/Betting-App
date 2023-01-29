@@ -21,15 +21,19 @@ public class ServerProperties {
     
     private Properties properties;
 
-    public ServerProperties() throws IOException {
+    public ServerProperties(){
         
         try {
             properties=new Properties();
             properties.load(new FileInputStream("config/serverconfig.properties"));
-        } catch (FileNotFoundException e) {
-            
+        } catch (FileNotFoundException ex) {
+
             //TODO if there is no file
-            Logger.getLogger(DBProperties.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("ServerProperties FileNotFoundException: \n" + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("ServerProperties IOException: \n" + ex.getMessage());
+        }catch (Exception ex) {
+            System.out.println("ServerProperties Exception: \n" + ex.getMessage());
         }
     }
     

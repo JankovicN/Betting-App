@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.properties.DBConstants;
 import rs.ac.bg.fon.ps.properties.DBProperties;
+import rs.ac.bg.fon.ps.properties.ServerProperties;
 
 /**
  *
@@ -44,6 +45,8 @@ public class FormDBConfig extends javax.swing.JDialog {
         txtUsername = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
+        jLabel4 = new javax.swing.JLabel();
+        txtServerPort = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -66,6 +69,14 @@ public class FormDBConfig extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setText("Server port");
+
+        txtServerPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtServerPortActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,14 +86,16 @@ public class FormDBConfig extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtURL)
                     .addComponent(txtUsername)
                     .addComponent(txtPassword)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
-                .addGap(50, 50, 50))
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                    .addComponent(txtServerPort))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,8 +113,12 @@ public class FormDBConfig extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtServerPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addContainerGap())
         );
 
         pack();
@@ -112,38 +129,54 @@ public class FormDBConfig extends javax.swing.JDialog {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-      
+
         String url = txtURL.getText();
         String user = txtUsername.getText();
         String password = String.valueOf(txtPassword.getPassword());
-        if (url.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Polje za URL ne sme biti prazno!", "Greska", ERROR);
-            return;
-        }
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream("config/dbconfig.properties");
-            FileInputStream in = new FileInputStream("config/dbconfig.properties");
-            Properties props = new Properties();
-            props.load(in);
-            in.close();
-            props.setProperty("url", url);
-            props.setProperty("username", user);
-            props.setProperty("password", password);
-            props.store(out, null);
-            out.close();
-        } catch (Exception ex) {
-            System.out.println("FormDBConfig Exception: \n" + ex.getMessage());
-        } finally {
+        String port = txtServerPort.getText();
+        if (!checkProperties()) {
+            if (url.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Polje za URL ne sme biti prazno!", "Greska", ERROR);
+                return;
+            }
+            FileOutputStream out = null;
             try {
+                out = new FileOutputStream("config/dbconfig.properties");
+                FileInputStream in = new FileInputStream("config/dbconfig.properties");
+                Properties props = new Properties();
+                props.load(in);
+                in.close();
+                props.setProperty("url", url);
+                props.setProperty("username", user);
+                props.setProperty("password", password);
+                props.store(out, null);
                 out.close();
-            } catch (IOException ex) {
-                System.out.println("FormDBConfig IOException: \n" + ex.getMessage());
+
+                out = new FileOutputStream("config/server.properties");
+                in = new FileInputStream("config/server.properties");
+                props = new Properties();
+                props.load(in);
+                in.close();
+                props.setProperty("port", port);
+                props.store(out, null);
+                out.close();
+                JOptionPane.showMessageDialog(this, "Uspesno promenjeni parametri za bazu!");
+            } catch (Exception ex) {
+                System.out.println("FormDBConfig Exception: \n" + ex.getMessage());
+            } finally {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    System.out.println("FormDBConfig IOException: \n" + ex.getMessage());
+                }
             }
         }
-        JOptionPane.showMessageDialog(this, "Uspesno promenjeni parametri za bazu!");
         this.dispose();
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void txtServerPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServerPortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtServerPortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,16 +225,29 @@ public class FormDBConfig extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtServerPort;
     private javax.swing.JTextField txtURL;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void popuniPolja(){
+    private void popuniPolja() {
         DBProperties props = new DBProperties();
+        ServerProperties serverProps = new ServerProperties();
         txtURL.setText(props.getURL());
         txtUsername.setText(props.getUsername());
         txtPassword.setText(props.getPassword());
-        
+        txtServerPort.setText(serverProps.getPort());
+    }
+
+    private boolean checkProperties() {
+        DBProperties props = new DBProperties();
+        ServerProperties serverProps = new ServerProperties();
+        String url = txtURL.getText();
+        String user = txtUsername.getText();
+        String password = String.valueOf(txtPassword.getPassword());
+        String port = txtServerPort.getText();
+        return props.getURL().equals(url) && props.getUsername().equals(user) && props.getPassword().equals(password) && serverProps.getPort().equals(port);
     }
 }

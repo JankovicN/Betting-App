@@ -4,12 +4,11 @@
  */
 package rs.ac.bg.fon.ps.repository.db;
 
-import java.io.IOException;
+import static java.awt.image.ImageObserver.ERROR;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.properties.DBProperties;
 
 /**
@@ -17,39 +16,44 @@ import rs.ac.bg.fon.ps.properties.DBProperties;
  * @author nikol
  */
 public class DBConnectionFactory {
-    
+
     private static DBConnectionFactory instance;
     private Connection connection;
     private String url, username, password;
-    
-    public static DBConnectionFactory getInstance(){
-    
-        if(instance==null){
-            instance= new DBConnectionFactory();
+
+    public static DBConnectionFactory getInstance() {
+
+        if (instance == null) {
+            instance = new DBConnectionFactory();
         }
-        return instance;    
+        return instance;
     }
-    
-    public Connection getConnection() throws SQLException{
-    
-        if(connection==null || connection.isClosed()){
-            readConfigProperties();
-            
-            connection=DriverManager.getConnection(url,username,password);
-            connection.setAutoCommit(false);
+
+    public Connection getConnection() throws SQLException {
+        try {
+            if (connection == null || connection.isClosed()) {
+                readConfigProperties();
+
+                connection = DriverManager.getConnection(url, username, password);
+                connection.setAutoCommit(false);
+            }
+            return connection;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
         }
-        return connection;
+        return null;
     }
 
     private void readConfigProperties() {
 
         try {
             DBProperties properties = new DBProperties();
-            url=properties.getURL();
-            username= properties.getUsername();
-            password=properties.getPassword();
+            url = properties.getURL();
+            username = properties.getUsername();
+            password = properties.getPassword();
         } catch (Exception e) {
-            System.out.println("DBConnectionFactory Exception: \n"+e.getMessage());
+            JOptionPane.showMessageDialog(null, "Promenite config properties!", "Greska", ERROR);
+            System.out.println("DBConnectionFactory Exception: \n" + e.getMessage());
         }
     }
 }
